@@ -13,7 +13,7 @@ INCLUDE(cotire)
 
 # include directories
 #INCLUDE_DIRECTORIES(system ../external/include/)
-#INCLUDE_DIRECTORIES(system ../external/include/mysql_connector/include)
+INCLUDE_DIRECTORIES(system "${PROJECT_SOURCE_DIR}/lib_prj")
 INCLUDE_DIRECTORIES(after  ${PROJECT_SOURCE_DIR})
 
 #运行cmake输出终端消息，调试可以用
@@ -52,5 +52,8 @@ endif( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 
 ADD_SUBDIRECTORY(lib_prj)
 ADD_SUBDIRECTORY(main_prj)
+ADD_SUBDIRECTORY(linux/MainServer)
+ADD_SUBDIRECTORY(linux/test)
+ADD_SUBDIRECTORY(linux/testClient)
 
 

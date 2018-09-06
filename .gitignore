@@ -1,1 +1,3 @@
 /src/Debug
+/src/lib_prj/utility/easyTest.h
+/src/lib_prj/Thread/SimpleAtomicCount.cpp
