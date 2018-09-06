@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="MoreThread">
+      <UniqueIdentifier>{2da42dfc-b0f2-45d2-a978-f899e81d8ebe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utility">
+      <UniqueIdentifier>{d6779d1b-098d-461a-b84c-5559ac97ddbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="linux">
+      <UniqueIdentifier>{165a07ba-3fd6-4aeb-b0ca-74d2e64e0c05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="linux\net">
+      <UniqueIdentifier>{8a9d0d49-22c5-4052-b3a8-f8127cea00a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="linux\simulate_linux_hfile">
+      <UniqueIdentifier>{3c2be717-73bb-45f4-8445-77106c7027f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="linux\Thread">
+      <UniqueIdentifier>{86374f86-f8da-438a-b7b4-290d4e7325ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test">
+      <UniqueIdentifier>{c7c6b448-a7fb-4f12-a11b-45e356268261}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="linux_utility">
+      <UniqueIdentifier>{44b6d902-1432-4c84-a0f2-509b95e95c31}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\test\main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\net\epoll_base.cpp">
+      <Filter>linux\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\net\my_socket.cpp">
+      <Filter>linux\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\net\test_client.cpp">
+      <Filter>linux\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\net\test_epoll.cpp">
+      <Filter>linux\net</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\utility\debugLog.cpp">
+      <Filter>utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\utility\logFile.cpp">
+      <Filter>utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\utility\memoryStream.cpp">
+      <Filter>utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\utility\TestMemoryStream.cpp">
+      <Filter>utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Thread\Thread.cpp">
+      <Filter>linux\Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\test_msg_que.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\utility\BacktraceInfo.cpp">
+      <Filter>linux_utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\test\test_backtrack.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\utility\cpu_time.cpp">
+      <Filter>linux_utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\utility\file_lock.cpp">
+      <Filter>linux_utility</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\test\Makefile.am">
+      <Filter>源文件</Filter>
+    </None>
+    <None Include="..\..\..\Thread\message_queue.inl">
+      <Filter>linux\Thread</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\test\config.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\net\epoll_base.h">
+      <Filter>linux\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\net\message.h">
+      <Filter>linux\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\net\my_socket.h">
+      <Filter>linux\net</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\utility\circleBuf.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\utility\debugLog.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\utility\easyTest.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\utility\heapObj.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\utility\logFile.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\utility\memoryStream.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\utility\misc.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\utility\MultIndexContainer.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\utility\noncopyable.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\utility\ObjPool.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\utility\parseStr.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\utility\singleton.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\utility\stlBoost.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\utility\typedef.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\utility\UniqueId.h">
+      <Filter>utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\simulate_linux_hfile\unistd.h">
+      <Filter>linux\simulate_linux_hfile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Thread\Thread.h">
+      <Filter>linux\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\simulate_linux_hfile\pthread.h">
+      <Filter>linux\simulate_linux_hfile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Thread\message_queue.h">
+      <Filter>linux\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utility\BacktraceInfo.hpp">
+      <Filter>linux_utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\simulate_linux_hfile\execinfo.h">
+      <Filter>linux\simulate_linux_hfile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utility\cpu_time.h">
+      <Filter>linux_utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utility\file_lock.hpp">
+      <Filter>linux_utility</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

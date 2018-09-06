@@ -12,7 +12,7 @@ workspace  "CppUtility"
 		--"Release"
 	}
 	location (outdir)
-
+    defines { "DEBUG_TEST_CPU_TIME" }
 
 project "CppUtility"
 	language "C++"
@@ -27,5 +27,6 @@ project "CppUtility"
 		"../src/**.cc",
 		"../src/**.h",
 		"../src/**.hpp",
+		"../src/**.cpps",  --显示用，不参加cmake编译
 	}
 

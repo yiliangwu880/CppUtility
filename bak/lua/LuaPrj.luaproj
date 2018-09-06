@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>E439935D-B2A2-46AE-856D-2AA408428F33</ProjectGuid>
+    <!--$guid1$-->
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>
+    </StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <Name>LuaPrj</Name>
+    <RootNamespace>LuaPrj</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="lua_code\" />
+    <Folder Include="lua_code\game\" />
+    <Folder Include="lua_code\luaCommon code\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="lua_code\cfg.lua" />
+    <Compile Include="lua_code\class.lua" />
+    <Compile Include="lua_code\class_test.lua" />
+    <Compile Include="lua_code\game\com_task.lua" />
+    <Compile Include="lua_code\game\com_task_test.lua" />
+    <Compile Include="lua_code\main.lua" />
+    <Compile Include="lua_code\rand.lua" />
+    <Compile Include="lua_code\string.lua" />
+    <Compile Include="lua_code\t.lua" />
+    <Compile Include="lua_code\table.lua" />
+    <Compile Include="lua_code\table_test.lua" />
+    <Compile Include="lua_code\template_code.lua" />
+    <Compile Include="lua_code\utility.lua" />
+    <Compile Include="lua_code\utility_test.lua" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="lua_code\luaCommon code\ConvertLuaData.cpp" />
+    <Content Include="lua_code\luaCommon code\ConvertLuaData.h" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+</Project>

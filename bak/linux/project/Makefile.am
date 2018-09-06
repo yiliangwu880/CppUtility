@@ -1,0 +1,8 @@
+
+
+SUBDIRS = MainServer testClient
+
+
+
+
+
