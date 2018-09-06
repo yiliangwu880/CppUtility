@@ -52,8 +52,8 @@ endif( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 
 ADD_SUBDIRECTORY(lib_prj)
 ADD_SUBDIRECTORY(main_prj)
-ADD_SUBDIRECTORY(linux/MainServer)
-ADD_SUBDIRECTORY(linux/test)
-ADD_SUBDIRECTORY(linux/testClient)
+ADD_SUBDIRECTORY(SocketTest/MainServer)
+ADD_SUBDIRECTORY(SocketTest/test)
+ADD_SUBDIRECTORY(SocketTest/testClient)
 
 
