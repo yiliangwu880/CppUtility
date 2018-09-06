@@ -11,7 +11,6 @@ using namespace wyl;
 //using namespace boost;
 //using namespace stdext;;
 
-DebugLog g_logFile("log.txt"); //全局变量，很不好，改静态函数获取
 
 void testUtility();
  void testStaticReg();
@@ -50,7 +49,7 @@ void test_delay_handler();
 
 int main(int argc, char* argv[])
 {
-	g_logFile.setStdOut(true);
+	DebugLog::GetDefaultLog().setStdOut(true);
 	LOG_DEBUG("\nstart");
 
 	//testRegion();

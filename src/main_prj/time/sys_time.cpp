@@ -123,7 +123,7 @@ namespace wyl
         //strptime(pTime, "%Y-%m-%d %H-%M-%S", &tm_time); //格式化输出 win32没有这个函数,就用上面自己写的吧
 
         ret_time = mktime(&tm_time);
-        if (-1 == ret_time)
+		if (ret_time  < 0)
         {
             return false;
         }

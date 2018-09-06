@@ -99,7 +99,6 @@ namespace wyl
 
 //////////////////////////////////////////////////////////////////////////
 
-
 //simple interface of Map container
 template<typename Key, typename mapped_type>
 class EasyMap

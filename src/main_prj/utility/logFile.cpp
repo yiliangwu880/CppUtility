@@ -142,6 +142,11 @@ DebugLog::~DebugLog()
     }
 }
 
+DebugLog & DebugLog::GetDefaultLog()
+{
+	static DebugLog s_logFile("log.txt");
+	return s_logFile;
+}
 
 
 //file end

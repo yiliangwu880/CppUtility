@@ -4,3 +4,8 @@
 
 #编译
 GCC要求>=4.8版本
+
+整个文件夹放到linux目录，安装cmake gcc等。
+
+CppUtility/src/目录执行：sh build.sh
+

@@ -1,6 +1,5 @@
 
 //#include "my_socket.h"
-#include "config.h"
 #include "../utility/circleBuf.h"
 #include "../utility/logFile.h"
 #include <string>

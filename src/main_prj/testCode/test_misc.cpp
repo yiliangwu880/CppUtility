@@ -1,5 +1,4 @@
 
-#include "config.h"
 #include "../utility/circleBuf.h"
 #include "../utility/logFile.h"
 #include "../utility/misc.h"

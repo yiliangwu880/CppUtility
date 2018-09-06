@@ -37,7 +37,6 @@ brief:
 
 #include "../utility/typedef.h"
 #include <map>
-#include "config.h"
 #include <algorithm>
 #include "game_task_cfg.h"
 #include <stdarg.h>
