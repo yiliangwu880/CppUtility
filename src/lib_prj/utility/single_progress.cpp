@@ -99,6 +99,7 @@ void file_lock::unlock()
 
 SingleProgress::SingleProgress()
 :m_is_exit(false)
+, m_old_cb(nullptr)
 {
 
 }
@@ -112,8 +113,15 @@ void SingleProgress::CheckSingle(const std::string &single_file_name)
 		LOG_DEBUG("progress aleady run!");
 		exit(1);
 	}
-
-	signal(SIGUSR1, SingleProgress::catch_signal);
+	sighandler_t old_cb = signal(SIGUSR1, SingleProgress::catch_signal);
+	//SIG_IGN 屏蔽该信号        ② SIG_DFL 恢复默认行
+	if ((old_cb != SIG_IGN)
+		&&
+		(old_cb != SIG_DFL)
+		)
+	{
+		m_old_cb = old_cb;
+	}
 }
 
 void SingleProgress::StopSingle(const std::string &single_file_name)
@@ -129,4 +137,8 @@ void SingleProgress::StopSingle(const std::string &single_file_name)
 void SingleProgress::catch_signal(int sig_type)
 {
 	SingleProgress::Instance().m_is_exit = true;
+	if (nullptr != SingleProgress::Instance().m_old_cb)
+	{
+		SingleProgress::Instance().m_old_cb(sig_type);
+	}
 }

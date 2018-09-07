@@ -1,7 +1,8 @@
 /**
 author: yilaing.wu
 
-功能：限制程序单独启动一个进程。 信号结束进程
+功能：限制程序单独启动一个进程。 信号结束进程. 
+会在程序当前目录创建锁文件，比如 my_name.lock
 example:
 启动进程：
 void main()
@@ -28,6 +29,7 @@ void main()
 
 #pragma once
 #include <string>
+#include <signal.h>
 
 class file_lock
 {
@@ -71,5 +73,6 @@ private:
 
 private:
 	bool m_is_exit;
+	sighandler_t m_old_cb;
 };
 
