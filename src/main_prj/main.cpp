@@ -41,7 +41,7 @@ void testObjPool();
 void testEnumName();
 void testGameTask();
 void TestRank();
-
+void test_single_progresss();
 void test_delay_handler();
 
 
@@ -69,7 +69,7 @@ int main(int argc, char* argv[])
 	//testMemoryStream();
 //	testUniquId();
 	//testMoreThread();
-
+	//test_single_progresss();
 	while(1);
 	return 0;
 }

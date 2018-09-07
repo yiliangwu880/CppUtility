@@ -35,8 +35,8 @@ LINK_DIRECTORIES(
 
 #指定编译器
 if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-    SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g  -pthread -DDEBUG -Werror -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g  -pthread   -Werror -DDEBUG -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free")
+    SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g  -rdynamic -pthread -DDEBUG -Werror -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g  -rdynamic -pthread   -Werror -DDEBUG -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free")
 else( CMAKE_BUILD_TYPE STREQUAL "Release" )
     #set(CMAKE_BUILD_TYPE "Release")
     SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O2 -DGMPERMISSION -pthread -Werror -Wno-unused-result -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free ")

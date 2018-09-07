@@ -2,3 +2,5 @@
 /src/lib_prj/utility/easyTest.h
 /src/lib_prj/Thread/SimpleAtomicCount.cpp
 /vs/vs2013
+/vs/vs2013/obj
+/vs/vs2013/bin
