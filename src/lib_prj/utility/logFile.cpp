@@ -30,7 +30,7 @@ void DebugLog::setStdOut( bool is_std_out )
 DebugLog::DebugLog( const char *fname, const char *prefix_name )
 :m_log_lv(LOG_LV_ANY)
 ,m_file(NULL)
-,m_is_std_out(false)
+,m_is_std_out(true)
 ,m_prefix_name(prefix_name)
 {
 
@@ -87,10 +87,16 @@ void DebugLog::printf( DebugLogLv lv, const char * file, int line, const char *p
 
 	va_list vp;
 	va_start(vp,pattern);	
-	vfprintf(m_file,s.c_str(),vp);
 	if (m_is_std_out)
 	{
-		vprintf(s.c_str(), vp);
+		char out_str[1000];
+		vsnprintf(out_str, sizeof(out_str), s.c_str(), vp);
+		fprintf(m_file, out_str); //用一次vfprintf，再用vprintf有时候有BUG， vp被 vfprintf修改了，原因未明
+		::printf(out_str);
+	}
+	else
+	{
+		vfprintf(m_file, s.c_str(), vp);
 	}
     va_end(vp);
    // if (lv<=LOG_LV_ERROR)

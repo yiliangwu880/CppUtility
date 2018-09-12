@@ -92,8 +92,7 @@ private:
 #define ASSERT_DEBUG(cond)\
 	do{\
 	if(!(cond)){\
-	DebugLog::GetDefaultLog().printf(LOG_LV_ERROR, __FILE__, __LINE__, __FUNCTION__, "assert"); \
-	cout << __FILE__ << ":" <<  __LINE__ << "assert error" << endl;\
+	DebugLog::GetDefaultLog().printf(LOG_LV_ERROR, __FILE__, __LINE__, __FUNCTION__, "assert error"); \
 	}	\
 	}while(0)
 
