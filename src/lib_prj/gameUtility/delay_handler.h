@@ -62,8 +62,8 @@ public:
 	//请求创建BaseDelayOpt派生对象
 	//特点：错误调用也不会内存泄露
 	//注意：创建后，马上调用AddOpt后，才能调用BaseDelayOptMgr的其他成员。不然会下一次CreateOpt()会销毁
-	template <typename DeriveOpt>
-	DeriveOpt *CreateOpt()
+	template <typename DelayPara>
+	DelayPara *CreateOpt()
 	{
 		if (NULL != m_new_opt)
 		{
@@ -71,7 +71,7 @@ public:
 			printf("error call, call continue CreateOpt twice!!!\n");
 			m_new_opt = NULL;
 		}
-		DeriveOpt *t = new DeriveOpt();
+		DelayPara *t = new DelayPara();
 		if(NULL == t)
 		{
 			return NULL;
@@ -80,8 +80,8 @@ public:
 		return t;
 	}
 	//c++11用这个版本代替上面的函数
-	template <typename DeriveOpt, typename... Args>
-	DeriveOpt *CreateOpt(Args&&... args)
+	template <typename DelayPara, typename... Args>
+	DelayPara *CreateOpt(Args&&... args)
 	{
 		if (NULL != m_new_opt)
 		{
@@ -89,7 +89,7 @@ public:
 			printf("error call, call continue CreateOpt twice!!!\n");
 			m_new_opt = NULL;
 		}
-		DeriveOpt *t = new DeriveOpt(std::forward<Args>(args)...);
+		DelayPara *t = new DelayPara(std::forward<Args>(args)...);
 		if (NULL == t)
 		{
 			return NULL;
