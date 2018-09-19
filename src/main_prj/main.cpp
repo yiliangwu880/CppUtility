@@ -43,6 +43,7 @@ void testGameTask();
 void TestRank();
 void test_single_progresss();
 void test_delay_handler();
+void testDelayPara();
 
 
 
@@ -51,6 +52,7 @@ int main(int argc, char* argv[])
 	DebugLog::GetDefaultLog().setStdOut(true);
 	LOG_DEBUG("\nstart");
 
+	testDelayPara();
 	//testRegion();
 	//
 	//TestRank();
@@ -62,7 +64,7 @@ int main(int argc, char* argv[])
    // testStringTool();
     //testLogFile();
     //testReadCfg();
-    test_wyl_time();
+  //  test_wyl_time();
    //testTimer();
   //  testStaticReg();
 	//testRandom();
@@ -70,7 +72,7 @@ int main(int argc, char* argv[])
 //	testUniquId();
 	//testMoreThread();
 	//test_single_progresss();
-	while(1);
+	//while(1);
 	return 0;
 }
 
