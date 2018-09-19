@@ -1,18 +1,31 @@
 /*
 brief: ÑÓÊ±²ÎÊı¹ÜÀí£¬ ÓÃ»§¶¯Ì¬µ÷ÓÃ´´½¨³õÊ¼»¯£¬ ÑÓÊ±£¨ÊÕµ½ÍøÂçÏûÏ¢ºó£©£¬»ñÈ¡²ÎÊı£¬×Ô¶¯ÊÍ·Å¡£
 Àı×Ó£º
-	create para, 
-	init
-	user req.
+	ÍøÂçÇëÇóÀı×Ó
+	//ÍøÂçÇëÇóÊÇ£¬¹¹Ôì¶¯Ì¬²ÎÊı
+	class MyPara : public BaseDelayPara
+	{
+	public:
+	MyPara(int p1, int p2)
+	{
+	a = p1; b = p2;
+	}
+	int a, b;
+	};
 
-	//wait cb 
-	 get para
-	 user cb
-	 auto release
+	MyPara *p = DelayParaMgr::Instance().ConstructPara<MyPara>(1, 2);
+	assert(p != NULL);
+	send(p); --·¢ËÍµ½ÍøÂç£¬µÈ»Øµ÷
 
 
-	 //on timer
-	 check an release timeout para
+	//ÍøÂç»Øµ÷Ê±µ÷ÓÃ
+	DelayParaGuard<MyPara> guard(p); //×Ô¶¯ÊÍ·Å pÄÚ´æ
+	assert(guard.m_para != NULL);
+	assert(guard.m_para->a == 1);
+
+
+	 //³¬Ê±ÇåÀí²ÎÊı
+	 DelayParaMgr::Instance().OnTimer();
 	
 */
 
@@ -22,7 +35,7 @@ brief: ÑÓÊ±²ÎÊı¹ÜÀí£¬ ÓÃ»§¶¯Ì¬µ÷ÓÃ´´½¨³õÊ¼»¯£¬ ÑÓÊ±£¨ÊÕµ½ÍøÂçÏûÏ¢ºó£©£¬»ñÈ¡²ÎÊı£
 #include <map>
 #include <utility>
 
-struct DelayParaGuard;
+
 
 class BaseDelayPara
 {
@@ -33,10 +46,13 @@ private:
 
 };
 
+//template <typename T> class DelayParaGuard; //palÅóÓÑ
 
 class DelayParaMgr
 {
-	friend class DelayParaGuard;
+	template <typename T> 
+	friend class DelayParaGuard; //DelayParaGuardÀàµÄËùÓĞÊµÀı»¯, ¶¼ÎªDelayParaMgrµÄÓÑÔª
+
 	DelayParaMgr();
 public:
 	static DelayParaMgr &Instance()
@@ -46,22 +62,22 @@ public:
 	}
 
 	//ÇëÇó´´½¨
-	template <typename DelayPara>
-	DelayPara *CreatePara()
-	{
-		DelayPara *para = new DelayPara();
-		if(NULL == para)
-		{
-			return NULL;
-		}
-		time_t cur=0;
-		time(&cur);
-		m_para_2_time.insert(std::make_pair(para, cur));
-		return para;
-	}
+	//template <typename DelayPara>
+	//DelayPara *ConstructPara()
+	//{
+	//	DelayPara *para = new DelayPara();
+	//	if(NULL == para)
+	//	{
+	//		return NULL;
+	//	}
+	//	time_t cur=0;
+	//	time(&cur);
+	//	m_para_2_time.insert(std::make_pair(para, cur));
+	//	return para;
+	//}
 	//c++11ÓÃÕâ¸ö°æ±¾´úÌæÉÏÃæµÄº¯Êı
 	template <typename DelayPara, typename... Args>
-	DelayPara *CreatePara(Args&&... args)
+	DelayPara *ConstructPara(Args&&... args)
 	{
 		DelayPara *para = new DelayPara(std::forward<Args>(args)...);
 		if (NULL == para)
@@ -73,36 +89,44 @@ public:
 		m_para_2_time.insert(std::make_pair(para, cur));
 		return para;
 	}
-
 	//½¨Òé5Ãëµ÷ÓÃÒ»´Î
 	void OnTimer();
+	uint32_t GetParaCnt();
+	//Ò»°ã²»ÉèÖÃ£¬ÓÃÄ¬ÈÏµÄ¾ÍĞĞ
+	void SetTimeOutSec(uint64 sec);
 
-	DelayParaGuard *GetPara(BaseDelayPara *para);
 private:
 	void DeletePara(BaseDelayPara *para);
+	//·µ»Ø²ÎÊıÖ¸Õë£¬ Ê§°Ü·µ»Ønull
+	BaseDelayPara *FindPara(BaseDelayPara *para);
 
 private:
 	static const uint64 TIME_OUT_SEC = 10;  //¹ıÆÚÊ±¼ä£¬Ãë
-
-private:
 	typedef std::map<BaseDelayPara *, uint64> Para2Time;
 
 	Para2Time m_para_2_time; //²ÎÊı 2 ´´½¨Ê±¼ä´Á
+	uint64 m_time_out_sec = 10;
 };
 
 
-struct DelayParaGuard
+
+template <typename DelayPara>
+class DelayParaGuard
 {
-	DelayParaGuard()
-	:para(NULL)
-	{}
+public:
+	DelayParaGuard(BaseDelayPara *para)
+	:m_para(NULL)
+	{
+		BaseDelayPara *base = DelayParaMgr::Instance().FindPara(para);
+		m_para = dynamic_cast<DelayPara *>(base);
+	}
 	~DelayParaGuard()
 	{
-		if (NULL != para)
+		if (NULL != m_para)
 		{
-			DelayParaMgr::Instance().DeletePara(para);
+			DelayParaMgr::Instance().DeletePara(m_para);
 		}
 	}
 
-	BaseDelayPara *para;
+	DelayPara *m_para;
 };
