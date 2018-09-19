@@ -101,7 +101,7 @@ private:
 	BaseDelayPara *FindPara(BaseDelayPara *para);
 
 private:
-	static const uint64 TIME_OUT_SEC = 10;  //过期时间，秒
+	static const uint64 TIME_OUT_SEC = 60*5;  //过期时间，秒. 时间可以长点，避免动态内存重复利用产生BUG。 回调参数获取的内存不是自己的。
 	typedef std::map<BaseDelayPara *, uint64> Para2Time;
 
 	Para2Time m_para_2_time; //参数 2 创建时间戳
