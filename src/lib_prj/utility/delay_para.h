@@ -89,6 +89,14 @@ public:
 		m_para_2_time.insert(std::make_pair(para, cur));
 		return para;
 	}
+	//读取参数，不释放。
+	template <typename DelayPara>
+	const DelayPara *PeerPara(BaseDelayPara *para)
+	{
+		BaseDelayPara *base = DelayParaMgr::Instance().FindPara(para);
+		return dynamic_cast<DelayPara *>(base);
+	}
+
 	//建议5秒调用一次
 	void OnTimer();
 	uint32_t GetParaCnt();
