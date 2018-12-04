@@ -1,6 +1,8 @@
 #include <iostream>
 using namespace std;
 
+放弃吧，参考更好实现 ScopeGuard
+
 template<typename T>
 class Defer{
 	public:
