@@ -44,6 +44,7 @@ std::string GameCheat::doHandle1( GamePlayer *pPlayer, const VecStr &vecStr )
 	string s;
 	CONST_FOR_IT(VecStr, vecStr)
 	{
+		s += " ";
 		s+=*it;
 	}
 	return s;

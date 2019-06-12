@@ -52,7 +52,8 @@ int main(int argc, char* argv[])
 	DebugLog::GetDefaultLog().setStdOut(true);
 	LOG_DEBUG("\nstart");
 
-	testDelayPara();
+	test_game_cheat();
+	//testDelayPara();
 	//testRegion();
 	//
 	//TestRank();
