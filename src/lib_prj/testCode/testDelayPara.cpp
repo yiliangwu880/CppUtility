@@ -17,7 +17,7 @@ namespace
 	};
 	void test1()
 	{
-		LOG_DEBUG("test normal");
+		L_DEBUG("test normal");
 		{
 			assert(DelayParaMgr::Instance().GetParaCnt() == 0);
 			MyPara *p = DelayParaMgr::Instance().ConstructPara<MyPara>(1, 2);
@@ -56,7 +56,7 @@ namespace
 
 	void testTimer()
 	{
-		LOG_DEBUG("test time out");
+		L_DEBUG("test time out");
 		{
 			assert(DelayParaMgr::Instance().GetParaCnt() == 0);
 			MyPara *p = DelayParaMgr::Instance().ConstructPara<MyPara>(1, 2);
@@ -76,8 +76,8 @@ namespace
 
 void testDelayPara()
 {
-	LOG_DEBUG("testDelayPara");
+	L_DEBUG("testDelayPara");
 	test1();
 	testTimer();
-	LOG_DEBUG("done");
+	L_DEBUG("done");
 }

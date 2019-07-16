@@ -16,7 +16,7 @@ void ExchangeRankMgr::addNewMember( RankMemberBase *p_member )
 {
 	if (nullptr == p_member)
 	{
-		LOG_ERROR("nullptr point");
+		L_ERROR("nullptr point");
 		return;
 	}
 	p_member->rank(m_vec_member_p.size());
@@ -51,7 +51,7 @@ void ExchangeRankMgr::startFight( uint32 active_rank, uint32 target_rank )
 {
 	if(!enableFight(active_rank, target_rank))
 	{
-		LOG_ERROR("can't fight");
+		L_ERROR("can't fight");
 		return;
 	}
 	m_lock_rank.insert(active_rank);
@@ -79,7 +79,7 @@ bool ExchangeRankMgr::endFightExchange( uint32 active_rank, uint32 target_rank, 
 	}
 	if (m_set_rank_pair.find(RankPair(active_rank, target_rank)) == m_set_rank_pair.end())
 	{
-		LOG_ERROR("two target havn't call startFight %d %d", active_rank, target_rank);
+		L_ERROR("two target havn't call startFight %d %d", active_rank, target_rank);
 		return false;
 	}
 	if (m_lock_rank.find(active_rank) == m_lock_rank.end()
@@ -118,12 +118,12 @@ bool ExchangeRankMgr::erase( uint32 rank )
 		|| !m_set_rank_pair.empty()
 		)
 	{
-		LOG_ERROR("have some lock member,can't erase member");
+		L_ERROR("have some lock member,can't erase member");
 		return false;
 	}
 	if (rank>=m_vec_member_p.size())
 	{
-		LOG_ERROR("rank out of rang. %d", rank);
+		L_ERROR("rank out of rang. %d", rank);
 		return false;;
 	}
 	m_vec_member_p.erase(m_vec_member_p.begin()+rank);

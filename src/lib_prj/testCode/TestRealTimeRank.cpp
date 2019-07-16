@@ -33,7 +33,7 @@ namespace
 			switch (type)
 			{
 			default:
-				LOG_ERROR("unknow rank type =%d", (int)type);
+				L_ERROR("unknow rank type =%d", (int)type);
 				assert(false);
 				return 0;
 			case RankType::LV:		return m_lv;
@@ -46,7 +46,7 @@ namespace
 			switch (type)
 			{
 			default:
-				LOG_ERROR("unknow rank type =%d", (int)type);
+				L_ERROR("unknow rank type =%d", (int)type);
 				assert(false);
 				return 0;
 			case RankType::LV:		return m_lv_rank;
@@ -58,7 +58,7 @@ namespace
 			switch (type)
 			{
 			default:
-				LOG_ERROR("unknow rank type =%d", (int)type);
+				L_ERROR("unknow rank type =%d", (int)type);
 				assert(false);
 				break;
 			case RankType::LV:		 m_lv_rank = idx; break;

@@ -60,7 +60,7 @@ public:
 			int len = epoll_wait(m_fd, events, MAX_REACT_SIZE, -1);
 			if (len == -1 || 0 == len) 
 			{
-				LOG_ERROR("logic error");
+				L_ERROR("logic error");
 				return;
 			}
 			for (int i=0; i<len; ++i)
@@ -93,7 +93,7 @@ public:
 				}
 				if (!is_do)
 				{
-					LOG_ERROR("未处理类型，events=%d", events[i].events);
+					L_ERROR("未处理类型，events=%d", events[i].events);
 				}
 			}
 		}

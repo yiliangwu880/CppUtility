@@ -44,16 +44,16 @@ namespace
 
 	void MyHandler::handlePri( const epoll_event &event )
 	{
-		LOG_ERROR("priority error");
+		L_ERROR("priority error");
 	}
 
 	void MyHandler::handleHup( const epoll_event &event )
 	{
 		MySocket *p = (MySocket *)event.data.ptr;
 		int fd = p->fd;
-		LOG_DEBUG("¹ÒÆð fd=%d", fd);
+		L_DEBUG("¹ÒÆð fd=%d", fd);
 		size_t ret = g_fd_map_socket.erase(fd);
-		LOG_CONDIT_VOID(1 == ret, "g_fd_map_socket.erase error, fd=%d", fd);
+		L_COND_VOID(1 == ret, "g_fd_map_socket.erase error, fd=%d", fd);
 		::close(p->fd);
         p->fd = -1;
 	}
@@ -62,13 +62,13 @@ namespace
 	{
 		MySocket *p = (MySocket *)event.data.ptr;
 		int fd = p->fd;
-		LOG_DEBUG("fd=%d error", fd);
+		L_DEBUG("fd=%d error", fd);
 	}
 
 	void MyHandler::handleOut( const epoll_event &event )
 	{
 		MySocket *p = (MySocket *)event.data.ptr;
-		ASSERT_DEBUG(-1 != p->fd);
+		L_ASSERT(-1 != p->fd);
 		while (1)
 		{
 			int ret = EasyRW::send(p->fd, p->write_buf);
@@ -94,8 +94,8 @@ namespace
 					break;
 				}
 				is_accept = true;
-				LOG_DEBUG("new connect fd=%d", fd);
-				ASSERT_DEBUG(g_fd_map_socket.find(fd) == g_fd_map_socket.end());
+				L_DEBUG("new connect fd=%d", fd);
+				L_ASSERT(g_fd_map_socket.find(fd) == g_fd_map_socket.end());
 				MySocket data;
 				data.fd = fd;
 				FdMapMySocket::iterator it= g_fd_map_socket.insert(make_pair(fd, data)).first;
@@ -103,18 +103,18 @@ namespace
 				epoll_event ev;
 				ev.events = EPOLL_ALL_EVENT;
 				ev.data.ptr = (void *)&(it->second);
-				ASSERT_DEBUG(g_epoll.ctrl(EpollEtBase<MyHandler>::ADD, fd, &ev));
+				L_ASSERT(g_epoll.ctrl(EpollEtBase<MyHandler>::ADD, fd, &ev));
 			}
 			if (!is_accept)
 			{
-				LOG_DEBUG("handleIn listen fd=%d, but accept fail", g_listen.fd());
+				L_DEBUG("handleIn listen fd=%d, but accept fail", g_listen.fd());
 			}
 			
 		}
 		else
 		{
 			//read
-			ASSERT_DEBUG(-1 != event.data.fd);
+			L_ASSERT(-1 != event.data.fd);
 			while (1)
 			{
 				int ret = EasyRW::recv(pMySocket->fd, pMySocket->recv_buf);
@@ -122,7 +122,7 @@ namespace
 				{
 					break;
 				}
-				LOG_DEBUG("rev data");
+				L_DEBUG("rev data");
 			}
 		}
 	}
@@ -149,11 +149,11 @@ namespace
                 if (ret)
                 {
                     char_buf[len]=0;
-                    LOG_DEBUG("write data to cout [%s]", char_buf);
+                    L_DEBUG("write data to cout [%s]", char_buf);
                 }
                 else
                 {
-                    LOG_DEBUG("write empty data to cout");
+                    L_DEBUG("write empty data to cout");
                 }
             }
 			while(1)
@@ -174,11 +174,11 @@ namespace
 void testEpoll()
 {
 	daemon(1,1);
-	ASSERT_DEBUG(g_epoll.init());
+	L_ASSERT(g_epoll.init());
 	SockAddr addr("0.0.0.0", PORT);
 	if(!g_listen.init(addr))
     {
-        LOG_ERROR("init fail");
+        L_ERROR("init fail");
         return;
     }
 
@@ -191,7 +191,7 @@ void testEpoll()
 	ev.data.ptr = (void *)&(it->second);
 	if(!(g_epoll.ctrl(EpollEtBase<MyHandler>::ADD, fd, &ev)))
     {
-        LOG_ERROR("g_epoll.ctrl fail");
+        L_ERROR("g_epoll.ctrl fail");
         return;
     }
 

@@ -5,7 +5,7 @@
 
 void test_single_progresss()
 {
-	LOG_DEBUG("test_single_progresss");
+	L_DEBUG("test_single_progresss");
 	SingleProgress::Instance().CheckSingle("my_name");
 
 }

@@ -27,18 +27,18 @@ namespace
 void testClient()
 {
 	SockAddr addr(ip, PORT);
-	LOG_DEBUG("1");
+	L_DEBUG("1");
 	int sock_stream;
-	LOG_DEBUG("2");
+	L_DEBUG("2");
 	bool r = Socket::connect(sock_stream, addr);
-	LOG_CONDIT_VOID(r, "连接失败，ip=%s,port=%d", ip, PORT);
+	L_COND_VOID(r, "连接失败，ip=%s,port=%d", ip, PORT);
 	MyBuf buf;
 
 	while (1)
 	{
 		string s;
 		cin >> s;
-		ASSERT_DEBUG(buf.write((const uint8 *)s.c_str(), s.length()));
+		L_ASSERT(buf.write((const uint8 *)s.c_str(), s.length()));
 		EasyRW::send(sock_stream, buf);
 	}
 }

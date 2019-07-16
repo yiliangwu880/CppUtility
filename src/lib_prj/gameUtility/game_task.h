@@ -128,7 +128,7 @@ bool TaskMgr<TaskCfg>::RegTask(const TaskCfg &cfg, Args&&... args)
 	{
 		if (cfg.id == task->GetCfg().id)
 		{
-			LOG_ERROR("repeated reg task.id=%d", cfg.id);
+			L_ERROR("repeated reg task.id=%d", cfg.id);
 			return false;
 		}
 	}
@@ -189,7 +189,7 @@ uint32 TaskMgr<TaskCfg>::GetCfgPara(const TaskCfg &cfg, uint32 idx) const
 	switch (idx)
 	{
 	default:
-		LOG_ERROR("idx too big. %d", idx); //target_type_info.vec_para_logic 定义的size过大
+		L_ERROR("idx too big. %d", idx); //target_type_info.vec_para_logic 定义的size过大
 		return 0;
 		break;
 	case 0: return cfg.para1; break;
@@ -226,7 +226,7 @@ bool TaskMgr<TaskCfg>::IsLogicOk(TaskParaLogic logic, int64 cfg_last_para, int64
 	}
 	else
 	{
-		LOG_ERROR("unknow logic %d", (int)logic);
+		L_ERROR("unknow logic %d", (int)logic);
 		return false;
 	}
 	return false;
@@ -250,7 +250,7 @@ void TaskMgr<TaskCfg>::Update(GameTaskType task_type, ...)
 	const auto it2 = GameTaskTypeMgr::Instance().GetCfg().find(task_type);
 	if (it2 == GameTaskTypeMgr::Instance().GetCfg().end())
 	{
-		LOG_ERROR("unknow task type %d", (int)task_type);
+		L_ERROR("unknow task type %d", (int)task_type);
 		return;
 	}
 	const GameTaskTypeDetail &type_detail = it2->second;
@@ -259,7 +259,7 @@ void TaskMgr<TaskCfg>::Update(GameTaskType task_type, ...)
 	uint32 para_num = type_detail.vec_para_logic.size();
 	if (para_num<1)
 	{
-		LOG_ERROR("error GameTaskTypeMgr::Instance().GetCfg(), type=%d", (int)task_type );
+		L_ERROR("error GameTaskTypeMgr::Instance().GetCfg(), type=%d", (int)task_type );
 		return;
 	}
 	for (uint32 i = 0; i < para_num - 1; ++i)

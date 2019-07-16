@@ -52,12 +52,23 @@
 #include "./Random/random.h"
 #include "./Random/randomName.h"
 #include "./utility/MultIndexContainer.h"
-#include "./utility/logFile.h"
+#include "./utility/log_file.h"
 #include "./utility/global_reg.h"
 #include "./utility/memoryStream.h"
+#include "./utility/log_file.h"
 
 
 
 
 
+//for easy test
+//////////////////////////////////////////////////////////////////////////
+
+template <typename T>
+void Info(T t)
+{
+	std::stringstream ss;
+	ss << t;
+	LogMgr::Obj().Printf(LL_INFO, __FILE__, __LINE__, __FUNCTION__, ss.str().c_str());
+}
 

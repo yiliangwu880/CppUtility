@@ -1,6 +1,6 @@
 
 #include <stdio.h>
-#include "utility/logFile.h"
+#include "utility/log_file.h"
 
 
 
@@ -8,9 +8,9 @@ void testClient();
 
 int  main(int argc, char** argv)
 {
-	LOG_DEBUG("start run");
+	L_DEBUG("start run");
 	testClient();  
-	LOG_DEBUG("end run");
+	L_DEBUG("end run");
 	return 0;
 }
 

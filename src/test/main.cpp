@@ -7,9 +7,6 @@
 
 using namespace std;
 using namespace wyl;
-//using namespace boost;
-//using namespace stdext;;
-
 
 void testUtility();
  void testStaticReg();
@@ -45,36 +42,32 @@ void test_single_progresss();
 void test_delay_handler();
 void testDelayPara();
 
+namespace
+{
+	DefaultLog my_log("log.txt");
+}
+ 
+void MyUnitTestPrintf(bool is_error, const char * file, int line, const char *fun, const char * pattern, va_list vp)
+{
+	if (is_error)
+	{
+		my_log.Printf(LL_ERROR, file, line, fun, pattern, vp);
+	} 
+	else
+	{
+		my_log.Printf(LL_DEBUG, file, line, fun, pattern, vp);
+	}
+}
+
 
 
 int main(int argc, char* argv[])
 {
-	DebugLog::GetDefaultLog().setStdOut(true);
-	LOG_DEBUG("\nstart");
-
-	test_game_cheat();
-	//testDelayPara();
-	//testRegion();
-	//
-	//TestRank();
-	//testGameTask();
-	//testStaticReg();
-	//test_delay_handler();
-   //testRank();
-  // testUtility();
-   // testStringTool();
-    //testLogFile();
-    //testReadCfg();
-  //  test_wyl_time();
-   //testTimer();
-  //  testStaticReg();
-	//testRandom();
-	//testMemoryStream();
-//	testUniquId();
-	//testMoreThread();
-	//test_single_progresss();
-	//while(1);
-	return 0;
+	L_DEBUG("start");
+	UnitTestMgr::Obj().Start(MyUnitTestPrintf);
+	testLogFile();
+	test_wyl_time();
+	//return 0;
 }
 
 GlobalReg<string> gdd("2");

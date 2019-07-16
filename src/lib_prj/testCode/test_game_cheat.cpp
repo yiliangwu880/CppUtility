@@ -13,7 +13,7 @@ namespace
 	void test1()
 	{
 		string s = GameCheat::executeCheatStr(NULL, "doHandle1 abc,:ccd 123,321");
-		LOG_DEBUG("para list: %s", s.c_str());
+		L_DEBUG("para list: %s", s.c_str());
 		assert(true);
 		
 	}

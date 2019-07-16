@@ -2,9 +2,9 @@
 cmake_minimum_required (VERSION 2.8)
 
 
-SET(PRJ_NAME "test")
+SET(PRJ_NAME "stest")
 # 项目信息
-project (my_test CXX)
+project (my_stest CXX)
 
 # include directories
 INCLUDE_DIRECTORIES(after  ${PROJECT_SOURCE_DIR})

@@ -7,7 +7,7 @@ SET(PRJ_NAME "testClient")
 project (my_linux CXX)
 
 # include directories
-INCLUDE_DIRECTORIES(system ../main_prj)
+INCLUDE_DIRECTORIES(system ../test)
 INCLUDE_DIRECTORIES(after  ${PROJECT_SOURCE_DIR})
 
 #MESSAGE( status, "PROJECT_SOURCE_DIR="${PRJ_NAME})

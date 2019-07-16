@@ -1,6 +1,6 @@
 
 #include "../utility/circleBuf.h"
-#include "../utility/logFile.h"
+#include "../utility/log_file.h"
 #include "../utility/misc.h"
 #include <string>
 #include <vector>

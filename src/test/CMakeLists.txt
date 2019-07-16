@@ -2,7 +2,7 @@
 cmake_minimum_required (VERSION 2.8)
 
 # 项目信息
-project (my_main_prj CXX)
+project (my_test CXX)
 
 configure_file("version.h.in" "${PROJECT_SOURCE_DIR}/version.h")
 
@@ -17,19 +17,19 @@ file(GLOB_RECURSE SRCS  ${PROJECT_SOURCE_DIR} "*.cc")
 file(GLOB_RECURSE SRCS2  ${PROJECT_SOURCE_DIR} "*.cpp")
 
 # 指定生成目标
-ADD_EXECUTABLE(main_prj ${SRCS} ${SRCS2})
+ADD_EXECUTABLE(test ${SRCS} ${SRCS2})
 
 #设置依赖
-ADD_DEPENDENCIES(main_prj lib_prj)
+ADD_DEPENDENCIES(test lib_prj)
 
 #增加系统依赖库
 ADD_library(pthread SHARED IMPORTED)
 ADD_library(crypto SHARED IMPORTED)
 
 # 设置链接库
-target_link_libraries(main_prj lib_prj dl)
+target_link_libraries(test lib_prj dl)
 
 #cotire设置gcc的预编译头相关			
-set_target_properties(main_prj PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "stdafx.h")
-cotire(main_prj)
+set_target_properties(test PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "stdafx.h")
+cotire(test)
 

@@ -1,6 +1,6 @@
 
 #include <stdio.h>
-#include "utility/logFile.h"
+#include "utility/log_file.h"
 
 
 
@@ -13,9 +13,9 @@ int  main(int argc, char** argv)
     testBacktrace();
     return 0;
 
-	LOG_DEBUG("start server run"); DebugLog::GetDefaultLog().flush();
+	L_DEBUG("start server run"); 
 	testEpoll(); 
-	LOG_DEBUG("end server run");
+	L_DEBUG("end server run");
 	return 0;
 }
 

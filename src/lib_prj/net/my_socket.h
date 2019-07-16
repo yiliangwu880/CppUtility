@@ -84,12 +84,12 @@ public:
 		}
 		int opt = fcntl(fd, F_GETFL); 
 		if (opt < 0) { 
-			LOG_ERROR("error logic");
+			L_ERROR("error logic");
 			return;
 		} 
 		opt |= O_NONBLOCK; 
 		if (fcntl(fd, F_SETFL, opt) < 0) { 
-			LOG_ERROR("error logic");
+			L_ERROR("error logic");
 			return;
 		} 
 	}

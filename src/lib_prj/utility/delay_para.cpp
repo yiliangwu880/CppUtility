@@ -52,7 +52,7 @@ void DelayParaMgr::DeletePara(BaseDelayPara *para)
 		 m_para_2_time.erase(it);
 		 return;
 	}
-	LOG_ERROR("DeletePara fail, error call?");
+	L_ERROR("DeletePara fail, error call?");
 }
 
 void DelayParaMgr::SetTimeOutSec(uint64 sec)

@@ -237,14 +237,14 @@ void RealTimeRankMgr<Member>::UpdateMemberRank(uint64 id, RankType type)
 	auto it = m_id_2_member.find(id);
 	if (it == m_id_2_member.end())
 	{
-		LOG_ERROR("find member fail. id=%lu", id);
+		L_ERROR("find member fail. id=%lu", id);
 		return;
 	}
 
 	auto rank_it = m_type_2_rank.find(type);
 	if (rank_it == m_type_2_rank.end())
 	{
-		LOG_ERROR("find rank type fail. %d", (int)type);
+		L_ERROR("find rank type fail. %d", (int)type);
 		return;
 	}
 	rank_it->second.UpdateMemberRank(it->second);
@@ -357,7 +357,7 @@ Member *  RealTimeRank<Member>::GetMember(uint32 rank) const
 {
 	if (rank >= m_vec_member.size())
 	{
-		LOG_ERROR("rank out of rang. %d", rank);
+		L_ERROR("rank out of rang. %d", rank);
 		return nullptr;
 	}
 	return m_vec_member[rank];
