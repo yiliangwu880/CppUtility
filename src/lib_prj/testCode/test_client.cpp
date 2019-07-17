@@ -1,7 +1,7 @@
 
 //#include "my_socket.h"
 #include "../utility/circleBuf.h"
-#include "../utility/log_file.h"
+#include "../utility/log_def.h"
 #include <string>
 
 void test_client();

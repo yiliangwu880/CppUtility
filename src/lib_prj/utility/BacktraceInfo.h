@@ -1,5 +1,5 @@
 /**
-*@brief 堆栈模块
+*@brief 进程崩溃，输出堆栈日志
 * 通过函数 
 int backtrace (void **buffer, int size);
 char **backtrace_symbols (void *const *buffer, int size);

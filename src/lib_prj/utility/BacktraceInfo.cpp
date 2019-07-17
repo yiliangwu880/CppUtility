@@ -10,7 +10,7 @@
 
 #include <execinfo.h>
 #include "signal.h"
-#include "BacktraceInfo.hpp"
+#include "BacktraceInfo.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <cxxabi.h>

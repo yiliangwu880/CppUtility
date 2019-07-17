@@ -7,7 +7,7 @@
 //#include "../gameUtility/res.h"
 #include "../gameUtility/friend.h"
 #include "../utility/misc.h"
-#include "../utility/log_file.h"
+#include "../utility/log_def.h"
 
 using namespace std;
 using namespace wyl;

@@ -52,13 +52,13 @@
 #include "Random/random.h"
 #include "Random/randomName.h"
 #include "utility/MultIndexContainer.h"
-#include "utility/log_file.h"
+#include "utility/log_def.h"
 #include "utility/global_reg.h"
 #include "utility/memoryStream.h"
 #include "utility/delay_para.h"
 
 #include "unit_test/unit_test.h"
-#include "utility/log_file.h"
+#include "utility/log_def.h"
 
 
 
