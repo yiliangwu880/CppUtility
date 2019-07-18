@@ -44,7 +44,6 @@
 
 #include "./utility/misc.h"
 #include "./utility/stlBoost.h"
-#include "./utility/singleton.h"
 #include "./utility/UniqueId.h"
 #include "./time/cd.h"
 #include "./time/sys_time.h"

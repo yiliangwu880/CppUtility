@@ -8,9 +8,9 @@ excamples:
 
 UNITTEST(t1)
 {
-	UTIL_ASSERT(1 == 11);
+	UNIT_ASSERT(1 == 11);
 
-	LOG_DEBUG("run t1");
+	UNIT_INFO("run t1");
 }
 
 int main()
@@ -21,7 +21,9 @@ UnitTestMgr::Obj().Start();
 */
 
 #pragma once
+
 #include <vector>
+#include <stdarg.h>
 
 class IUnitTest
 {

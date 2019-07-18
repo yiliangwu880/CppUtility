@@ -64,7 +64,7 @@ private:
 
 //Map结构保存空闲id段，优点省内存，缺点查找效率底
 template <class IdType>
-class MapUniqueID : public Noncopyable
+class MapUniqueID //: public Noncopyable
 {
 private:
 	typedef std::map<IdType, IdType> IdMapId;
