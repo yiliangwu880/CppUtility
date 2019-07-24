@@ -1,6 +1,6 @@
 /*
 	brief: 时间相关
-
+	这个不维护了，维护svr_util的 timestamp
 */
 
 #pragma once

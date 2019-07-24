@@ -1,6 +1,6 @@
 /*
 	brief: 闹钟，定时器
-
+	等废弃，svr_util 有更好实现
 */
 
 #pragma once

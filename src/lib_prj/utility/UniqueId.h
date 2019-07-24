@@ -10,6 +10,10 @@
 
 
 //0值表示无效id, 占用最大内存为历史最高使用id数
+//缺点:复用释放id, 用户容易写出一种BUG：用新id操作旧对象绑定的相同id
+
+
+
 class UniqueID
 {
 public:
@@ -21,9 +25,25 @@ public:
         m_max_index = 0;
         m_vec_free.clear();
     }
-
+	//唯一id  高32用timestamp, 低32用自增。  1秒内，产生少于4亿，就能保证唯一
+//{
+//	一般几行代码，重复跑4亿次，都要十几秒了。 所以实际情况不会重复
+//}
+	//32-4位能表示 8年左右，限制1秒只能生产16个ID（4位）。 所以不能用时间戳组合
+	//32位表示时间戳，够用一百多年不重复。
+	uint64 newId64()
+	{
+		static uint32 seed = 0;
+		time_t sec;
+		time(&sec);
+		seed++;
+		uint64 id = sec << 32;
+		id = id | seed;
+		return id;
+	}
 	uint32 newId()
 	{
+
 		if (m_vec_free.empty())
 		{
 			if (m_max_index == (uint32)(-1))
