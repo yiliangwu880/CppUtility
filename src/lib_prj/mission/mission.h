@@ -104,10 +104,10 @@ enum ConditionType
 	CT_LV,
 	CT_MAX,
 };
-class TriggerFind: public SingletonBase<TriggerFind>
+class TriggerFind: public Singleton<TriggerFind>
 {
 
-	friend class SingletonBase<TriggerFind>;
+	friend class Singleton<TriggerFind>;
 	typedef std::map<uint32, uint32> ConditMapId;
 	typedef std::vector<ConditMapId> VecConditMapId;
 public:

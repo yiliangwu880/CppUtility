@@ -15,10 +15,10 @@ brief:游戏作弊码,
 
 //typedef int GamePlayer;
 class GamePlayer; //玩家类，不同工程名字不一样，手动改吧。
-class GameCheat : public SingletonBase<GameCheat>
+class GameCheat : public Singleton<GameCheat>
 {
 public:
-	// friend class SingletonBase<GameCheat>;
+	// friend class Singleton<GameCheat>;
 
 	typedef std::string (*ExecuteFun)(GamePlayer *pPlayer, const VecStr &vecStr);
 public:

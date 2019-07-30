@@ -22,7 +22,7 @@ namespace wyl
         注意：通常大部分代码不应该用定时器，经验证明很多问题的。
         ）问题1： 循环定时器，容易没销毁掉旧的继续触发新的循环，越来越多。
 	*/
-	class TimeCallBack : public SingletonBase<TimeCallBack>
+	class TimeCallBack : public Singleton<TimeCallBack>
 	{
 		struct Data
 		{

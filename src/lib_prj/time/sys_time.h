@@ -25,9 +25,9 @@ namespace wyl
 		}
 
 	*/
-	class SysTime : public SingletonBase<SysTime>
+	class SysTime : public Singleton<SysTime>
 	{
-        friend class SingletonBase<SysTime>;
+        friend class Singleton<SysTime>;
         SysTime();
 
 	public:

@@ -6,7 +6,7 @@
 /************************************************************************/
 /* 
 Example:
-class concreterClass : public SingletonBase<concreterClass>
+class concreterClass : public Singleton<concreterClass>
 {
 private:
 concreterClass(){};
@@ -17,16 +17,16 @@ concreterClass(){};
 
 
 template <typename T, bool INIT = true>
-class SingletonBase : private Noncopyable
+class Singleton : private Noncopyable
 {
 };
 
 template <typename T>
-class SingletonBase<T,true> : private Noncopyable
+class Singleton<T,true> : private Noncopyable
 {
 protected:
-	SingletonBase() {}
-	~SingletonBase() {}
+	Singleton() {}
+	~Singleton() {}
 
 public:
 	static T& instance()
