@@ -50,3 +50,14 @@ class
 	map<int, string>{ {1, "a"}, { 2, "b" }};
 	string str{ "Hello World" };
 };
+
+enum MyEnum: char  //Ö¸¶¨×Ö½Ú
+{
+
+};
+
+enum class MyClass
+{
+
+};
+
