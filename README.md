@@ -1,7 +1,7 @@
 # CppUtility
 收集可复用代码
 从codelib继承，只做linux平台的可复用代码。以后停止更新codelib
-部分代码和 svr_utili一样，已svr_utili为准。优先维护
+部分代码和 svr_util一样，已svr_util为准。优先维护
 
 设计目的：
 	以源码的方式提供给别得项目使用或者参考

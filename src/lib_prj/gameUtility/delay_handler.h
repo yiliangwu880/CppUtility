@@ -117,7 +117,7 @@ private:
 
 
 	Id2VecOpt m_id_2_vec_opt;
-	BaseDelayOpt *m_new_opt;		//new出来opt对象，加入延时操作时，对象转移到m_vec_opt
+	BaseDelayOpt *m_new_opt;		//new出来opt对象，加入延时操作时，对象转移到m_id_2_vec_opt
 	bool m_is_opting;				//true表示进入BaseDelayOptMgr::OptTarget运行中
 };
 
