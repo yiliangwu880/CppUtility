@@ -1,32 +1,32 @@
 /*
 brief: 延时处理逻辑， 比如:处理离线玩家事件，缓存操作，等读取数据库成功后执行。
 例子：
-
-
-c++11 版本
-                                                                        //////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	class MyOptMgr: public BaseDelayOptMgr<MyTarget, uint64>
+	class MyOptMgr: public DelayOptMgr<MyTarget, uint64>
 	{
 	public:
-		virtual MyTarget *OnFindTarget(uint64 target_id)
+		virtual MyTarget *OnFindTarget(uint64 target_id)		//实现查找内存目标	
 		{
-			                                                            //1 实现查找内存目标
-		};
-		virtual void OnMissTarget(uint64 target_id)
+			...
+		}
+
+		virtual void OnMissTarget(uint64 target_id)			//实现，请求读档。  (缓存没有对象时会调用）
 		{
-			                                                            //2 实现，请求读档。  (缓存没有对象时会调用）
-		};
+			...
+		}
 	};
+
 	MyOptMgr mgr;
 
 	mgr.OptTarget(id, target);                                          //3 读档成功 
 	mgr.DelOpt(id);                                                     //4 读档失败调用
+
 	                                                                    //5 加入操作请求
-	MyOptMgr<TargetType> mgr;
-	function<...> *opt = [&](TargetType &target){};
-	mgr.addOpt(id, opt);
-	                                                                    //todo 用户自定义opt初始化代码
+	auto opt = [&](TargetType &target){};                                          
+	mgr.AddOpt(target_id, opt);
+
+	或者
+
+	auto opt = std::bind(bindFun, _1, ...);
 	mgr.AddOpt(target_id, opt);
 
 */

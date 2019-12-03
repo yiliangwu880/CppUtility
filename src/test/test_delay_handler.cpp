@@ -1,10 +1,12 @@
 
-#include "../lib_prj/gameUtility/delay_handler.h"
+#include "../lib_prj/game_utility/delay_handler.h"
 #include "../lib_prj/utility/cnt_typedef.h"
 #include "../lib_prj/utility/misc.h"
 #include "../lib_prj/unit_test/unit_test.h"
 
 using namespace std;
+using namespace placeholders;
+
 namespace
 {
 	class MyTarget
@@ -45,6 +47,10 @@ namespace
 
 	MyOptMgr g_opt_mgr;
 
+	void bindFun(MyTarget &my_target, uint32 add)
+	{
+		my_target.m_opt1_cnt += add;
+	}
 	void test1()
 	{
 		UNIT_INFO("-----------print error is ok---------------");
@@ -89,6 +95,14 @@ namespace
 		uint32 old_cnt = g_id_2_target[1].m_opt1_cnt;
 		g_opt_mgr.AddOpt(1, opt);
 		UNIT_ASSERT(old_cnt + 1 == g_id_2_target[1].m_opt1_cnt);
+
+		//std::bind
+		{
+			uint32 old_cnt = g_id_2_target[1].m_opt1_cnt;
+			auto f = std::bind(bindFun, _1, 3);
+			g_opt_mgr.AddOpt(1, f);
+			UNIT_ASSERT(old_cnt + 3 == g_id_2_target[1].m_opt1_cnt);
+		}
 	}
 
 	void test2()

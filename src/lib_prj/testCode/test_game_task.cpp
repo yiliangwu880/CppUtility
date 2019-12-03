@@ -2,7 +2,7 @@
 brief: use example and test code
 */
 #include "stdafx.h"
-#include "../gameUtility/game_task.h"
+#include "../game_utility/game_task.h"
 
 
 using namespace std;

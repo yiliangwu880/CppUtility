@@ -1,7 +1,7 @@
 /*
 brief: use example and test code
 */
-#include "../gameUtility/rank/RealTimeRank.h"
+#include "../game_utility/rank/RealTimeRank.h"
 #include <algorithm>
 #include <iostream>
 

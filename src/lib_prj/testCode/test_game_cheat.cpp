@@ -2,7 +2,7 @@
 
 
 #include "stdafx.h"
-#include "../gameUtility/game_cheat.h"
+#include "../game_utility/game_cheat.h"
 
 
 using namespace std;
