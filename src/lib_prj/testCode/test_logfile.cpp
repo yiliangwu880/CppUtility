@@ -5,7 +5,6 @@
 
 
 //#include "../game_utility/res.h"
-#include "../game_utility/friend.h"
 #include "../utility/misc.h"
 #include "../utility/log_def.h"
 

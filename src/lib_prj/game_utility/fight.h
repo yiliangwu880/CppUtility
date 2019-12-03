@@ -1,6 +1,6 @@
 /*
+供参考，没复用价值
 brief:游戏战斗相关
-非透明复用风格
 对象分解：技能，技能效果，效果作用对象, 日志
 
 加战斗记录
@@ -115,7 +115,7 @@ public:
 class FightCalculate
 {
 public:
-	//技能施放逻辑，搞起
+	//技能施放逻辑
 	void launch(const Effects &_effect, TargetBase &er, TargetBase &target, Memory &log);
 private:
 };

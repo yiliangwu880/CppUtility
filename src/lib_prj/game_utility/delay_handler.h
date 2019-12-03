@@ -1,4 +1,6 @@
 /*
+author:yiliangwu880
+you can get more refer from https://github.com/yiliangwu880/CppUtility.git
 brief: 延时处理逻辑， 比如:处理离线玩家事件，缓存操作，等读取数据库成功后执行。
 例子：
 	class MyOptMgr: public DelayOptMgr<MyTarget, uint64>

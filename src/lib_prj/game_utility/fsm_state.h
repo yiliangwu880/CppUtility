@@ -1,61 +1,61 @@
 /*
-brief:
-有效状态机参考代码
+author:yiliangwu880
+you can get more refer from https://github.com/yiliangwu880/CppUtility.git
+brief: finite-state machine
+有限状态机参考代码
+
+
 */
 
 #pragma once
 #include "../utility/typedef.h"
 
-class StateObj //比如玩家，AI对象
+namespace StateMachine
 {
-public:
-private:
+	class Obj;
+	struct BaseState
+	{
+		BaseState(Obj &obj)
+			:m_obj(obj)
+		{}
+		Obj &m_obj;
 
-};
+		//add you function, like :virtual void Handle1();
+	};
+	struct State1 : public BaseState
+	{
+		State1(Obj &obj)
+			:BaseState(obj)
+		{}
+	};
+	struct State2 : public BaseState
+	{
+		State2(Obj &obj)
+			:BaseState(obj)
+		{}
+	};
 
-class StateMachine;
-//状态类尽量别保存对象信息
-class BaseState
-{
-public:
-	virtual void Enter(){};
-	virtual void Exit(){};
-	virtual void Event(){};
-	
-protected:
-	//StateObj &m_obj;
-	StateMachine *m_machine;
-};
+	class Obj
+	{
+	public:
+		BaseState *m_state = nullptr;
 
-class State1 : public BaseState
-{
-public:
-	virtual void Event();
-protected:
-private:
-};
-class State2 : public BaseState
-{
-public:
-protected:
-private:
-};
+		template<class State>
+		void ChangeState()
+		{
+			if (nullptr != m_state)
+			{
+				delete m_state;
+			}
+			m_state = new State(*this);
+		}
 
-//状态对象简单，可以考虑去掉StateMachine类，由状态对象来管理状态机
-class StateMachine
-{
-public:
-	StateMachine();
-	void ChangeState(BaseState * m_state);//注意参数只能位本对象的成员之一，别怼到别的对象了
-	void Event(); //传递各种事件到具体状态，可以加更多事件接口
+		template<class State>
+		bool IsState()
+		{
+			State *p = dynamic_cast<State *>(m_state);
+			return  (NULL != p);
+		}
+	};
 
-public:
-	//所有状态列表
-	State1 m_state1;
-	State2 m_state2;
-
-private:
-	BaseState *m_p_cur; //当前状态
-	BaseState *m_p_last; //最近历史 状态
-
-};
+}

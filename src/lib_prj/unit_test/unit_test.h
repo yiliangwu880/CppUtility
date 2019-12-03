@@ -1,4 +1,6 @@
 /*
+author:yiliangwu880
+you can get more refer from https://github.com/yiliangwu880/CppUtility.git
 version: 1.02
 简单的单元测试功能。
 	 语法简洁
