@@ -9,12 +9,10 @@ brief:ÓÎÏ·×÷±×Âë
 #include "../utility/string_tool.h"
 #include "../utility/misc.h"
 
-#define REG_CHEAT_FUN(fun)\
-	MAP_REG_NAME_DEFINE(StrMapCheatFun, s_##fun, #fun, GameCheat::fun) 
 
 using namespace std;
 
-std::string GameCheat::executeCheatStr( GamePlayer *pPlayer, const char *pChar )
+std::string GameCheat::DoCmd( GamePlayer *pPlayer, const char *pChar )
 {
 	VecStr vec_str;
 	VecStr vec_split;
@@ -34,18 +32,31 @@ std::string GameCheat::executeCheatStr( GamePlayer *pPlayer, const char *pChar )
 		return "can't find handle function";
 	}
 	vec_str.erase(vec_str.begin());
-	ExecuteFun p_fun = it->second;
+	DoPlayerCmdFun p_fun = it->second;
 	return (*p_fun)(pPlayer, vec_str);
 }
 
-REG_CHEAT_FUN(doHandle1);
-std::string GameCheat::doHandle1( GamePlayer *pPlayer, const VecStr &vecStr )
+std::string GameCheat::DoCmd(const char *pChar)
 {
-	string s;
-	CONST_FOR_IT(VecStr, vecStr)
+	VecStr vec_str;
+	VecStr vec_split;
+	vec_split.push_back(";");
+	vec_split.push_back(",");
+	vec_split.push_back(".");
+	vec_split.push_back(" ");
+	vec_split.push_back(":");
+	StringTool::split(pChar, vec_split, vec_str);
+	if (vec_str.empty())
 	{
-		s += " ";
-		s+=*it;
+		return "no string";
 	}
-	return s;
+	auto it = StrMapCheatFun_DoCmdFun::obj().find(vec_str.front());
+	if (it == StrMapCheatFun_DoCmdFun::obj().end())
+	{
+		return "can't find handle function";
+	}
+	vec_str.erase(vec_str.begin());
+	DoCmdFun p_fun = it->second;
+	return (*p_fun)(vec_str);
 }
+

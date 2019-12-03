@@ -26,8 +26,8 @@ using namespace std;
 	MAP_REG_NAME_DEFINE(MapName2, g_a, "a", 1);
 	MAP_REG_NAME_DEFINE(MapName2, g_b, "abc", 2);
 	MAP_REG_NAME_DEFINE(MapName2, g_b2, "accd", 2);
-	MAP_REG_NAME_DEFINE_BY_STRING_KEY(MapName2, bda, 2);
-	MAP_REG_NAME_DEFINE_BY_STRING_KEY(MapName2, ca, 2);
+	MAP_REG_DEFINE(MapName2, bda, 2);
+	MAP_REG_DEFINE(MapName2, ca, 2);
 
 
 

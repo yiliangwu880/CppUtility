@@ -9,6 +9,7 @@ configure_file("version.h.in" "${PROJECT_SOURCE_DIR}/version.h")
 # include directories
 #INCLUDE_DIRECTORIES(system "${PROJECT_SOURCE_DIR}/../lib_prj")
 INCLUDE_DIRECTORIES(after  ${PROJECT_SOURCE_DIR})
+INCLUDE_DIRECTORIES(after  ${PROJECT_SOURCE_DIR}/../lib_prj/unit_test)
 
 
 # 查找当前目录下的所有源文件

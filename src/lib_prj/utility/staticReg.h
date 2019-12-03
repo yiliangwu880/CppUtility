@@ -1,8 +1,11 @@
 /*
 author:yiliangwu
 brief: 静态注册使用例子
-特点:注册可以写在cpp任意地方,避免去别的文件(写好，不希望随便修改的库文件)添加初始化代码
-main函数后才保证初始化成功。
+特点:
+	注册可以写在cpp任意地方,免去到处翻代码文件添加声明或者定义
+	main函数后才保证初始化成功。
+
+缺点：实现原理不好理解
 
 use example:
 //in h file
@@ -72,19 +75,18 @@ private:\
 	SetClassName(){};\
 };
 
-//注册值，SetClassName(单件注册类), key(键值字符串，不用"") map_value(值)
-//以下宏定义可以在不同文件里面调用，实现不同cpp文件写注册功能。
-#define MAP_REG_DEFINE(SetClassName, key, map_value) \
-	namespace{SetClassName::RunReg s_##key(make_pair(SetClassName::key_type(key), map_value));}
+//多一层，避免__LINE__直接变化成字符串"__LINE__"
+#define MAG_REG_LINENAME_CAT(name, line) name##line
+#define MAG_REG_LINENAME(name, line) MAG_REG_LINENAME_CAT(name, line) 
 
-
-//不建议用
 #define MAP_REG_NAME_DEFINE(SetClassName, obj_name, key, map_value) \
-	namespace{SetClassName::RunReg obj_name(make_pair(SetClassName::key_type(key), map_value));}
+	namespace{SetClassName::RunReg MAG_REG_LINENAME(obj_name, __LINE__)(make_pair(SetClassName::key_type(key), SetClassName::value_type::second_type(map_value)));}
+
+//注册值，SetClassName(单件注册类), key(键值字符串，不用"") map_value(值)
+#define MAP_REG_DEFINE(SetClassName, key, map_value) \
+	MAP_REG_NAME_DEFINE(SetClassName, key, #key, map_value)
 
 
-//注册值，SetClassName(单件注册类), str_key(键值字符串，不用"") map_value(值)
-#define MAP_REG_NAME_DEFINE_BY_STRING_KEY(SetClassName, str_key, map_value) \
-		MAP_REG_NAME_DEFINE(SetClassName, str_key, #str_key, map_value)
+
 
 
