@@ -2,24 +2,32 @@
 /*
 author:YiliangWu
 brief:
+ä»»åŠ¡åŠŸèƒ½ï¼š
+	é€šç”¨åœ°å®ç°äº†å¾€ç©å®¶èº«ä¸ŠåŠ å…¥ä»»åŠ¡ï¼Œä»»åŠ¡è¿›åº¦å˜åŒ–ï¼Œç»“æŸåŠŸèƒ½ã€‚ ä¸èƒ½ç›´æ¥å¤ç”¨ï¼Œéœ€è¦æ ¹æ®ç”¨æˆ·é¡¹ç›®ä¿®æ”¹ä¸‹é…ç½®å­—æ®µã€‚
 
-ÈÎÎñ¹¦ÄÜ
-ĞÂÈÎÎñĞèÒª×ö:
-ĞÂÈÎÎñÀàĞÍ£¬ĞèÒªGameTaskTypeMgr¹¹Ôìº¯ÊıÀïÃæ¼ÓGameTaskTypeDetailÅäÖÃ
-ĞÂÈÎÎñ£¬ ²ß»®ÅäÖÃ°´ÕÕ GameTaskTypeDetail ÒªÇóÌîÖµ
-×¢²áÈÎÎñÊÂ¼şµ÷ÓÃ£º TaskMgr<TaskCfg>::RegTask
-ÈÎÎñ¸üĞÂ´¥·¢µ÷ÓÃ£º[TaskMgr<TaskCfgTaskCfg>::Update(task_type, ...)]
+å¾…ä¼˜åŒ–ï¼š
+GameTaskTypeDetailé…ç½® æ”¹ä¸ºæ”¾åˆ°ç­–åˆ’é…ç½®
+åæ­£éƒ½ä¸ä¸ä¿®æ”¹å°±å¤ç”¨ï¼Œå°±ä¸ç”¨æ¨¡æ¿ï¼Œç®€åŒ–é—®é¢˜ã€‚ç›´æ¥å®šä¹‰TaskCfgï¼Œç”¨æˆ·æ ¹æ®å…·ä½“é¡¹ç›®å†ä¿®æ”¹ TaskCfgã€‚ 
 
-Ê¹ÓÃÀı×Ó£º
+
+æ–°åŠ ä»»åŠ¡éœ€è¦åš:
+æ–°ä»»åŠ¡ç±»å‹ï¼Œéœ€è¦GameTaskTypeMgræ„é€ å‡½æ•°é‡Œé¢åŠ GameTaskTypeDetailé…ç½®. 
+æ–°ä»»åŠ¡ï¼Œ ç­–åˆ’é…ç½®æŒ‰ç…§ GameTaskTypeDetail è¦æ±‚å¡«å€¼
+
+çœ‹éœ€è¦å®šä¹‰æ–°ä»»åŠ¡ç±»ï¼šæ¯”å¦‚class DeriveTask: public BaseTask
+æ³¨å†Œä»»åŠ¡äº‹ä»¶è°ƒç”¨ï¼š TaskMgr<TaskCfg>::RegTask
+ä»»åŠ¡æ›´æ–°è§¦å‘è°ƒç”¨ï¼š[TaskMgr<TaskCfgTaskCfg>::Update(task_type, ...)]
+
+ä½¿ç”¨ä¾‹å­ï¼š
 	class DeriveTask: public BaseTask<TaskCfg>
 	{
 	public:
-		DeriveTask(const MyTaskCfg &cfg Õâ¸ö²ÎÊı±ØĞë·ÅµÚÒ» , Player &player, int64 num = 0);
-		virtual void OnFinish() override{};//¿ÉÒÔ×ö´æµµ²Ù×÷£¬±ÈÈç´ætask_id, num, is_finish
-		virtual void OnUpdate()override{};//¿ÉÒÔ×ö´æµµ²Ù×÷£¬±ÈÈç´ætask_id, num
+		DeriveTask(const MyTaskCfg &cfg è¿™ä¸ªå‚æ•°å¿…é¡»æ”¾ç¬¬ä¸€ , Player &player, int64 num = 0);
+		virtual void OnFinish() override{};//å¯ä»¥åšå­˜æ¡£æ“ä½œï¼Œæ¯”å¦‚å­˜task_id, num, is_finish
+		virtual void OnUpdate()override{};//å¯ä»¥åšå­˜æ¡£æ“ä½œï¼Œæ¯”å¦‚å­˜task_id, num
 	}
 
-	//×¢²áÈÎÎñ
+	//æ³¨å†Œä»»åŠ¡
 	TaskMgr<TaskCfg> mgr;
 	Player player;
 	TaskCfg cfg; 
@@ -27,8 +35,8 @@ brief:
 	mgr.RegTask<DeriveTask>(cfg, player, [1]);
 	...
 
-	//µ±´¥·¢ÈÎÎñ¸Ä±äÊÂ¼ş·¢ÉúÊ±µ÷ÓÃ
-	obj:Update(target_type.GET_ITEM, 1002, 1)£»
+	//å½“è§¦å‘ä»»åŠ¡æ”¹å˜äº‹ä»¶å‘ç”Ÿæ—¶è°ƒç”¨
+	obj:Update(target_type.GET_ITEM, 1002, 1)ï¼›
 
 */
 /************************************************************************/
@@ -43,22 +51,19 @@ brief:
 #include "../utility/stlBoost.h"
 
 
-//²ß»®ÅäÖÃÄ£°å£¬¸ù¾İ²»Í¬ÏîÄ¿¸ÄÃüÃû£¬²ÎÊıÃû×ÖÒªÒ»Ñù¡£
-//struct  TaskCfg
-//{
-//	uint32 id;
-//	uint32 task_type;
-//	uint32 para1, para2, para3, para4, para5;
-//};
+//ç­–åˆ’é…ç½®æ¨¡æ¿ï¼Œæ ¹æ®ä¸åŒé¡¹ç›®æ”¹å‘½å
+struct  TaskCfg
+{
+	uint32 id;
+	uint32 task_type;
+	uint32 para1, para2, para3, para4, para5; //é€‰ç”¨å‚æ•°
+};
 
-
-
-//ÅÉÉúÀàµÄ¹¹Ôìº¯Êı£¬µÚÒ»¸ö²ÎÊı±ØĞëÎª const TaskCfg &
-template<class TaskCfg>
+//æ´¾ç”Ÿç±»çš„æ„é€ å‡½æ•°ï¼Œç¬¬ä¸€ä¸ªå‚æ•°å¿…é¡»ä¸º const TaskCfg &
 class BaseTask
 {
 public:
-	//para num ÈÎÎñ³õÊ¼»¯½ø¶È
+	//para num ä»»åŠ¡åˆå§‹åŒ–è¿›åº¦
 	BaseTask(const TaskCfg &cfg, int64 num)
 		:m_num(num)
 		, m_cfg(cfg)
@@ -75,34 +80,34 @@ public:
 	void AddNum(int64 add){ m_num += add; }
 	const int64 GetNum(){ return m_num; }
 protected:
-	int64 m_num; //±íÊ¾½ø¶È
+	int64 m_num; //è¡¨ç¤ºè¿›åº¦
 	const TaskCfg &m_cfg;
 };
 
 
-template<class TaskCfg>
+
 class TaskMgr
 {
 public:
-	using BaseTask_ = BaseTask<TaskCfg>;
+	using BaseTask_ = BaseTask;
 	~TaskMgr();
 	template<class DeriveTask, class... Args>
 	bool RegTask(const TaskCfg &cfg, Args&&... args);
 	bool UnRegTask(const TaskCfg &cfg);
 	uint32 GetRegTaskNum() const;
 
-	//ÊÂ¼ş
-	//para ..., Ã¿¸ö²ÎÊıµÄÒâÒå¸ù¾İ GameTaskTypeÔÚtarget_type_infosÀïÃæ±í´ïµÄÒâÒåÀ´
+	//äº‹ä»¶
+	//para ..., æ¯ä¸ªå‚æ•°çš„æ„ä¹‰æ ¹æ® GameTaskTypeåœ¨target_type_infosé‡Œé¢è¡¨è¾¾çš„æ„ä¹‰æ¥
 	void Update(GameTaskType target_type, ...);
 		
 private:
 	uint32 GetCfgPara(const TaskCfg &cfg, uint32 idx) const;
-	//true±íÊ¾ cur_numºÍcfg_last_para ·ûºÏÂß¼­¹ØÏµ logic
+	//trueè¡¨ç¤º cur_numå’Œcfg_last_para ç¬¦åˆé€»è¾‘å…³ç³» logic
 	bool IsLogicOk(TaskParaLogic logic, int64 cfg_last_para, int64 cur_num) const;
-	//ÅĞ¶Ï·Ç×îºóÒ»¸ö²ÎÊı¾ö¶¨µÄÈÎÎñÌõ¼şÊÇ·ñ·ûºÏ
-	//	para target_type_info Îª target_type_infosµÄÒ»¸öÔªËØ
-	//	para ..., Update´«½øÀ´µÄ¿É±ä²ÎÊı¡£ ¸ñÊ½Îª para1, para2, para3 
-	//return true±íÊ¾·ûºÏÌõ¼ş
+	//åˆ¤æ–­éæœ€åä¸€ä¸ªå‚æ•°å†³å®šçš„ä»»åŠ¡æ¡ä»¶æ˜¯å¦ç¬¦åˆ
+	//	para target_type_info ä¸º target_type_infosçš„ä¸€ä¸ªå…ƒç´ 
+	//	para ..., Updateä¼ è¿›æ¥çš„å¯å˜å‚æ•°ã€‚ æ ¼å¼ä¸º para1, para2, para3 
+	//return trueè¡¨ç¤ºç¬¦åˆæ¡ä»¶
 	bool IsMatchCondition(const GameTaskTypeDetail &target_type_info, const TaskCfg &task_cfg, va_list args) const;
 
 private:
@@ -112,16 +117,17 @@ private:
 	Type2VecTask m_type_2_vec_task;
 };
 
-/* ¿É±ä²ÎÊı×öÍê¹¹Ôìº¯Êı
+
+/* å¯å˜å‚æ•°åšå®Œæ„é€ å‡½æ•°
 template<class... _Valty>
 void emplace_front(_Valty&&... _Val)
 {	construct(
 _STD forward<_Valty>(_Val)...);
 }
 */
-template<class TaskCfg>
+
 template<class DeriveTask, class... Args>
-bool TaskMgr<TaskCfg>::RegTask(const TaskCfg &cfg, Args&&... args)
+bool TaskMgr::RegTask(const TaskCfg &cfg, Args&&... args)
 {
 	VecTask &vec = m_type_2_vec_task[(GameTaskType)cfg.task_type];
 	for (BaseTask_ *task : vec)
@@ -135,199 +141,5 @@ bool TaskMgr<TaskCfg>::RegTask(const TaskCfg &cfg, Args&&... args)
 
 	DeriveTask *p = new DeriveTask(cfg, std::forward<Args>(args)...);
 	vec.push_back(p);
-	return true;
-}
-
-template<class TaskCfg>
-TaskMgr<TaskCfg>::~TaskMgr()
-{
-	for (auto &v : m_type_2_vec_task)
-	{
-		for (BaseTask_ *task : v.second)
-		{
-			delete task;
-		}
-	}
-}
-
-
-template<class TaskCfg>
-bool TaskMgr<TaskCfg>::UnRegTask(const TaskCfg &cfg)
-{
-	auto it = m_type_2_vec_task.find((GameTaskType)cfg.task_type);
-	if (it == m_type_2_vec_task.end())
-	{
-		return false;
-	}
-	VecTask &vec = it->second;
-	for (BaseTask_ *task : vec)
-	{
-		if (cfg.id == task->GetCfg().id)
-		{
-			delete task;
-			wyl::VecRemove(vec, task);
-			return true;
-		}
-	}
-	return false;
-}
-
-template<class TaskCfg>
-uint32 TaskMgr<TaskCfg>::GetRegTaskNum() const
-{
-	uint32 num = 0;
-	for (const auto &v : m_type_2_vec_task)
-	{
-		num += v.second.size();
-	}
-	return num;
-}
-
-template<class TaskCfg>
-uint32 TaskMgr<TaskCfg>::GetCfgPara(const TaskCfg &cfg, uint32 idx) const
-{
-	switch (idx)
-	{
-	default:
-		L_ERROR("idx too big. %d", idx); //target_type_info.vec_para_logic ¶¨ÒåµÄsize¹ı´ó
-		return 0;
-		break;
-	case 0: return cfg.para1; break;
-	case 1: return cfg.para2; break;
-	case 2: return cfg.para3; break;
-	case 3: return cfg.para4; break;
-	case 4: return cfg.para5; break;
-	}
-}
-
-template<class TaskCfg>
-bool TaskMgr<TaskCfg>::IsLogicOk(TaskParaLogic logic, int64 cfg_last_para, int64 cur_num) const
-{
-	if (logic == TaskParaLogic::GREATER)
-	{
-		if (cur_num >= cfg_last_para)
-		{
-			return true;
-		}
-	}
-	else if (logic == TaskParaLogic::LESS)
-	{
-		if (cur_num <= cfg_last_para)
-		{
-			return true;
-		}
-	}
-	else if (logic == TaskParaLogic::EQUAL)
-	{
-		if (cur_num == cfg_last_para)
-		{
-			return true;
-		}
-	}
-	else
-	{
-		L_ERROR("unknow logic %d", (int)logic);
-		return false;
-	}
-	return false;
-}
-
-template<class TaskCfg>
-void TaskMgr<TaskCfg>::Update(GameTaskType task_type, ...)
-{
-	va_list args;
-	va_list forward_args; //×ª´«¸øIsMatchConditionº¯ÊıÓÃ
-	va_start(args, task_type);
-	va_start(forward_args, task_type);
-
-	auto it = m_type_2_vec_task.find(task_type);
-	if (it == m_type_2_vec_task.end())
-	{
-		return;
-	}
-	VecTask &vec_task = it->second;
-
-	const auto it2 = GameTaskTypeMgr::Instance().GetCfg().find(task_type);
-	if (it2 == GameTaskTypeMgr::Instance().GetCfg().end())
-	{
-		L_ERROR("unknow task type %d", (int)task_type);
-		return;
-	}
-	const GameTaskTypeDetail &type_detail = it2->second;
-
-	std::vector<typename VecTask::value_type> remove_task; //Íê³ÉµÈÉ¾³ıµÄÈÎÎñ
-	uint32 para_num = type_detail.vec_para_logic.size();
-	if (para_num<1)
-	{
-		L_ERROR("error GameTaskTypeMgr::Instance().GetCfg(), type=%d", (int)task_type );
-		return;
-	}
-	for (uint32 i = 0; i < para_num - 1; ++i)
-	{
-		va_arg(args, uint32);
-	}
-	const uint32 last_para = va_arg(args, uint32);
-
-	//task_state ºÍ type_detail ±È½Ï£¬²»·ûºÏÌõ¼şÍË³ö, ·ûºÏ¸Ä±ä½ø¶È
-	for (BaseTask_ *base_task : vec_task)
-	{
-		const TaskCfg &task_cfg = base_task->GetCfg();
-
-		//ÅĞ¶ÏÊÇ·ñ·ûºÏÌõ¼ş
-		if (!IsMatchCondition(type_detail, task_cfg, forward_args))
-		{
-			break;
-		}
-
-		//·ûºÏÌõ¼ş£¬ÅĞ¶Ï×îºóÒ»¸ö²ÎÊı
-		if (type_detail.is_last_para_absolute)//is_last_para_absolute true±íÊ¾×îºóÒ»¸ö²ÎÊı±íÊ¾¾ø¶ÔÖµ£¬false ±íÊ¾ÀÛ¼ÓÖµ. default ±íÊ¾ÀÛ¼Ó
-		{
-			base_task->SetNum(last_para);
-		}
-		else
-		{
-			base_task->AddNum(last_para);
-		}
-
-		int64 cfg_last_para = GetCfgPara(task_cfg, para_num - 1);
-		TaskParaLogic logic = type_detail.vec_para_logic.back();
-		if (IsLogicOk(logic, cfg_last_para, base_task->GetNum()))
-		{
-			base_task->OnFinish();
-			remove_task.push_back(base_task);
-		}
-		else
-		{
-			base_task->OnUpdate();
-		}
-	}
-
-	for (const auto &v : remove_task)
-	{
-		delete v;
-		wyl::VecRemove(vec_task, v);
-	}
-}
-
-template<class TaskCfg>
-bool TaskMgr<TaskCfg>::IsMatchCondition(const GameTaskTypeDetail &type_detail, const TaskCfg &task_cfg, va_list args) const
-{
-	int idx = 0;
-	int last_idx = type_detail.vec_para_logic.size() - 1;
-	uint32 cfg_para = 0;
-	for (const auto &logic : type_detail.vec_para_logic)
-	{
-		if (idx == last_idx)//×îºóÒ»¸ö²ÎÊı²»ÅĞ¶Ï
-		{
-			break;
-		}
-		cfg_para = GetCfgPara(task_cfg, idx);
-		uint32 para = va_arg(args, uint32);
-		if (!IsLogicOk(logic, cfg_para, para))
-		{
-			return false;
-		}
-		++idx;
-	}
 	return true;
 }

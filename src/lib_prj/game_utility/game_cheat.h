@@ -2,23 +2,23 @@
 author:yiliangwu880
 you can get more refer from https://github.com/yiliangwu880/CppUtility.git
 
-brief:Ö´ĞĞ×Ö·û´®ÃüÁî£¬ ÓÎÏ·×÷±×Âë,
-ÌØµã£º
-	1£©ĞÂ¼Ó×÷±×¹¦ÄÜµÄ·½·¨·Ç³£·½±ã£¬¶øÇÒ¿ÉÒÔ·ÅÔÚÒ»¸ö´úÂëÇøÓò£º £¨ÃâÈ¥µ½´¦·­´úÂëÎÄ¼şÌí¼ÓÉùÃ÷¶¨Òå£©
-		¶¨ÒåĞÂº¯Êı£¬ FuntionName
-		ĞÂº¯ÊıºóÃæ REG_CHEAT_FUN(FuntionName); ¾²Ì¬×¢²áº¯Êı¡£
-	2£©ÃüÁîºÍº¯ÊıÃûÒ»Ñù¡£ ±ÈÈç "AddMoney 1000" ¾ÍÖ´ĞĞ AddMoneyº¯Êı. (¶Å¾øÏàÍ¬ÒâÒå¶«Î÷ÃüÃû²»Ò»Ñù£¬´úÂëÄÑä¯ÀÀ)
+brief:æ‰§è¡Œå­—ç¬¦ä¸²å‘½ä»¤ï¼Œ æ¸¸æˆä½œå¼Šç ,
+ç‰¹ç‚¹ï¼š
+	1ï¼‰æ–°åŠ ä½œå¼ŠåŠŸèƒ½çš„æ–¹æ³•éå¸¸æ–¹ä¾¿ï¼Œè€Œä¸”å¯ä»¥æ”¾åœ¨ä¸€ä¸ªä»£ç åŒºåŸŸï¼š ï¼ˆå…å»åˆ°å¤„ç¿»ä»£ç æ–‡ä»¶æ·»åŠ å£°æ˜å®šä¹‰ï¼‰
+		å®šä¹‰æ–°å‡½æ•°ï¼Œ FuntionName
+		æ–°å‡½æ•°åé¢ REG_CHEAT_FUN(FuntionName); é™æ€æ³¨å†Œå‡½æ•°ã€‚
+	2ï¼‰å‘½ä»¤å’Œå‡½æ•°åä¸€æ ·ã€‚ æ¯”å¦‚ "AddMoney 1000" å°±æ‰§è¡Œ AddMoneyå‡½æ•°. (æœç»ç›¸åŒæ„ä¹‰ä¸œè¥¿å‘½åä¸ä¸€æ ·ï¼Œä»£ç éš¾æµè§ˆ)
 
-×Ö·û´®ÃüÁîÓÃ; , . : ¿Õ¸ñ ·Ö¿ª²ÎÊı¡£
+å­—ç¬¦ä¸²å‘½ä»¤ç”¨; , . : ç©ºæ ¼ åˆ†å¼€å‚æ•°ã€‚
 
-È±µã£ºÊµÏÖÔ­ÀíÄÑÀí½â
+ç¼ºç‚¹ï¼šå®ç°åŸç†éš¾ç†è§£
 
 
 sample:
 	GameCheat::DoCmd(player, "AddMoney 1000");
 
 
-	//´¦ÀíÃüÁî"AddMoney 1000"
+	//å¤„ç†å‘½ä»¤"AddMoney 1000"
 	std::string AddMoney(GamePlayer *pPlayer, const VecStr &vecStr)
 	{
 		for(string v: vecStr)
@@ -38,13 +38,13 @@ sample:
 #include "../utility/cnt_typedef.h"
 
 //typedef int GamePlayer;
-class GamePlayer; //Íæ¼ÒÀà£¬²»Í¬¹¤³ÌÃû×Ö²»Ò»Ñù£¬ÊÖ¶¯¸Ä°É¡£
+class GamePlayer; //ç©å®¶ç±»ï¼Œä¸åŒå·¥ç¨‹åå­—ä¸ä¸€æ ·ï¼Œæ‰‹åŠ¨æ”¹å§ã€‚
 using DoPlayerCmdFun = std::string(*)(GamePlayer *pPlayer, const VecStr &vecStr);
 using DoCmdFun = std::string(*)(const VecStr &vecStr);
 class GameCheat 
 {
 public:
-	//Ö´ĞĞ×÷±××Ö·û´®£¬·µ»Ø½á¹ûĞÅÏ¢¡£	
+	//æ‰§è¡Œä½œå¼Šå­—ç¬¦ä¸²ï¼Œè¿”å›ç»“æœä¿¡æ¯ã€‚	
 	static std::string DoCmd(GamePlayer *pPlayer, const char *pChar);
 	static std::string DoCmd(const char *pChar);
 
@@ -52,11 +52,11 @@ public:
 };
 
 
-//ÉêÃ÷¾²Ì¬×¢²áÀà
+//ç”³æ˜é™æ€æ³¨å†Œç±»
 REG_MAP_NAME_DECLARE(StrMapCheatFun, std::string, DoPlayerCmdFun)
 REG_MAP_NAME_DECLARE(StrMapCheatFun_DoCmdFun, std::string, DoCmdFun)
 
-//cmd ²»ĞèÒª""
+//cmd ä¸éœ€è¦""
 #define REG_PLAYER_DO_CMD_EX(cmd, fun)\
 	MAP_REG_DEFINE(StrMapCheatFun, cmd, fun) 
 
