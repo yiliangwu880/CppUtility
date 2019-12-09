@@ -78,7 +78,7 @@ namespace wyl
 	template <typename Map>
 	inline typename Map::mapped_type *MapFind(Map &map, typename Map::key_type key)
 	{
-		typename Map::iterator iter = map.find(key);
+		auto iter = map.find(key);
 		if (iter==map.end())
 		{
 			return NULL;
@@ -87,14 +87,14 @@ namespace wyl
 	}
 
 	template <typename Map>
-	inline  const typename Map::mapped_type *ConstMapFind(const Map &map, typename Map::key_type key)
+	inline  const typename Map::mapped_type *MapFind(const Map &map, typename Map::key_type key)
 	{
 		typename Map::const_iterator iter = map.find(key);
-		if (iter==map.end())
+		if (iter == map.end())
 		{
 			return NULL;
-		}		
-		return &(iter->second);	
+		}
+		return &(iter->second);
 	}
 
 //////////////////////////////////////////////////////////////////////////
