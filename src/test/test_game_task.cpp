@@ -79,47 +79,47 @@ namespace
 		{
 			TaskCfg cfg = {
 				1,//id
-				(uint32)GameTaskType::LV,
+				(uint32)TaskType::LV,
 				1 //para list
 			};
 			UNIT_ASSERT(0 == mgr.GetRegTaskNum());
 			mgr.RegTask<DeriveTask>(cfg, player);
 			UNIT_ASSERT(1 == mgr.GetRegTaskNum());
 
-			mgr.Update(GameTaskType::LV, 0);
+			mgr.Update(TaskType::LV, 0);
 			UNIT_ASSERT(1 == mgr.GetRegTaskNum());
-			mgr.Update(GameTaskType::LV, 1);
+			mgr.Update(TaskType::LV, 1);
 			UNIT_ASSERT(0 == mgr.GetRegTaskNum());
 		}
 		{//测试初始化进度就是完成状态
 			TaskCfg cfg = {
 				11,//id
-				(uint32)GameTaskType::LV,
+				(uint32)TaskType::LV,
 				1 //para list
 			};
 			mgr.RegTask<DeriveTask>(cfg, player, 1);
 
-			mgr.Update(GameTaskType::LV, 0);
+			mgr.Update(TaskType::LV, 0);
 			UNIT_ASSERT(1 == mgr.GetRegTaskNum());
-			mgr.Update(GameTaskType::LV, 1);
+			mgr.Update(TaskType::LV, 1);
 			UNIT_ASSERT(0 == mgr.GetRegTaskNum()); 
 		}
 		{//测试回调是否有效，测试执行无效Update
 			player.ClearCb();
 			TaskCfg cfg = {
 				2,//id
-				(uint32)GameTaskType::GET_ITEM,
+				(uint32)TaskType::GET_ITEM,
 				1001, 2//para list
 			};
 			mgr.RegTask<DeriveTask>(cfg, player);
-			mgr.Update(GameTaskType::GET_ITEM, 1002, 1);
+			mgr.Update(TaskType::GET_ITEM, 1002, 1);
 			UNIT_ASSERT(1 == mgr.GetRegTaskNum());
 			UNIT_ASSERT(0 == player.m_update_cnt);
-			mgr.Update(GameTaskType::GET_ITEM, 1001, 1);
+			mgr.Update(TaskType::GET_ITEM, 1001, 1);
 			UNIT_ASSERT(1 == player.m_update_cnt);
 			UNIT_ASSERT(1 == mgr.GetRegTaskNum());
 			UNIT_ASSERT(0 == player.m_finish_cnt);
-			mgr.Update(GameTaskType::GET_ITEM, 1001, 1);
+			mgr.Update(TaskType::GET_ITEM, 1001, 1);
 			UNIT_ASSERT(1 == player.m_finish_cnt);
 			UNIT_ASSERT(0 == mgr.GetRegTaskNum());
 		}
@@ -127,39 +127,39 @@ namespace
 			player.ClearCb();
 			TaskCfg cfg = {
 				2,//id
-				(uint32)GameTaskType::GET_ITEM,
+				(uint32)TaskType::GET_ITEM,
 				1001, 2//para list
 			};
 			mgr.RegTask<DeriveTask>(cfg, player);
-			mgr.Update(GameTaskType::GET_ITEM, 1002, 1);
+			mgr.Update(TaskType::GET_ITEM, 1002, 1);
 			UNIT_ASSERT(1 == mgr.GetRegTaskNum());
-			mgr.Update(GameTaskType::GET_ITEM, 1001, 1);
+			mgr.Update(TaskType::GET_ITEM, 1001, 1);
 			UNIT_ASSERT(1 == mgr.GetRegTaskNum());
 
 			TaskCfg cfg2 = {
 				22,//id
-				(uint32)GameTaskType::GET_QUALITY_ITEM,
+				(uint32)TaskType::GET_QUALITY_ITEM,
 				1001, 2, 2//para list  --品质》2，数量>=2
 			};
 			mgr.RegTask<DeriveTask>(cfg2, player);
 			UNIT_ASSERT(2 == mgr.GetRegTaskNum());
-			mgr.Update(GameTaskType::GET_ITEM, 1001, 1);
-			mgr.Update(GameTaskType::GET_QUALITY_ITEM, 1001, 2, 1);
-			mgr.Update(GameTaskType::GET_QUALITY_ITEM, 1001, 1, 1); //无效
-			mgr.Update(GameTaskType::GET_QUALITY_ITEM, 1002, 2, 1); //无效
+			mgr.Update(TaskType::GET_ITEM, 1001, 1);
+			mgr.Update(TaskType::GET_QUALITY_ITEM, 1001, 2, 1);
+			mgr.Update(TaskType::GET_QUALITY_ITEM, 1001, 1, 1); //无效
+			mgr.Update(TaskType::GET_QUALITY_ITEM, 1002, 2, 1); //无效
 			UNIT_ASSERT(1 == mgr.GetRegTaskNum()); //cfg已经完成
-			mgr.Update(GameTaskType::GET_QUALITY_ITEM, 1001, 2, 1);
+			mgr.Update(TaskType::GET_QUALITY_ITEM, 1001, 2, 1);
 			UNIT_ASSERT(0 == mgr.GetRegTaskNum());
 		}
 		{//unreg 
 			TaskCfg cfg = {
 				1,//id
-				(uint32)GameTaskType::LV,
+				(uint32)TaskType::LV,
 				1 //para list
 			};
 			TaskCfg cfg1 = {
 				11,//id
-				(uint32)GameTaskType::LV,
+				(uint32)TaskType::LV,
 				1 //para list
 			};
 			UNIT_ASSERT(0 == mgr.GetRegTaskNum());
@@ -174,7 +174,7 @@ namespace
 	}
 }
 
-UNITTEST( testGameTask)
+UNITTEST(testGameTask)
 {
 	UNIT_INFO("testGameTask");
 	TestRegNum();

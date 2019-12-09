@@ -36,7 +36,6 @@ void testLogFile();
 void testReadCfg();
 void testObjPool();
 void testEnumName();
-void testGameTask();
 void TestRank();
 void test_single_progresss();
 void test_delay_handler();
@@ -66,7 +65,6 @@ int main(int argc, char* argv[])
 	L_DEBUG("start");
 	UnitTestMgr::Obj().Start(MyUnitTestPrintf);
 	testLogFile();
-	test_wyl_time();
 	//return 0;
 }
 

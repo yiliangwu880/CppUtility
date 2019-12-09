@@ -20,7 +20,7 @@ TaskMgr::~TaskMgr()
 
 bool TaskMgr::UnRegTask(const TaskCfg &cfg)
 {
-	auto it = m_type_2_vec_task.find((GameTaskType)cfg.task_type);
+	auto it = m_type_2_vec_task.find((TaskType)cfg.task_type);
 	if (it == m_type_2_vec_task.end())
 	{
 		return false;
@@ -99,7 +99,7 @@ bool TaskMgr::IsLogicOk(TaskParaLogic logic, int64 cfg_last_para, int64 cur_num)
 }
 
 
-void TaskMgr::Update(GameTaskType task_type, ...)
+void TaskMgr::Update(TaskType task_type, ...)
 {
 	va_list args;
 	va_list forward_args; //转传给IsMatchCondition函数用
@@ -123,14 +123,12 @@ void TaskMgr::Update(GameTaskType task_type, ...)
 
 	std::vector<typename VecTask::value_type> remove_task; //完成等删除的任务
 	uint32 para_num = type_detail.vec_para_logic.size();
-	if (para_num < 1)
+	if (para_num>0)
 	{
-		L_ERROR("error GameTaskTypeMgr::Instance().GetCfg(), type=%d", (int)task_type);
-		return;
-	}
-	for (uint32 i = 0; i < para_num - 1; ++i)
-	{
-		va_arg(args, uint32);
+		for (int32 i = 0; i < (int32)para_num; ++i)
+		{
+			va_arg(args, uint32);
+		}
 	}
 	const uint32 last_para = va_arg(args, uint32);
 
@@ -155,8 +153,8 @@ void TaskMgr::Update(GameTaskType task_type, ...)
 			base_task->AddNum(last_para);
 		}
 
-		int64 cfg_last_para = GetCfgPara(task_cfg, para_num - 1);
-		TaskParaLogic logic = type_detail.vec_para_logic.back();
+		int64 cfg_last_para = GetCfgPara(task_cfg, para_num);
+		TaskParaLogic logic = type_detail.finish_logic;
 		if (IsLogicOk(logic, cfg_last_para, base_task->GetNum()))
 		{
 			base_task->OnFinish();
@@ -183,10 +181,6 @@ bool TaskMgr::IsMatchCondition(const GameTaskTypeDetail &type_detail, const Task
 	uint32 cfg_para = 0;
 	for (const auto &logic : type_detail.vec_para_logic)
 	{
-		if (idx == last_idx)//最后一个参数不判断
-		{
-			break;
-		}
 		cfg_para = GetCfgPara(task_cfg, idx);
 		uint32 para = va_arg(args, uint32);
 		if (!IsLogicOk(logic, cfg_para, para))

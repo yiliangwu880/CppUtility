@@ -55,7 +55,7 @@ GameTaskTypeDetail配置 改为放到策划配置
 struct  TaskCfg
 {
 	uint32 id;
-	uint32 task_type;
+	uint32 task_type;		//GameTaskType
 	uint32 para1, para2, para3, para4, para5; //选用参数
 };
 
@@ -98,7 +98,7 @@ public:
 
 	//事件
 	//para ..., 每个参数的意义根据 GameTaskType在target_type_infos里面表达的意义来
-	void Update(GameTaskType target_type, ...);
+	void Update(TaskType target_type, ...);
 		
 private:
 	uint32 GetCfgPara(const TaskCfg &cfg, uint32 idx) const;
@@ -112,7 +112,7 @@ private:
 
 private:
 	using VecTask = std::vector<BaseTask_ *>;
-	using Type2VecTask = std::map<GameTaskType, VecTask>;
+	using Type2VecTask = std::map<TaskType, VecTask>;
 
 	Type2VecTask m_type_2_vec_task;
 };
@@ -129,7 +129,7 @@ _STD forward<_Valty>(_Val)...);
 template<class DeriveTask, class... Args>
 bool TaskMgr::RegTask(const TaskCfg &cfg, Args&&... args)
 {
-	VecTask &vec = m_type_2_vec_task[(GameTaskType)cfg.task_type];
+	VecTask &vec = m_type_2_vec_task[(TaskType)cfg.task_type];
 	for (BaseTask_ *task : vec)
 	{
 		if (cfg.id == task->GetCfg().id)
