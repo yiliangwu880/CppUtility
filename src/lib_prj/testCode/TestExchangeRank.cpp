@@ -4,7 +4,6 @@ brief: use example and test code
 #include "../game_utility/rank/exchangeRank.h"
 #include <algorithm>
 #include <iostream>
-#include "../utility/memoryStream.h"
 
 
 

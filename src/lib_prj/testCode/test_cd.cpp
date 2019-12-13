@@ -4,7 +4,6 @@
 #include "../time/cd.h"
 #include "../time/sys_time.h"
 #include "../time/alarm_clock.h"
-#include "../utility/memoryStream.h"
 
 #include   <stdio.h>      
 #include   <stdio.h>      
@@ -521,8 +520,8 @@ void testPeriodCnt()
 	{
         g_time.SetTimeOffset(0);
 		uint8 buf[100];
-		Memory out(buf, 100);
-		const Memory in(buf, 100);
+		//Memory out(buf, 100);
+		//const Memory in(buf, 100);
 
 
 

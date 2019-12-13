@@ -4,7 +4,6 @@
 #include "../time/cd.h"
 #include "../time/sys_time.h"
 #include "../time/alarm_clock.h"
-#include "../utility/memoryStream.h"
 #include "../utility/enum_str.h"
 
 #include   <stdio.h>      
