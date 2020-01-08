@@ -122,9 +122,25 @@ namespace
 				{
 					break;
 				}
-				L_DEBUG("rev data");
+				//L_DEBUG("rev data");
 			}
 		}
+	}
+
+	//返回值参考 为buf读取元素的数量
+	template<typename CircleBuf>
+	int writeNouse(CircleBuf &buf)
+	{
+		typedef typename CircleBuf::ValueType ValueType;
+		uint32 len = 0;
+		const ValueType *p_read = buf.getCanContinueRead(len);
+		if (NULL == p_read)
+		{
+			return 0;
+		}
+
+		buf.finishWillRead(len);
+		return len;
 	}
 
 	void MyHandler::loop()
@@ -149,21 +165,34 @@ namespace
                 if (ret)
                 {
                     char_buf[len]=0;
-                    L_DEBUG("write data to cout [%s]", char_buf);
+                  //  L_DEBUG("write data to cout [%s]", char_buf);
                 }
                 else
                 {
-                    L_DEBUG("write empty data to cout");
+                  //  L_DEBUG("tt write empty data to cout");
                 }
             }
 			while(1)
 			{
-				int ret = EasyRW::write(cout, buf);
+				static uint64 total_rev = 0;
+				static uint64 last_tm = 0;
+				static uint64 use_sec = 0;
+				int ret = writeNouse(buf);
 				if (0 == ret || -1 ==ret )
 				{
 					break;
 				}
-				cout << endl;
+				total_rev += ret;
+
+				uint64 cur_tm = time(nullptr);
+				if (cur_tm - last_tm > 2)
+				{
+					last_tm = cur_tm;
+					use_sec += 2;
+					L_DEBUG("bps=%.4f Mb", double(total_rev) / (1024*1024* use_sec));
+					//i7 下，cs同机器， 接近 3028.11 Mb, total_bytes=157461.92 Mb  
+				}
+				//cout << endl;
 			}
 		}
 	}
@@ -173,7 +202,7 @@ namespace
 
 void testEpoll()
 {
-	daemon(1,1);
+	//daemon(1,1);
 	L_ASSERT(g_epoll.init());
 	SockAddr addr("0.0.0.0", PORT);
 	if(!g_listen.init(addr))

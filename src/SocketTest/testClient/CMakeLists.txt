@@ -9,7 +9,7 @@ project (my_linux CXX)
 # include directories
 INCLUDE_DIRECTORIES(system ../test)
 INCLUDE_DIRECTORIES(after  ${PROJECT_SOURCE_DIR})
-
+#SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 #MESSAGE( status, "PROJECT_SOURCE_DIR="${PRJ_NAME})
 # 查找当前目录下的所有源文件
 # 并将名称保存到 DIR_SRCS 变量

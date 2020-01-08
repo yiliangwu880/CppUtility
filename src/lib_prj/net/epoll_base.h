@@ -6,7 +6,7 @@
 
 #define EPOLL_ALL_EVENT (EPOLLIN|EPOLLOUT|EPOLLPRI|EPOLLERR|EPOLLHUP)
 
-//et模式
+//et模式， 边缘触发，事件只通知 一次。
 template<typename Handler, uint32 MAX_REACT_SIZE=10000>
 class EpollEtBase
 {

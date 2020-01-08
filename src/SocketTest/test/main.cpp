@@ -11,7 +11,7 @@ void testBacktrace();
 int  main(int argc, char** argv)
 {
   //  testBacktrace();
-    return 0;
+   // return 0;
 
 	L_DEBUG("start server run"); 
 	testEpoll(); 

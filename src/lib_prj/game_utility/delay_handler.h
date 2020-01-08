@@ -31,6 +31,11 @@ brief: 延时处理逻辑， 比如:处理离线玩家事件，缓存操作，等读取数据库成功后执行。
 	auto opt = std::bind(bindFun, _1, ...);
 	mgr.AddOpt(target_id, opt);
 
+	或者 
+
+	auto opt = std::bind(&TargetType::Fun, _1, ...);//指定成员函数
+	mgr.AddOpt(target_id, opt);
+
 */
 
 #pragma once

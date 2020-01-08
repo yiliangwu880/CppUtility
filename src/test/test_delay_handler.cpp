@@ -16,9 +16,13 @@ namespace
 		{
 			m_opt1_cnt = m_opt2_cnt = 0;
 		}
-
-		uint32 m_opt1_cnt;	//操作 map 次数 
-		uint32 m_opt2_cnt;	//操作 map 次数 
+		void Fun()
+		{
+			m_opt3_cnt++;
+		}
+		uint32 m_opt1_cnt = 0;	//操作 map 次数 
+		uint32 m_opt2_cnt = 0;	//操作 map 次数 
+		uint32 m_opt3_cnt = 0;
 	};
 
 	typedef std::map<uint64, MyTarget> Id2Target;
@@ -102,6 +106,12 @@ namespace
 			auto f = std::bind(bindFun, _1, 3);
 			g_opt_mgr.AddOpt(1, f);
 			UNIT_ASSERT(old_cnt + 3 == g_id_2_target[1].m_opt1_cnt);
+		}
+		{
+			auto f = std::bind(&MyTarget::Fun, _1);
+			//g_opt_mgr.AddOpt(1, f);
+			f(g_id_2_target[1]);
+			UNIT_ASSERT(1 == g_id_2_target[1].m_opt3_cnt);
 		}
 	}
 
