@@ -20,6 +20,8 @@ namespace StateMachine
 		{}
 		Obj &m_obj;
 
+		virtual void OnStart() {};
+		virtual void OnEnd() {};
 		//add you function, like :virtual void Handle1();
 	};
 	struct State1 : public BaseState
@@ -37,19 +39,18 @@ namespace StateMachine
 
 	class Obj
 	{
-	public:
 		BaseState *m_state = nullptr;
-
-		template<class State>
-		void ChangeState()
+		State1 m_s1;
+		State1 m_s2;
+	public:
+		void ChangeState(BaseState &state)
 		{
-			if (nullptr != m_state)
-			{
-				delete m_state;
-			}
-			m_state = new State(*this);
+			m_state->OnEnd();
+			m_state = &state;
+			m_state->OnStart();
 		}
 
+		//特点： 状态类名 就当类似枚举用，免去同样意义多处重复定义。
 		template<class State>
 		bool IsState()
 		{

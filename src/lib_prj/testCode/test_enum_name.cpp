@@ -1,9 +1,6 @@
 
 
 #include "stdafx.h"
-#include "../time/cd.h"
-#include "../time/sys_time.h"
-#include "../time/alarm_clock.h"
 #include "../utility/enum_str.h"
 
 #include   <stdio.h>      

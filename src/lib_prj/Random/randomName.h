@@ -24,6 +24,7 @@ brief: 对随机数有操作：peer, use
 #include "../utility/typedef.h"
 #include <set>
 #include "random.h"
+#include <cassert>
 
 template<typename CreateName>
 class RandomPeerUse
