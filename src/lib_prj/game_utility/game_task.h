@@ -70,6 +70,7 @@ enum class TaskType
 };
 
 //策划配置模板，根据不同项目改命名
+//本来配置信息可以做出模板，会更通用， 但代码会更复杂。这里选修改代码的方式使用，一个项目通常就一次修改，就能吧模板问题简化掉。
 struct  TaskCfg
 {
 	uint32 id;	                              //任务id,唯一就可以了
@@ -153,7 +154,7 @@ private:
 	using Type2VecTask = std::map<TaskType, VecTask>;
 
 	Type2VecTask m_type_2_vec_task;
-	bool m_is_enable_unreg = true; //放错误调用UnRegTask
+	bool m_is_updateing = false; //防错误调用
 };
 
 

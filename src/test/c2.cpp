@@ -22,6 +22,3 @@ using namespace std;
 using namespace wyl;
 //using namespace boost;
 //using namespace stdext;;
-
-GLOBAL_REG(string,a1, "4");
-GLOBAL_REG(string,a2, "5");

@@ -71,3 +71,22 @@ void t()
 	handler(3);
 
 }
+
+）获取函数参数数量
+
+template<typename Sig>
+struct get_;
+
+template<typename R, typename... Args>
+struct get_<R(*)(Args...)> {
+	static size_t const value = sizeof...(Args);
+};
+
+template<typename Sig>
+inline size_t get(Sig) {
+	return get_<Sig>::value;
+}
+
+void fun(int, int) {}
+
+Info(get(fun)); //获取参数数量

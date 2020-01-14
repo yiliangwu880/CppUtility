@@ -134,7 +134,7 @@ TaskMgr::~TaskMgr()
 
 bool TaskMgr::UnRegTask(const TaskCfg &cfg)
 {
-	if (!m_is_enable_unreg)
+	if (m_is_updateing)
 	{
 		L_ERROR("error call UnRegTask")
 		return false;
@@ -220,7 +220,12 @@ bool TaskMgr::IsLogicOk(TaskParaOpt logic, int64 cfg_last_para, int64 cur_num) c
 
 void TaskMgr::Update(TaskType task_type, ...)
 {
-	m_is_enable_unreg = false;
+	if (m_is_updateing)
+	{
+		L_ERROR("recurrive call");
+		return;
+	}
+	m_is_updateing = true;
 	va_list args;
 	va_list forward_args; //转传给IsMatchCondition函数用
 	va_start(args, task_type);
@@ -229,7 +234,7 @@ void TaskMgr::Update(TaskType task_type, ...)
 	auto it = m_type_2_vec_task.find(task_type);
 	if (it == m_type_2_vec_task.end())
 	{
-		m_is_enable_unreg = true;
+		m_is_updateing = false;
 		return;
 	}
 	VecTask &vec_task = it->second;
@@ -238,7 +243,7 @@ void TaskMgr::Update(TaskType task_type, ...)
 	if (nullptr == type_detail)
 	{
 		L_ERROR("unknow task type %d", (int)task_type);
-		m_is_enable_unreg = true;
+		m_is_updateing = false;
 		return;
 	}
 
@@ -292,7 +297,7 @@ void TaskMgr::Update(TaskType task_type, ...)
 		delete v;
 		wyl::VecRemove(vec_task, v);
 	}
-	m_is_enable_unreg = true;
+	m_is_updateing = false;
 }
 
 
