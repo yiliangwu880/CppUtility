@@ -4,6 +4,7 @@ you can get more refer from https://github.com/yiliangwu880/CppUtility.git
 brief: finite-state machine
 有限状态机参考代码
 
+如果对象有多类状态，不会混合到一个状态机。可以考虑多个状态机管理器组合并存
 
 */
 
