@@ -90,3 +90,11 @@ inline size_t get(Sig) {
 void fun(int, int) {}
 
 Info(get(fun)); //获取参数数量
+
+)可变参数,完美转发
+template<class... Args>
+void emplace_front(Args&&... args)
+{
+	construct(
+		std::forward<Args>(args)...);
+}

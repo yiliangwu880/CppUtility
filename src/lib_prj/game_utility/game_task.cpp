@@ -5,8 +5,8 @@
 struct  TaskTypeStrInfo
 {
 	std::vector<std::string> vec_para_opt;
-	std::string finish_opt;
-	bool is_last_para_absolute;
+	std::string finish_opt= ">=";
+	bool is_last_para_absolute = false;
 };
 
 using TaskType2Cfg = std::map<TaskType, TaskTypeStrInfo>;
@@ -14,23 +14,23 @@ using TaskType2Cfg = std::map<TaskType, TaskTypeStrInfo>;
 namespace {
 	const TaskType2Cfg & GetTaskType2Cfg()
 	{
-		static TaskType2Cfg cfg =
+		static const TaskType2Cfg cfg =
 		{
-			{//para1==update::para1，任务进度 >= para2 ，Update传入的最后一个参数是累加值
+			{//para0==update::para0，任务进度 >= para1 ，para1是累加值
 				TaskType::KILL_MONSTER,
-				{{"==",}, ">=", false,}
+				{{"==",},/* ">=", false,*/}
 			},
-			{//任务进度 >= para1 ，Update传入的最后一个参数是累加值
+			{//任务进度 >= para0 ，para0是绝对值
 				TaskType::LV,
 				{{}, ">=", true,}
 			},
 			{//获取id物品， >= 品质， >= para2
 				TaskType::GET_QUALITY_ITEM,
-				{{"==", ">="}, ">=", false,}
+				{{"==", ">="},}
 			},
 			{
 				TaskType::GET_ITEM,
-				{{"=="}, ">=", false,}
+				{{"=="},}
 			},
 		};
 		return cfg;
@@ -43,6 +43,7 @@ class GameTaskTypeMgr
 {
 private:
 	std::map<TaskType, TaskTypeInfo> m_cfg;
+
 public:
 	static const GameTaskTypeMgr &Instance()
 	{
@@ -51,6 +52,7 @@ public:
 	}
 	const std::map<TaskType, TaskTypeInfo> &GetCfg() const { return m_cfg; }
 	bool IsCfgOk();//检查配置非法
+
 private:
 	TaskParaOpt Str2TaskParaLogic(const std::string &s);
 	GameTaskTypeMgr();
@@ -239,8 +241,10 @@ void TaskMgr::Update(TaskType task_type, ...)
 	}
 	VecTask &vec_task = it->second;
 
-	const TaskTypeInfo *type_detail = wyl::MapFind(GameTaskTypeMgr::Instance().GetCfg(), task_type);
-	if (nullptr == type_detail)
+	//待优化
+	//baseTask初始化的时候，绑定TaskTypeInfo *type_detail指针,不必每次update查
+	const TaskTypeInfo *type_info = wyl::MapFind(GameTaskTypeMgr::Instance().GetCfg(), task_type);
+	if (nullptr == type_info)
 	{
 		L_ERROR("unknow task type %d", (int)task_type);
 		m_is_updateing = false;
@@ -248,7 +252,7 @@ void TaskMgr::Update(TaskType task_type, ...)
 	}
 
 	std::vector<typename VecTask::value_type> remove_task; //完成等删除的任务
-	uint32 para_num = type_detail->vec_para_opt.size();
+	uint32 para_num = type_info->vec_para_opt.size();
 	if (para_num>0)
 	{
 		for (int32 i = 0; i < (int32)para_num; ++i)
@@ -264,13 +268,13 @@ void TaskMgr::Update(TaskType task_type, ...)
 		const TaskCfg &task_cfg = base_task->GetCfg();
 
 		//判断是否符合条件
-		if (!IsMatchCondition(*type_detail, task_cfg, forward_args))
+		if (!IsMatchCondition(*type_info, task_cfg, forward_args))
 		{
 			break;
 		}
 
 		//符合条件，判断最后一个参数
-		if (type_detail->is_last_para_absolute)//is_last_para_absolute true表示最后一个参数表示绝对值，false 表示累加值. default 表示累加
+		if (type_info->is_last_para_absolute)//is_last_para_absolute true表示最后一个参数表示绝对值，false 表示累加值. default 表示累加
 		{
 			base_task->SetNum(last_para);
 		}
@@ -280,8 +284,7 @@ void TaskMgr::Update(TaskType task_type, ...)
 		}
 
 		int64 cfg_last_para = GetCfgPara(task_cfg, para_num);
-		TaskParaOpt logic = type_detail->finish_opt;
-		if (IsLogicOk(logic, cfg_last_para, base_task->GetNum()))
+		if (IsLogicOk(type_info->finish_opt, cfg_last_para, base_task->GetNum()))
 		{
 			base_task->OnFinish();
 			remove_task.push_back(base_task);
