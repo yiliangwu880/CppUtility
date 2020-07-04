@@ -1,7 +1,7 @@
 
 #include "game_task.h"
 
-//ÒâÒåºÍTaskTypeInfoÒ»Ñù£¬ÎªÁËÈİÒ×ÈË¹¤±àĞ´
+//æ„ä¹‰å’ŒTaskTypeInfoä¸€æ ·ï¼Œä¸ºäº†å®¹æ˜“äººå·¥ç¼–å†™
 struct  TaskTypeStrInfo
 {
 	std::vector<std::string> vec_para_opt;
@@ -16,15 +16,15 @@ namespace {
 	{
 		static const TaskType2Cfg cfg =
 		{
-			{//para0==update::para0£¬ÈÎÎñ½ø¶È >= para1 £¬para1ÊÇÀÛ¼ÓÖµ
+			{//para0==update::para0ï¼Œä»»åŠ¡è¿›åº¦ >= para1 ï¼Œpara1æ˜¯ç´¯åŠ å€¼
 				TaskType::KILL_MONSTER,
 				{{"==",},/* ">=", false,*/}
 			},
-			{//ÈÎÎñ½ø¶È >= para0 £¬para0ÊÇ¾ø¶ÔÖµ
+			{//ä»»åŠ¡è¿›åº¦ >= para0 ï¼Œpara0æ˜¯ç»å¯¹å€¼
 				TaskType::LV,
 				{{}, ">=", true,}
 			},
-			{//»ñÈ¡idÎïÆ·£¬ >= Æ·ÖÊ£¬ >= para2
+			{//è·å–idç‰©å“ï¼Œ >= å“è´¨ï¼Œ >= para2
 				TaskType::GET_QUALITY_ITEM,
 				{{"==", ">="},}
 			},
@@ -38,11 +38,11 @@ namespace {
 }
 
 
-//ÈÎÎñÀàĞÍĞÅÏ¢ÅäÖÃ
+//ä»»åŠ¡ç±»å‹ä¿¡æ¯é…ç½®
 class GameTaskTypeMgr
 {
 private:
-	std::map<TaskType, TaskTypeInfo> m_cfg;
+	std::array<TaskTypeInfo, TaskType::MAX_LEN> m_cfg;
 
 public:
 	static const GameTaskTypeMgr &Instance()
@@ -50,8 +50,8 @@ public:
 		static GameTaskTypeMgr d;
 		return d;
 	}
-	const std::map<TaskType, TaskTypeInfo> &GetCfg() const { return m_cfg; }
-	bool IsCfgOk();//¼ì²éÅäÖÃ·Ç·¨
+	const std::array<TaskTypeInfo, TaskType::MAX_LEN> &GetCfg() const { return m_cfg; }
+	bool IsCfgOk();//æ£€æŸ¥é…ç½®éæ³•
 
 private:
 	TaskParaOpt Str2TaskParaLogic(const std::string &s);
@@ -106,12 +106,18 @@ TaskParaOpt GameTaskTypeMgr::Str2TaskParaLogic(const std::string &s)
 
 GameTaskTypeMgr::GameTaskTypeMgr()
 {
-	//×Ö·û´®ÅäÖÃ×ª»» ÅäÖÃ£¬¼Ó¿ìĞ§ÂÊ
+	//å­—ç¬¦ä¸²é…ç½®è½¬æ¢ é…ç½®ï¼ŒåŠ å¿«æ•ˆç‡
 	const TaskType2Cfg &str_cfg = GetTaskType2Cfg();
 	for (const auto &v : str_cfg)
 	{
+		TaskType t = v.first;
+		if (t >= TaskType::MAX_LEN)
+		{
+			L_ERROR("unknow task_type %d", t);
+			continue;
+		}
 		const TaskTypeStrInfo &cfg = v.second;
-		TaskTypeInfo &m_cfg_v = m_cfg[v.first];
+		TaskTypeInfo &m_cfg_v = m_cfg[t];
 		for (const std::string &s : cfg.vec_para_opt)
 		{
 			m_cfg_v.vec_para_opt.push_back(Str2TaskParaLogic(s));
@@ -141,12 +147,12 @@ bool TaskMgr::UnRegTask(const TaskCfg &cfg)
 		L_ERROR("error call UnRegTask")
 		return false;
 	}
-	auto it = m_type_2_vec_task.find((TaskType)cfg.task_type);
-	if (it == m_type_2_vec_task.end())
+	if (cfg.task_type>=TaskType::MAX_LEN)
 	{
+		L_ERROR("unknow task_type %d", cfg.task_type);
 		return false;
 	}
-	VecTask &vec = it->second;
+	VecTask &vec = m_type_2_vec_task[(TaskType)cfg.task_type];
 	for (BaseTask *task : vec)
 	{
 		if (cfg.id == task->GetCfg().id)
@@ -165,7 +171,7 @@ uint32 TaskMgr::GetRegTaskNum() const
 	uint32 num = 0;
 	for (const auto &v : m_type_2_vec_task)
 	{
-		num += v.second.size();
+		num += v.size();
 	}
 	return num;
 }
@@ -176,7 +182,7 @@ uint32 TaskMgr::GetCfgPara(const TaskCfg &cfg, uint32 idx) const
 	switch (idx)
 	{
 	default:
-		L_ERROR("idx too big. %d", idx); //target_type_info.vec_para_logic ¶¨ÒåµÄsize¹ı´ó
+		L_ERROR("idx too big. %d", idx); //target_type_info.vec_para_logic å®šä¹‰çš„sizeè¿‡å¤§
 		return 0;
 		break;
 	case 0: return cfg.para0; break;
@@ -229,20 +235,19 @@ void TaskMgr::Update(TaskType task_type, ...)
 	}
 	m_is_updateing = true;
 	va_list args;
-	va_list forward_args; //×ª´«¸øIsMatchConditionº¯ÊıÓÃ
+	va_list forward_args; //è½¬ä¼ ç»™IsMatchConditionå‡½æ•°ç”¨
 	va_start(args, task_type);
 	va_start(forward_args, task_type);
 
-	auto it = m_type_2_vec_task.find(task_type);
-	if (it == m_type_2_vec_task.end())
+	if (task_type>=TaskType::MAX_LEN)
 	{
 		m_is_updateing = false;
 		return;
 	}
-	VecTask &vec_task = it->second;
+	VecTask &vec_task = m_type_2_vec_task[task_type];
 
-	//´ıÓÅ»¯
-	//baseTask³õÊ¼»¯µÄÊ±ºò£¬°ó¶¨TaskTypeInfo *type_detailÖ¸Õë,²»±ØÃ¿´Îupdate²é
+	//å¾…ä¼˜åŒ–
+	//baseTaskåˆå§‹åŒ–çš„æ—¶å€™ï¼Œç»‘å®šTaskTypeInfo *type_detailæŒ‡é’ˆ,ä¸å¿…æ¯æ¬¡updateæŸ¥
 	const TaskTypeInfo *type_info = wyl::MapFind(GameTaskTypeMgr::Instance().GetCfg(), task_type);
 	if (nullptr == type_info)
 	{
@@ -251,7 +256,7 @@ void TaskMgr::Update(TaskType task_type, ...)
 		return;
 	}
 
-	std::vector<typename VecTask::value_type> remove_task; //Íê³ÉµÈÉ¾³ıµÄÈÎÎñ
+	std::vector<typename VecTask::value_type> remove_task; //å®Œæˆç­‰åˆ é™¤çš„ä»»åŠ¡
 	uint32 para_num = type_info->vec_para_opt.size();
 	if (para_num>0)
 	{
@@ -262,19 +267,19 @@ void TaskMgr::Update(TaskType task_type, ...)
 	}
 	const uint32 last_para = va_arg(args, uint32);
 
-	//task_state ºÍ type_detail ±È½Ï£¬²»·ûºÏÌõ¼şÍË³ö, ·ûºÏ¸Ä±ä½ø¶È
+	//task_state å’Œ type_detail æ¯”è¾ƒï¼Œä¸ç¬¦åˆæ¡ä»¶é€€å‡º, ç¬¦åˆæ”¹å˜è¿›åº¦
 	for (BaseTask *base_task : vec_task)
 	{
 		const TaskCfg &task_cfg = base_task->GetCfg();
 
-		//ÅĞ¶ÏÊÇ·ñ·ûºÏÌõ¼ş
+		//åˆ¤æ–­æ˜¯å¦ç¬¦åˆæ¡ä»¶
 		if (!IsMatchCondition(*type_info, task_cfg, forward_args))
 		{
 			break;
 		}
 
-		//·ûºÏÌõ¼ş£¬ÅĞ¶Ï×îºóÒ»¸ö²ÎÊı
-		if (type_info->is_last_para_absolute)//is_last_para_absolute true±íÊ¾×îºóÒ»¸ö²ÎÊı±íÊ¾¾ø¶ÔÖµ£¬false ±íÊ¾ÀÛ¼ÓÖµ. default ±íÊ¾ÀÛ¼Ó
+		//ç¬¦åˆæ¡ä»¶ï¼Œåˆ¤æ–­æœ€åä¸€ä¸ªå‚æ•°
+		if (type_info->is_last_para_absolute)//is_last_para_absolute trueè¡¨ç¤ºæœ€åä¸€ä¸ªå‚æ•°è¡¨ç¤ºç»å¯¹å€¼ï¼Œfalse è¡¨ç¤ºç´¯åŠ å€¼. default è¡¨ç¤ºç´¯åŠ 
 		{
 			base_task->SetNum(last_para);
 		}

@@ -90,6 +90,7 @@ brief:
 #include "../utility/stlBoost.h"
 
 
+//task类型，值作为数组索引
 enum class TaskType
 {
 	KILL_MONSTER = 1,
@@ -164,9 +165,9 @@ class TaskMgr
 {
 private:
 	using VecTask = std::vector<BaseTask *>;
-	using Type2VecTask = std::map<TaskType, VecTask>; //可以改成数组提示效率
+	using VecTaskS = std::array<VecTask, TaskType::MAX_LEN>; 
 
-	Type2VecTask m_type_2_vec_task;
+	VecTaskS m_type_2_vec_task = {};
 	bool m_is_updateing = false; //防错误调用
 
 public:
@@ -196,7 +197,13 @@ private:
 template<class DeriveTask, class... Args>
 bool TaskMgr::RegTask(const TaskCfg &cfg, Args&&... args)
 {
-	VecTask &vec = m_type_2_vec_task[(TaskType)cfg.task_type];
+	TaskType t = (TaskType)cfg.task_type
+	if (t>=TaskType::MAX_LEN)
+	{
+		L_ERROR("illegal task_type=%d", cfg.task_type);
+		return false;
+	}
+	VecTask &vec = m_type_2_vec_task[t];
 	for (BaseTask *task : vec)
 	{
 		if (cfg.id == task->GetCfg().id)
