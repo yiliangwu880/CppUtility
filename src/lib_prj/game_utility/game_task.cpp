@@ -129,7 +129,7 @@ GameTaskTypeMgr::GameTaskTypeMgr()
 
 TaskMgr::~TaskMgr()
 {
-	for (auto &v : m_type_2_vec_task)
+	for (auto &v : m_all_task)
 	{
 		for (BaseTask *task : v.second)
 		{
@@ -152,7 +152,7 @@ bool TaskMgr::UnRegTask(const TaskCfg &cfg)
 		L_ERROR("unknow task_type %d", cfg.task_type);
 		return false;
 	}
-	VecTask &vec = m_type_2_vec_task[(TaskType)cfg.task_type];
+	VecTask &vec = m_all_task[(TaskType)cfg.task_type];
 	for (BaseTask *task : vec)
 	{
 		if (cfg.id == task->GetCfg().id)
@@ -169,7 +169,7 @@ bool TaskMgr::UnRegTask(const TaskCfg &cfg)
 uint32 TaskMgr::GetRegTaskNum() const
 {
 	uint32 num = 0;
-	for (const auto &v : m_type_2_vec_task)
+	for (const auto &v : m_all_task)
 	{
 		num += v.size();
 	}
@@ -244,7 +244,7 @@ void TaskMgr::Update(TaskType task_type, ...)
 		m_is_updateing = false;
 		return;
 	}
-	VecTask &vec_task = m_type_2_vec_task[task_type];
+	VecTask &vec_task = m_all_task[task_type];
 
 	//待优化
 	//baseTask初始化的时候，绑定TaskTypeInfo *type_detail指针,不必每次update查

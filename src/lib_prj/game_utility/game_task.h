@@ -15,7 +15,7 @@ brief:
 	{
 		method1: 配置参数为task id, Task加set保存一完成sub task. 全部完成算完成。
 			comment:task系统复杂化了。
-		method2: 新些MoreTaskMgr系统。 Task 完成通知 MoreTaskMgr, MoreTaskMgr触发MoreTask完成.
+		method2: 新写MoreTaskMgr系统。 Task 完成通知 MoreTaskMgr, MoreTaskMgr触发MoreTask完成.
 			comment:组合思想，划分模块，简化整个系统。不错
 	}
 
@@ -23,7 +23,7 @@ brief:
 	{
 		Task：  代码层任务， 有类型，进度。     所有游戏任务，成就都是基于这个来实现
 		Quest:	   游戏任务，可以关联一个Task实现，或者一个quest关联多个BaseTask， 全部BaseTask完成来计算完成。 
-		Achieve:   成就，可以关联Task来实现。
+		Achieve:   成就，类似Quest。
 		TaskMgr：  管理全部BaseTask，控制BaseTask状态变化。
 	}
 
@@ -31,7 +31,7 @@ brief:
 	需要根据项目修改下配置TaskCfg的字段名。
 	配置：
 	{
-		新BaseTask类型， 需要加TaskType类型配置。 在代码GetTaskType2Cfg函数里面加.
+		新BaseTask类型， 需要加TaskType类型配置。 在代码 GetTaskType2Cfg 函数里面加.
 		新Quest, 配置TaskCfg。
 	}
 	代码：
@@ -86,6 +86,8 @@ brief:
 #include "../utility/typedef.h"
 #include <map>
 #include <algorithm>
+#include <array>
+#include <vector>
 #include <stdarg.h>
 #include "../utility/stlBoost.h"
 
@@ -119,7 +121,7 @@ private:
 public:
 	//@cfg： 派生类的构造函数，第一个参数必须为 const TaskCfg &  （TaskMgr::RegTask<>函数要求）
 	//para num 任务初始化进度
-	//读库后也用构造初始化就好了
+	//读库后也用构造初始化就可以了
 	BaseTask(const TaskCfg &cfg, int64 num)
 		:m_num(num)
 		, m_cfg(cfg)
@@ -165,9 +167,9 @@ class TaskMgr
 {
 private:
 	using VecTask = std::vector<BaseTask *>;
-	using VecTaskS = std::array<VecTask, TaskType::MAX_LEN>; 
+	using VecTaskS = std::array<VecTask, (uint32)TaskType::MAX_LEN>; 
 
-	VecTaskS m_type_2_vec_task = {};
+	VecTaskS m_all_task = {};	 //type idx VecTask
 	bool m_is_updateing = false; //防错误调用
 
 public:
@@ -176,6 +178,7 @@ public:
 	bool RegTask(const TaskCfg &cfg, Args&&... args);
 	bool UnRegTask(const TaskCfg &cfg);
 	uint32 GetRegTaskNum() const;
+	const VecTaskS &GetAllTask(); {return m_all_task;} //存库时需要
 
 	//更新事件，如果BaseTask 完成，会delete这个对象
 	//@para ..., 每个参数的意义根据 TaskType, TaskTypeInfo 意义来决定
@@ -203,7 +206,7 @@ bool TaskMgr::RegTask(const TaskCfg &cfg, Args&&... args)
 		L_ERROR("illegal task_type=%d", cfg.task_type);
 		return false;
 	}
-	VecTask &vec = m_type_2_vec_task[t];
+	VecTask &vec = m_all_task[t];
 	for (BaseTask *task : vec)
 	{
 		if (cfg.id == task->GetCfg().id)
