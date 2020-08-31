@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
-#include "../utility/typedef.h"
+#include "../../svr_util/include/typedef.h"
 
 
 class SockAddr

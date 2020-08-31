@@ -21,7 +21,7 @@ brief: 对随机数有操作：peer, use
 
 #pragma once
 
-#include "../utility/typedef.h"
+#include "../../svr_util/include/typedef.h"
 #include <set>
 #include "random.h"
 #include <cassert>

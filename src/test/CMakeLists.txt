@@ -22,14 +22,14 @@ SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/../bin)
 ADD_EXECUTABLE(test ${SRCS} ${SRCS2})
 
 #设置依赖
-ADD_DEPENDENCIES(test lib_prj)
+ADD_DEPENDENCIES(test lib_prj libsvr_util.a)
 
 #增加系统依赖库
 ADD_library(pthread SHARED IMPORTED)
 ADD_library(crypto SHARED IMPORTED)
 
 # 设置链接库
-target_link_libraries(test lib_prj dl)
+target_link_libraries(test lib_prj libsvr_util.a dl)
 
 #cotire设置gcc的预编译头相关			
 set_target_properties(test PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "stdafx.h")

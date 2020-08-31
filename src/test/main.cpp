@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
 {
 	L_DEBUG("start");
 	UnitTestMgr::Obj().Start(MyUnitTestPrintf);
-	testLogFile();
+	//testLogFile();
 	//return 0;
 }
 

@@ -6,7 +6,7 @@ Author:         Yiliangwu
 
 #pragma once
 
-#include "../utility/typedef.h"
+#include "../../svr_util/include/typedef.h"
 #include <vector>
 
 typedef  unsigned short U16;

@@ -33,7 +33,7 @@ brief: ÑÓÊ±²ÎÊı¹ÜÀí£¬ ÓÃ»§¶¯Ì¬µ÷ÓÃ´´½¨³õÊ¼»¯£¬ ÑÓÊ±£¨ÊÕµ½ÍøÂçÏûÏ¢ºó£©£¬»ñÈ¡²ÎÊı£
 */
 
 #pragma once
-#include "../utility/typedef.h"
+#include "../../svr_util/include/typedef.h"
 #include <vector>
 #include <map>
 #include <utility>

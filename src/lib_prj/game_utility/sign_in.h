@@ -4,8 +4,10 @@ brief:游戏签到相关
 */
 
 #pragma once
-#include "../utility/typedef.h"
+#include "../../svr_util/include/typedef.h"
 #include <vector>
+#include "../../svr_util/include/time/su_cd.h"
+#include "../../svr_util/include/time/su_timestamp.h"
 
 /*
 累积每日签到数，
@@ -22,7 +24,7 @@ public:
 	inline uint32 getSignCnt() const{return m_cnt;}
 
 private:
-	CurCycleNum m_cycle_num;
+	su::CurCycleNum m_cycle_num;
 	time_t m_last_num;	//最近周期数
 	uint32 m_cnt;		//签到数
 };
@@ -49,8 +51,8 @@ public:
 	const uint32 getSignCnt() const {return m_sign_cnt;}
 
 private:
-	CurCycleNum m_week_cnt;
-	CurCycleNum m_day_cnt;
+	su::CurCycleNum m_week_cnt;
+	su::CurCycleNum m_day_cnt;
 	time_t m_last_week;		//最近周周期数
 	time_t m_last_day;		//最近日周期数
 	VecBool m_vec_bool;		//每一天签到记录, idx==0表示周1
@@ -78,7 +80,7 @@ public:
 	const uint32 getSignCnt() const {return m_sign_cnt;}
 
 private:
-	CurCycleNum m_day_cnt;
+	su::CurCycleNum m_day_cnt;
 	time_t m_last_day;		//最近访问的天周期数
 	time_t m_last_mon;		//最近访问的月周期数
 	VecBool m_vec_bool;		//每一天签到记录,0表示周1

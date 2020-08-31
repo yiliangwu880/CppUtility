@@ -18,20 +18,25 @@ namespace {
 		{
 			{//para0==update::para0，任务进度 >= para1 ，para1是累加值
 				TaskType::KILL_MONSTER,
-				{{"==",},/* ">=", false,*/}
-			},
-			{//任务进度 >= para0 ，para0是绝对值
-				TaskType::LV,
-				{{}, ">=", true,}
-			},
-			{//获取id物品， >= 品质， >= para2
-				TaskType::GET_QUALITY_ITEM,
-				{{"==", ">="},}
-			},
-			{
-				TaskType::GET_ITEM,
-				{{"=="},}
-			},
+		{},
+			//	{{}, ">=", false,},
+			},			
+			//{//para0==update::para0，任务进度 >= para1 ，para1是累加值
+			//	TaskType::KILL_MONSTER,
+			//	{{"==",},/* ">=", false,*/}
+			//},
+			//{//任务进度 >= para0 ，para0是绝对值
+			//	TaskType::LV,
+			//	{{}, ">=", true,}
+			//},
+			//{//获取id物品， >= 品质， >= para2
+			//	TaskType::GET_QUALITY_ITEM,
+			//	{{"==", ">="},}
+			//},
+			//{
+			//	TaskType::GET_ITEM,
+			//	{{"=="},}
+			//},
 		};
 		return cfg;
 	}
@@ -42,7 +47,7 @@ namespace {
 class GameTaskTypeMgr
 {
 private:
-	std::array<TaskTypeInfo, TaskType::MAX_LEN> m_cfg;
+	std::array<TaskTypeInfo, (uint32_t)TaskType::MAX_LEN> m_cfg;
 
 public:
 	static const GameTaskTypeMgr &Instance()
@@ -50,7 +55,7 @@ public:
 		static GameTaskTypeMgr d;
 		return d;
 	}
-	const std::array<TaskTypeInfo, TaskType::MAX_LEN> &GetCfg() const { return m_cfg; }
+	const std::array<TaskTypeInfo, (uint32_t)TaskType::MAX_LEN> &GetCfg() const { return m_cfg; }
 	bool IsCfgOk();//检查配置非法
 
 private:
@@ -117,7 +122,7 @@ GameTaskTypeMgr::GameTaskTypeMgr()
 			continue;
 		}
 		const TaskTypeStrInfo &cfg = v.second;
-		TaskTypeInfo &m_cfg_v = m_cfg[t];
+		TaskTypeInfo &m_cfg_v = m_cfg[(uint32_t)t];
 		for (const std::string &s : cfg.vec_para_opt)
 		{
 			m_cfg_v.vec_para_opt.push_back(Str2TaskParaLogic(s));
@@ -129,9 +134,9 @@ GameTaskTypeMgr::GameTaskTypeMgr()
 
 TaskMgr::~TaskMgr()
 {
-	for (auto &v : m_all_task)
+	for (const VecTask &v : m_all_task)
 	{
-		for (BaseTask *task : v.second)
+		for (BaseTask *task : v)
 		{
 			delete task;
 		}
@@ -147,12 +152,12 @@ bool TaskMgr::UnRegTask(const TaskCfg &cfg)
 		L_ERROR("error call UnRegTask")
 		return false;
 	}
-	if (cfg.task_type>=TaskType::MAX_LEN)
+	if (cfg.task_type>=(uint32)TaskType::MAX_LEN)
 	{
 		L_ERROR("unknow task_type %d", cfg.task_type);
 		return false;
 	}
-	VecTask &vec = m_all_task[(TaskType)cfg.task_type];
+	VecTask &vec = m_all_task[cfg.task_type];
 	for (BaseTask *task : vec)
 	{
 		if (cfg.id == task->GetCfg().id)
@@ -239,16 +244,16 @@ void TaskMgr::Update(TaskType task_type, ...)
 	va_start(args, task_type);
 	va_start(forward_args, task_type);
 
-	if (task_type>=TaskType::MAX_LEN)
+	if ((uint32_t)task_type >= (uint32_t)TaskType::MAX_LEN)
 	{
 		m_is_updateing = false;
 		return;
 	}
-	VecTask &vec_task = m_all_task[task_type];
+	VecTask &vec_task = m_all_task[(uint32_t)task_type];
 
 	//待优化
 	//baseTask初始化的时候，绑定TaskTypeInfo *type_detail指针,不必每次update查
-	const TaskTypeInfo *type_info = wyl::MapFind(GameTaskTypeMgr::Instance().GetCfg(), task_type);
+	const TaskTypeInfo *type_info = &GameTaskTypeMgr::Instance().GetCfg()[(uint32_t)task_type];
 	if (nullptr == type_info)
 	{
 		L_ERROR("unknow task type %d", (int)task_type);

@@ -83,7 +83,7 @@ brief:
 
 #pragma once
 
-#include "../utility/typedef.h"
+#include "../../svr_util/include/typedef.h"
 #include <map>
 #include <algorithm>
 #include <array>
@@ -178,7 +178,6 @@ public:
 	bool RegTask(const TaskCfg &cfg, Args&&... args);
 	bool UnRegTask(const TaskCfg &cfg);
 	uint32 GetRegTaskNum() const;
-	const VecTaskS &GetAllTask(); {return m_all_task;} //存库时需要
 
 	//更新事件，如果BaseTask 完成，会delete这个对象
 	//@para ..., 每个参数的意义根据 TaskType, TaskTypeInfo 意义来决定
@@ -200,13 +199,13 @@ private:
 template<class DeriveTask, class... Args>
 bool TaskMgr::RegTask(const TaskCfg &cfg, Args&&... args)
 {
-	TaskType t = (TaskType)cfg.task_type
-	if (t>=TaskType::MAX_LEN)
+	TaskType t = (TaskType)cfg.task_type;
+	if ((uint32_t)t>=(uint32_t)TaskType::MAX_LEN)
 	{
 		L_ERROR("illegal task_type=%d", cfg.task_type);
 		return false;
 	}
-	VecTask &vec = m_all_task[t];
+	VecTask &vec = m_all_task[(uint32_t)t];
 	for (BaseTask *task : vec)
 	{
 		if (cfg.id == task->GetCfg().id)

@@ -9,7 +9,7 @@ brief: finite-state machine
 */
 
 #pragma once
-#include "../utility/typedef.h"
+#include "../../svr_util/include/typedef.h"
 
 namespace StateMachine
 {

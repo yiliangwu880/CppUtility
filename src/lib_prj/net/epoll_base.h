@@ -1,7 +1,7 @@
 
 #include <stdio.h>
 #include <sys/epoll.h>
-#include "../utility/typedef.h"
+#include "../../svr_util/include/typedef.h"
 #include "my_socket.h"
 
 #define EPOLL_ALL_EVENT (EPOLLIN|EPOLLOUT|EPOLLPRI|EPOLLERR|EPOLLHUP)

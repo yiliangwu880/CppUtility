@@ -2,7 +2,7 @@
 
 #include "sign_in.h"
 
-
+using namespace su;
 
 bool AccumulSignIn::signIn()
 {
@@ -41,7 +41,7 @@ bool WeekSignIn::signIn()
 		m_last_week = week;
 	}
 
-	const tm &tm_d = g_time.CurTm();
+	const tm &tm_d = SysTime::Obj().CurTm();
 	m_vec_bool[tm_d.tm_wday] = true;
 	++m_sign_cnt;
 	return true;
@@ -49,9 +49,9 @@ bool WeekSignIn::signIn()
 
 void MonthSignIn::Reset()
 {	
-	wyl::g_time.Refresh();
+	SysTime::Obj().Refresh();
 	m_vec_bool.clear();
-	m_vec_bool.resize(wyl::g_time.GetDaysInMonth());
+	m_vec_bool.resize(su::SysTime::Obj().GetDaysInMonth());
 	m_sign_cnt=0;
 }
 
@@ -65,14 +65,14 @@ bool MonthSignIn::signIn()
 	}
 	m_last_day = cur;
 
-	int cur_mon = g_time.GetMonthPeriodCnt();
+	int cur_mon = SysTime::Obj().GetMonthPeriodCnt();
 	if (m_last_mon != cur_mon)
 	{
 		m_last_mon = cur_mon;
 		Reset();
 	}
 
-	const tm &tm_d = g_time.CurTm();
+	const tm &tm_d = SysTime::Obj().CurTm();
 	m_vec_bool[tm_d.tm_mday-1]= true;
 	++m_sign_cnt;
 	return true;
