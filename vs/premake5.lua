@@ -29,6 +29,7 @@ project "CppUtility"
 		"../src/**.hpp",
 		"../src/**.cpps",  --显示用，不参加cmake编译
 		"../src/**.txt",
+		"../src/**.md",
 	}
 
 
