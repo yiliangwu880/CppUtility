@@ -2,9 +2,7 @@
 /*
 author:YiliangWu
 brief:
-待解决问题：
-	TaskMgr只能管理一个cfgTaskId的 Task
-	解决方法：Task自动生成唯一id
+
 
 任务功能：
 	通用地实现了往玩家身上加入任务，任务进度变化，结束功能。 
@@ -13,7 +11,7 @@ brief:
 扩展：
 	如果需求一个任务，包含多个子任务项的情况，需要参考这个实现重构。
 	{
-		method1: 配置参数为task id, Task加set保存一完成sub task. 全部完成算完成。
+		method1: 本系统加功能。配置参数为task id, Task加set保存一完成sub task. 全部完成算完成。
 			comment:task系统复杂化了。
 		method2: 新写MoreTaskMgr系统。 Task 完成通知 MoreTaskMgr, MoreTaskMgr触发MoreTask完成.
 			comment:组合思想，划分模块，简化整个系统。不错
@@ -88,8 +86,8 @@ brief:
 #include <algorithm>
 #include <array>
 #include <vector>
+#include <memory>
 #include <stdarg.h>
-#include "../utility/stlBoost.h"
 
 
 //task类型，值作为数组索引
@@ -111,32 +109,38 @@ struct  TaskCfg
 	uint32 para0, para1, para2, para3, para4; //选用参数
 };
 
+class TaskMgr;
 //任务基类
+//读库后也用构造初始化就可以了
+//注意： 用户需要确保 cfg, 对象生存期比 BaseTask 对象长。 一般cfg一直到进程结束才释放
+//  不能复制，因为构造对象就注册到TaskMgr了，避免临时对象注册到TaskMgr。
 class BaseTask
 {
 private:
 	int64 m_num;		  //表示进度
+	std::shared_ptr<TaskMgr> m_pMgr;
 	const TaskCfg &m_cfg; 
 
 public:
-	//@cfg： 派生类的构造函数，第一个参数必须为 const TaskCfg &  （TaskMgr::RegTask<>函数要求）
-	//para num 任务初始化进度
-	//读库后也用构造初始化就可以了
-	BaseTask(const TaskCfg &cfg, int64 num)
-		:m_num(num)
-		, m_cfg(cfg)
-	{
-	}
+	//@num 任务初始化进度
+	BaseTask(const TaskCfg &cfg, std::shared_ptr<TaskMgr> pMgr, int64 num=0);
 
-	virtual ~BaseTask(){};
+	virtual ~BaseTask();
 
-	virtual void OnFinish() = 0;
-	virtual void OnUpdate() = 0;
+	virtual void OnFinish() {};
+	virtual void OnUpdate() {};
 
 	const TaskCfg &GetCfg(){ return m_cfg; }
 	void SetNum(int64 num){ m_num = num; }
 	void AddNum(int64 add){ m_num += add; }
 	const int64 GetNum(){ return m_num; }
+
+
+	BaseTask(BaseTask&&)=default;
+private:
+	//noncopyable
+	BaseTask(const BaseTask&);
+	BaseTask & operator= (const BaseTask &);
 };
 
 //任务参数逻辑
@@ -150,7 +154,7 @@ enum class TaskParaOpt
 
 //任务类型
 //表达 TaskMgr::Update参数和任务配置参数的关系。 
-struct TaskTypeInfo
+struct TaskTypeCfg
 {
 	//vec_para_logic[0] 表示TaskMgr::Update para0的关系，  vec_para_logic[1]表示。。。。
 	//只有para0时，这里就为empty
@@ -165,57 +169,36 @@ struct TaskTypeInfo
 //注意：TaskMgr free的时候，会free管理中的所有Task。
 class TaskMgr
 {
+	friend class BaseTask;
 private:
 	using VecTask = std::vector<BaseTask *>;
 	using VecTaskS = std::array<VecTask, (uint32)TaskType::MAX_LEN>; 
 
-	VecTaskS m_all_task = {};	 //type idx VecTask
+	VecTaskS m_all_task;	 //type idx VecTask
 	bool m_is_updateing = false; //防错误调用
 
 public:
 	~TaskMgr();
-	template<class DeriveTask, class... Args>
-	bool RegTask(const TaskCfg &cfg, Args&&... args);
-	bool UnRegTask(const TaskCfg &cfg);
 	uint32 GetRegTaskNum() const;
 
 	//更新事件，如果BaseTask 完成，会delete这个对象
-	//@para ..., 每个参数的意义根据 TaskType, TaskTypeInfo 意义来决定
+	//@para ..., 每个参数的意义根据 TaskType, TaskTypeCfg 意义来决定
 	//注意：每个参数必需为类型uint32
-	void Update(TaskType target_type, ...);
+	void Update(TaskType target_type, ...);	
+	
+	//true表示 进度完成
+	bool IsFinish(const TaskCfg &task_cfg, uint32 cur_num);
 		
 private:
+	bool RegTask(BaseTask &task);
+	bool UnRegTask(BaseTask &task);
 	uint32 GetCfgPara(const TaskCfg &cfg, uint32 idx) const;
-	//true表示 cur_num和cfg_last_para 符合逻辑关系 logic
-	bool IsLogicOk(TaskParaOpt logic, int64 cfg_last_para, int64 cur_num) const;
-	//判断任务条件是否符合, 根据 TaskTypeInfo， TaskCfg 和 参数列表比对，排除最后一个参数。
-	//@target_type_info	为 TaskTypeInfo的一个元素
+	//true表示 cur_num,cfg_para 符合逻辑关系 logic
+	bool IsLogicOk(TaskParaOpt logic, int64 cur_num, int64 cfg_para) const;
+	//判断任务条件是否符合, 根据 TaskTypeCfg， TaskCfg 和 参数列表比对，排除最后一个参数。
+	//@target_type_info	为 TaskTypeCfg的一个元素
 	//@args		Update传进来的可变参数。 格式为 para1, para2, para3 
 	//return true表示符合条件
-	bool IsMatchCondition(const TaskTypeInfo &target_type_info, const TaskCfg &task_cfg, va_list args) const;
+	bool IsMatchCondition(const TaskTypeCfg &target_type_info, const TaskCfg &task_cfg, va_list args) const;
+
 };
-
-//注册Task,避免了用户操心动态分配
-template<class DeriveTask, class... Args>
-bool TaskMgr::RegTask(const TaskCfg &cfg, Args&&... args)
-{
-	TaskType t = (TaskType)cfg.task_type;
-	if ((uint32_t)t>=(uint32_t)TaskType::MAX_LEN)
-	{
-		L_ERROR("illegal task_type=%d", cfg.task_type);
-		return false;
-	}
-	VecTask &vec = m_all_task[(uint32_t)t];
-	for (BaseTask *task : vec)
-	{
-		if (cfg.id == task->GetCfg().id)
-		{
-			L_ERROR("repeated reg task.id=%d", cfg.id);
-			return false;
-		}
-	}
-
-	DeriveTask *p = new DeriveTask(cfg, std::forward<Args>(args)...);
-	vec.push_back(p);
-	return true;
-}
