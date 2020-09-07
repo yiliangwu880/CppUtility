@@ -145,55 +145,61 @@ GameTaskTypeMgr::GameTaskTypeMgr()
 
 TaskMgr::~TaskMgr()
 {
+	for (const VecTask &v : m_all_task)
+	{
+		for (BaseTask *task : v)
+		{
+			delete task;
+		}
+	}
 }
 
-bool TaskMgr::RegTask(BaseTask &task)
-{//注意：别调用 task 的虚函数
-	if (m_is_updateing)
-	{
-		L_ERROR("error call regTask during updateing");
-		return false;
-	}
-	const TaskCfg &cfg = task.GetCfg();
-	TaskType t = (TaskType)cfg.task_type;
-	if ((uint32_t)t >= (uint32_t)TaskType::MAX_LEN)
-	{
-		L_ERROR("illegal task_type=%d", cfg.task_type);
-		return false;
-	}
-	VecTask &vec = m_all_task[(uint32_t)t];
-	vec.push_back(&task);
-	return true;
-}
 
-bool TaskMgr::UnRegTask(BaseTask &task)
+
+bool TaskMgr::DestoryTask(uint64 id)
 {//注意：别调用 task 的虚函数
 	if (m_is_updateing)
 	{
 		L_ERROR("error call UnRegTask")
 		return false;
 	}
-	const TaskCfg &cfg = task.GetCfg();
-	if (cfg.task_type>=(uint32)TaskType::MAX_LEN)
+
+	for (VecTask &vec : m_all_task)
 	{
-		L_ERROR("unknow task_type %d", cfg.task_type);
-		return false;
-	}
-	VecTask &vec = m_all_task[cfg.task_type];
-	for (BaseTask *pTask : vec)
-	{
-		if (&task == pTask)
+		for (BaseTask *pTask : vec)
 		{
-			VecRemove(vec, pTask);
-			return true;
+			if ( id == (uint64)pTask)
+			{
+				VecRemove(vec, pTask);
+				delete pTask;
+				return true;
+			}
 		}
 	}
-	L_ERROR("UnRegTask fail, can't find BaseTask")
+	
+	//注销失败有时候是正常的，因为任务完成的时候就已经注销了。
 	return false;
 }
 
+const BaseTask * TaskMgr::Find(TaskType type, uint64 id)
+{
+	if ((size_t)type >= (size_t)TaskType::MAX_LEN)
+	{
+		L_ERROR("unknow task_type %lld", (size_t)type);
+		return nullptr;
+	}
+	const VecTask &vec = m_all_task[(size_t)type];
+	for (const BaseTask *pTask : vec)
+	{
+		if (id == (uint64)pTask)
+		{
+			return pTask;
+		}
+	}
+	return nullptr;
+}
 
-uint32 TaskMgr::GetRegTaskNum() const
+uint32 TaskMgr::GetTaskNum() const
 {
 	uint32 num = 0;
 	for (const auto &v : m_all_task)
@@ -254,6 +260,7 @@ bool TaskMgr::IsLogicOk(TaskParaOpt logic, int64 cur_num, int64 cfg_para) const
 
 void TaskMgr::Update(TaskType task_type, ...)
 {
+	//m_is_updateing 控制，保证了m_all_task 在Update中不会被别的地方 删除，增加元素
 	if (m_is_updateing)
 	{
 		L_ERROR("recurrive call");
@@ -319,6 +326,7 @@ void TaskMgr::Update(TaskType task_type, ...)
 	for (BaseTask * v : remove_task)
 	{
 		VecRemove(vec_task, v);
+		delete v;
 	}
 	m_is_updateing = false;
 }
@@ -326,7 +334,7 @@ void TaskMgr::Update(TaskType task_type, ...)
 bool TaskMgr::IsFinish(const TaskCfg &task_cfg, uint32 cur_num)
 {
 	const auto &ar = GameTaskTypeMgr::Obj().GetCfg();
-	if (task_cfg.task_type>= ar.size())
+	if (task_cfg.task_type >= ar.size())
 	{
 		L_ERROR("task type overflow %d", task_cfg.task_type);
 		return false;
@@ -357,27 +365,16 @@ bool TaskMgr::IsMatchCondition(const TaskTypeCfg &type_detail, const TaskCfg &ta
 
 
 
-BaseTask::BaseTask(const TaskCfg &cfg, shared_ptr<TaskMgr> pMgr, int64 num)
+BaseTask::BaseTask(const TaskCfg &cfg, int64 num)
 	:m_num(num)
-	, m_pMgr(pMgr)
 	, m_cfg(cfg)
 {
 
-	if (nullptr != m_pMgr)
-	{
-		m_pMgr->RegTask(*this); //注意里面不能调用BaseTask的虚函数
-	}
-	else
-	{
-		L_ERROR("null pMgr, init TaskMgr fail");
-	}
-	L_ERROR("create BaseTask");
+
+
 }
 
 BaseTask::~BaseTask()
 {
-	if (nullptr != m_pMgr)
-	{
-		m_pMgr->UnRegTask(*this); //注意里面不能调用BaseTask的虚函数
-	}
+
 }
