@@ -348,11 +348,9 @@ bool TaskMgr::IsFinish(const TaskCfg &task_cfg, uint32 cur_num)
 bool TaskMgr::IsMatchCondition(const TaskTypeCfg &type_detail, const TaskCfg &task_cfg, va_list args) const
 {
 	int idx = 0;
-	int last_idx = type_detail.vec_para_opt.size() - 1;
-	uint32 cfg_para = 0;
 	for (const auto &logic : type_detail.vec_para_opt)
 	{
-		cfg_para = GetCfgPara(task_cfg, idx);
+		uint32 cfg_para = GetCfgPara(task_cfg, idx);
 		uint32 para = va_arg(args, uint32);
 		if (!IsLogicOk(logic, para, cfg_para))
 		{
