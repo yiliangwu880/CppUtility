@@ -314,7 +314,6 @@ void TaskMgr::Update(TaskType task_type, ...)
 
 		if(IsFinish(task_cfg, base_task->GetNum()))
 		{
-			base_task->OnFinish();
 			remove_task.push_back(base_task);
 		}
 		else
@@ -323,12 +322,13 @@ void TaskMgr::Update(TaskType task_type, ...)
 		}
 	}
 
+	m_is_updateing = false;
 	for (BaseTask * v : remove_task)
 	{
+		v->OnFinish();
 		VecRemove(vec_task, v);
 		delete v;
 	}
-	m_is_updateing = false;
 }
 
 bool TaskMgr::IsFinish(const TaskCfg &task_cfg, uint32 cur_num)
