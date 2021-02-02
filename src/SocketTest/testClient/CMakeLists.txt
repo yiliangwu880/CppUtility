@@ -27,7 +27,7 @@ ADD_library(crypto SHARED IMPORTED)
 #设置依赖
 ADD_DEPENDENCIES(${PRJ_NAME} lib_prj)
 # 设置链接库
-target_link_libraries(${PRJ_NAME} lib_prj dl)
+target_link_libraries(${PRJ_NAME} lib_prj svr_util dl)
 
 #cotire设置gcc的预编译头相关			
 #set_target_properties(${PRJ_NAME} PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "stdafx.h")

@@ -1,7 +1,7 @@
 
 
 #include "delay_para.h"
-#include "../utility/misc.h"
+#include "misc.h"
 
 
 DelayParaMgr::DelayParaMgr()

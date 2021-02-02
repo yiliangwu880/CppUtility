@@ -9,6 +9,7 @@
 
 using namespace std;
 using namespace wyl;
+using namespace su;
 
 
 void testEpoll();
@@ -53,7 +54,7 @@ namespace
 		int fd = p->fd;
 		L_DEBUG("挂起 fd=%d", fd);
 		size_t ret = g_fd_map_socket.erase(fd);
-		L_COND_VOID(1 == ret, "g_fd_map_socket.erase error, fd=%d", fd);
+		L_COND_V(1 == ret, "g_fd_map_socket.erase error, fd=%d", fd);
 		::close(p->fd);
         p->fd = -1;
 	}
@@ -146,9 +147,9 @@ namespace
 	void MyHandler::loop()
 	{
 		//有缓存，输出到cout
-		FOR_IT(FdMapMySocket, g_fd_map_socket)
+		for(auto &v: g_fd_map_socket)
 		{
-			MyBuf &buf = it->second.recv_buf;
+			MyBuf &buf = v.second.recv_buf;
 			if (0 == buf.len())
 			{
 				continue;

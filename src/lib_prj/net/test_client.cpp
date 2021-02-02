@@ -31,7 +31,7 @@ void testClient()
 	int sock_stream;
 	L_DEBUG("2");
 	bool r = Socket::connect(sock_stream, addr);
-	L_COND_VOID(r, "连接失败，ip=%s,port=%d", ip, PORT);
+	L_COND_V(r, "连接失败，ip=%s,port=%d", ip, PORT);
 	MyBuf buf;
 
 	uint64 last_tm = 0;

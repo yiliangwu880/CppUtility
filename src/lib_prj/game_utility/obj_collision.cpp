@@ -3,9 +3,10 @@ brief:动态对象碰撞处理
 
 */
 #include <assert.h>
-#include "../utility/misc.h"
+#include "misc.h"
 #include "obj_collision.h"
-
+#define CONST_FOR_IT(type, ctn)\
+    for(type::const_iterator it=(ctn).begin(); it!=(ctn).end(); ++it)
 using namespace std;
 
 void GameColObj::regHandle( const ColKey2Handle &handles, ObjTypeID new_class_id, ObjTypeID base_id)

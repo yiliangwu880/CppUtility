@@ -13,7 +13,7 @@ INCLUDE(cotire)
 
 # include directories
 #INCLUDE_DIRECTORIES(system ../external/include/)
-INCLUDE_DIRECTORIES(system "${PROJECT_SOURCE_DIR}/../svr_util/include")
+INCLUDE_DIRECTORIES(system "${PROJECT_SOURCE_DIR}/../external/svr_util/include")
 INCLUDE_DIRECTORIES(system "${PROJECT_SOURCE_DIR}/lib_prj")
 INCLUDE_DIRECTORIES(after  ${PROJECT_SOURCE_DIR})
 
@@ -26,7 +26,7 @@ LINK_DIRECTORIES(
   ${PROJECT_BINARY_DIR}/lib
 
   #项目引用第三方库
-  ${PROJECT_SOURCE_DIR}/../svr_util/lib
+  ${PROJECT_SOURCE_DIR}/../external/svr_util/lib
 
   #系统目录
   /usr/local/lib

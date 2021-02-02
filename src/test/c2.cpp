@@ -18,7 +18,6 @@
 
 
 
-using namespace std;
-using namespace wyl;
+//using namespace std;
 //using namespace boost;
 //using namespace stdext;;

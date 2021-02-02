@@ -7,7 +7,7 @@
 	Version:        1.0
    ------------------------------------------------------------------------ */
 
-#include "../utility/misc.h"
+#include "misc.h"
 #include "random.h"
 
 //using namespace std;
@@ -97,7 +97,7 @@ const U16 PrimeRandom::PrimeNumbersTable[] = {
 	65519      ,
 	65521
 };
-const U16 PrimeRandom::PRIME_LEN = static_cast<U16>(wyl::ArrayLen(PrimeNumbersTable));
+const U16 PrimeRandom::PRIME_LEN = static_cast<U16>(su::ArrayLen(PrimeNumbersTable));
 const U16 PrimeRandom::MAX_PRIME = PrimeNumbersTable[PRIME_LEN-REMAIN_RANG];
 
 void PrimeRandom::RandomMode()

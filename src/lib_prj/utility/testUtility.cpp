@@ -285,26 +285,26 @@ namespace
 		char buf[100 + sizeof(CirMsgQueMem)]; //CirMsgQueMem::buf[101] ,实际可用 100
 		CirMsgQue::InitMemory(buf, sizeof(buf));
 		CirMsgQue que;
-		que.Init(buf, wyl::ArrayLen(buf));
+		que.Init(buf, su::ArrayLen(buf));
 		uint32 total_free_len = que.freeLen();
 		//uint32 head_len = sizeof(CirMsgQueMem)-1;
-		assert(total_free_len == wyl::ArrayLen(buf) - sizeof(CirMsgQueMem));
+		assert(total_free_len == su::ArrayLen(buf) - sizeof(CirMsgQueMem));
 
 		char in_data1[] = "123";
 		char in_data2[] = "4567";
 		char r[500] = {};
 		assert(que.Write(in_data1, 3));
-		assert(que.Read(r, wyl::ArrayLen(r)));
+		assert(que.Read(r, su::ArrayLen(r)));
 		r[3] = 0; assert(string(r) == "123");
 
 		assert(que.Write(in_data1, 3));
 		assert(que.Write(in_data2, 4));
-		assert(que.Read(r, wyl::ArrayLen(r)));
+		assert(que.Read(r, su::ArrayLen(r)));
 		r[3] = 0; assert(string(r) == "123");
-		assert(que.Read(r, wyl::ArrayLen(r)));
+		assert(que.Read(r, su::ArrayLen(r)));
 		r[4] = 0; assert(string(r) == "4567");
 
-		assert(false == que.Read(r, wyl::ArrayLen(r)));
+		assert(false == que.Read(r, su::ArrayLen(r)));
 
 		//测试写满的情况
 		assert(0 == que.len());
@@ -315,12 +315,12 @@ namespace
 		assert(false == que.Write(in_data1, 1));
 
 		//末尾分界点读写情况
-		assert(que.Read(r, wyl::ArrayLen(r)));
+		assert(que.Read(r, su::ArrayLen(r)));
 		assert(que.Write(in_data1, (total_free_len - sizeof(uint32)-2))); //full_len = msg_len+head_len  -- msg_len = full_len - len_size
 		assert(2 == que.freeLen());
 		assert(0 == que.CanWriteLen());
 		assert(false == que.Write(in_data1, 1));
-		assert(que.Read(r, wyl::ArrayLen(r)));
+		assert(que.Read(r, su::ArrayLen(r)));
 
 		assert(que.Write(in_data1, (total_free_len - sizeof(uint32)-5))); //full_len = msg_len+head_len  -- msg_len = full_len - len_size
 		assert(5 == que.freeLen());
@@ -328,21 +328,21 @@ namespace
 		assert(true == que.Write(in_data1, 1));
 		assert(0 == que.freeLen());
 		assert(0 == que.CanWriteLen());
-		assert(que.Read(r, wyl::ArrayLen(r)));
+		assert(que.Read(r, su::ArrayLen(r)));
 		assert(total_free_len - 5 == que.freeLen());
-		assert(que.Read(r, wyl::ArrayLen(r)));
+		assert(que.Read(r, su::ArrayLen(r)));
 		assert(total_free_len == que.freeLen());
 
-		CirMsgQue::InitMemory(buf, wyl::ArrayLen(buf));
+		CirMsgQue::InitMemory(buf, su::ArrayLen(buf));
 		assert(que.Write(in_data1, 6)); //随便数组前填10个。 msg_len = 10 - 4
 		assert(que.Write(in_data1, (que.freeLen() - sizeof(uint32)-2))); //full_len = msg_len+head_len  -- msg_len = full_len - len_size
 		assert(2 == que.freeLen());
-		assert(que.Read(r, wyl::ArrayLen(r)));
+		assert(que.Read(r, su::ArrayLen(r)));
 		assert(2+6+4 == que.freeLen());
 		//写分界点
 		assert(que.Write(in_data2, 4));
-		assert(que.Read(r, wyl::ArrayLen(r)));
-		assert(que.Read(r, wyl::ArrayLen(r)));
+		assert(que.Read(r, su::ArrayLen(r)));
+		assert(que.Read(r, su::ArrayLen(r)));
 		r[4] = 0; assert(string(r) == "4567");
 
 	}

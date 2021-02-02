@@ -2,11 +2,10 @@
 //
 
 #include "MoreThread/Thread.h"
-
+#include "unit_test.h"
  
 
 using namespace std;
-using namespace wyl;
 
 void testUtility();
  void testStaticReg();
@@ -41,29 +40,13 @@ void test_single_progresss();
 void test_delay_handler();
 void testDelayPara();
 
-namespace
-{
-	DefaultLog my_log("log.txt");
-}
- 
-void MyUnitTestPrintf(bool is_error, const char * file, int line, const char *fun, const char * pattern, va_list vp)
-{
-	if (is_error)
-	{
-		my_log.Printf(LL_ERROR, file, line, fun, pattern, vp);
-	} 
-	else
-	{
-		my_log.Printf(LL_DEBUG, file, line, fun, pattern, vp);
-	}
-}
 
 
 
 int main(int argc, char* argv[])
 {
 	L_DEBUG("start");
-	UnitTestMgr::Obj().Start(MyUnitTestPrintf);
+	UnitTestMgr::Obj().Start();
 	//testLogFile();
 	//return 0;
 }

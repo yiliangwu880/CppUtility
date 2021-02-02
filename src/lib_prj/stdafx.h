@@ -42,12 +42,12 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-#include "./utility/misc.h"
-#include "./utility/stlBoost.h"
+#include "misc.h"
+#include "easy_code.h"
+#include "stl_boost.h"
 #include "./Random/random.h"
 #include "./Random/randomName.h"
-#include "./utility/log_def.h"
-#include "./utility/log_def.h"
+#include "log_def.h"
 
 
 
@@ -61,6 +61,6 @@ void Info(T t)
 {
 	std::stringstream ss;
 	ss << t;
-	LogMgr::Obj().Printf(LL_INFO, __FILE__, __LINE__, __FUNCTION__, ss.str().c_str());
+	L_INFO("%s", ss.str().c_str());
 }
 

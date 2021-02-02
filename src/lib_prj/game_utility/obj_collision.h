@@ -122,7 +122,7 @@ private:\
 
 
 
-typedef const std::type_cfg *ObjTypeID; //NULL表示无基类
+typedef const std::type_info *ObjTypeID; //NULL表示无基类
 class GameColObj;
 typedef std::pair<ObjTypeID, ObjTypeID> ColKey;
 typedef void (*HandleCol)(GameColObj &left, GameColObj &right);
