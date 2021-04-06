@@ -23,10 +23,10 @@ namespace OCI
 {
 
 /**
-@name : ·­×ª¶ÓÁÐ
-@brief: ÔÚ¶àÏß³ÌÉú²úÕß-Ïû·ÑÕßÄ£Ê½ÖÐÉú²úÕßÏß³ÌÏò¶ÓÁÐÌí¼Ó¶ÔÏó£¬Ïû·ÑÕßÏß³Ì´Ó¶ÓÁÐÈ¡×ß¶ÔÏó
-        ÒòÎªÉæ¼°µ½¶àÏß³Ì·ÃÎÊ£¬Õâ¸ö¶ÓÁÐ±ØÐëÔÚÌí¼Ó/È¡×ß¶ÔÏóÊ±¼ÓËø¡£Õâ¸öÄ£°æÊµÏÖÕâÖÖ¶àÏß³Ì
-		°²È«µÄ¶ÓÁÐ£¬ÁíÍâÊ¹ÓÃÁ½¸ö¶ÓÁÐ·­×ªµÄ¼¼Êõ£¬¿ÉÒÔ¼«´óµÄ¼õÉÙËø»¥³âµÄ¼¸ÂÊ
+@name : ç¿»è½¬é˜Ÿåˆ—
+@brief: åœ¨å¤šçº¿ç¨‹ç”Ÿäº§è€…-æ¶ˆè´¹è€…æ¨¡å¼ä¸­ç”Ÿäº§è€…çº¿ç¨‹å‘é˜Ÿåˆ—æ·»åŠ å¯¹è±¡ï¼Œæ¶ˆè´¹è€…çº¿ç¨‹ä»Žé˜Ÿåˆ—å–èµ°å¯¹è±¡
+        å› ä¸ºæ¶‰åŠåˆ°å¤šçº¿ç¨‹è®¿é—®ï¼Œè¿™ä¸ªé˜Ÿåˆ—å¿…é¡»åœ¨æ·»åŠ /å–èµ°å¯¹è±¡æ—¶åŠ é”ã€‚è¿™ä¸ªæ¨¡ç‰ˆå®žçŽ°è¿™ç§å¤šçº¿ç¨‹
+		å®‰å…¨çš„é˜Ÿåˆ—ï¼Œå¦å¤–ä½¿ç”¨ä¸¤ä¸ªé˜Ÿåˆ—ç¿»è½¬çš„æŠ€æœ¯ï¼Œå¯ä»¥æžå¤§çš„å‡å°‘é”äº’æ–¥çš„å‡ çŽ‡
 */
 
 template<typename TObj, typename TLock>
@@ -59,7 +59,7 @@ protected:
 };
 
 /**
-*@note ½ö½öÒ»¸öÏß³ÌGet£¬¶à¸öÏß³ÌAddµÄ½»»»¶ÓÁÐ
+*@note ä»…ä»…ä¸€ä¸ªçº¿ç¨‹Getï¼Œå¤šä¸ªçº¿ç¨‹Addçš„äº¤æ¢é˜Ÿåˆ—
 */
 template<typename TObj, typename TLock>
 class CSwapList1 :
@@ -118,7 +118,7 @@ public:
 };
 
 /**
-*@note ¶à¸öÏß³ÌGet£¬¶à¸öÏß³ÌAddµÄ½»»»¶ÓÁÐ
+*@note å¤šä¸ªçº¿ç¨‹Getï¼Œå¤šä¸ªçº¿ç¨‹Addçš„äº¤æ¢é˜Ÿåˆ—
 */
 template<typename TObj, typename TLock>
 class CSwapList2 :
@@ -169,7 +169,7 @@ protected:
 };
 
 /**
-*@note ½ö½öÒ»¸öÏß³ÌGet£¬¶à¸öÏß³ÌAddµÄ½»»»¶ÓÁÐ,²¢ÇÒÌá¹©È¡¿Õback_listÔÙswapµÄ½Ó¿Ú
+*@note ä»…ä»…ä¸€ä¸ªçº¿ç¨‹Getï¼Œå¤šä¸ªçº¿ç¨‹Addçš„äº¤æ¢é˜Ÿåˆ—,å¹¶ä¸”æä¾›å–ç©ºback_listå†swapçš„æŽ¥å£
 */
 template<typename TObj, typename TLock>
 class CSwapList3 :
