@@ -20,9 +20,9 @@ project "CppUtility"
 
 
 	includedirs { 
-		--"../dep/hiredis",
+		"../external/svr_util/include/",
 	}
-	files	{ 
+    files	{
 		"../src/**.cpp",  --**递归所有子目录，指定目录可用 "cc/*.cpp" 或者  "cc/**.cpp"
 		"../src/**.cc",
 		"../src/**.h",
@@ -30,6 +30,7 @@ project "CppUtility"
 		"../src/**.cpps",  --显示用，不参加cmake编译
 		"../src/**.txt",
 		"../src/**.md",
+        "../external/svr_util/include/**.h",
 	}
 
 
