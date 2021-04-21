@@ -16,7 +16,7 @@ typedef std::map<std::string, std::string>  Str2Str;
 
 typedef std::vector<std::string>	VecStr;
 typedef std::vector<uint8>			VecUint8;
-typedef std::vector<uint16>			VecUint16;
+typedef std::vector<uint16_t>			VecUint16;
 typedef std::vector<int32>			VecInt32;
 typedef std::vector<int>			VecInt;
 typedef std::vector<uint32>			VecUint32;

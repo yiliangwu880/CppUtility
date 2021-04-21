@@ -1,216 +1,64 @@
-#ifndef __ASTAR_H__
-#define __ASTAR_H__
-
-#include <vector>
-#include <memory>
-#include <cstdint>
+/*
+author:yiliangwu880
+	you can get more refer from https ://github.com/yiliangwu880/CppUtility.git
+*/
+#pragma once
+#include <time.h>
+#include <sys/time.h>
 #include <functional>
+#include <queue>
 
-class BlockAllocator;
-
-class AStar
+namespace PathFind
 {
-public:
-    /**
-     * 二维向量
-     */
-    struct Vec2
-    {
-        uint16_t x;
-        uint16_t y;
 
-        Vec2() : x(0) , y(0)
-        {
-        }
+	static const uint32_t DEFAULT_MAX_RADIUS = 40;//@brief 默认寻路半径
+	static const uint32_t MAX_FIND_NODE_NUM = DEFAULT_MAX_RADIUS * 2 * DEFAULT_MAX_RADIUS * 2;//最大查找节点
 
-        Vec2(uint16_t x1, uint16_t y1) : x(x1), y(y1)
-        {
-        }
+	struct Pos
+	{
+		uint16_t x;
+		uint16_t y;
 
-        void reset(uint16_t x1, uint16_t y1)
-        {
-            x = x1;
-            y = y1;
-        }
+	public:
+		Pos(uint16_t ix, uint16_t iy)
+			:x(ix)
+			, y(iy)
+		{};
+		bool operator==(const Pos& pos) const {
+			return x == pos.x && y == pos.y;
+		};
+	};
+	//return true表示可以从 beforePos 走到 pos，
+	using IsBlockFun = std::function<bool(const Pos &beforePos, const Pos &pos)>;
 
-        int distance(const Vec2 &other) const
-        {
-            return abs(other.x - x) + abs(other.y - y);
-        }
+	class AStar
+	{
+	public:
+		enum FindResult
+		{
+			None,
+			SUCCESS,
+			UNREACHABLE,
+			TOO_FAR,
+			TOO_MUCH_NODE,
+		};
 
-        bool operator== (const Vec2 &other) const
-        {
-            return x == other.x && y == other.y;
-        }
-    };
+	private:
+		uint32_t m_max_radius = DEFAULT_MAX_RADIUS;
+		FindResult m_result = None;
 
-    typedef std::function<bool(const Vec2&)> Callback;
+	public:
+		static AStar &Ins()
+		{
+			static AStar ins;
+			return ins;
+		}
+		bool FindPath(const Pos &fromPos, const Pos &toPos, std::vector<Pos> &m_path, IsBlockFun m_blockFun);
+		void SetMaxRadius(uint32_t max_radius) { m_max_radius = max_radius; };
+		FindResult LastResult() { return m_result; }
+	private:
+		AStar() {};
+	};
 
-    /**
-     * 搜索参数
-     */
-    struct Params
-    {
-        bool        corner;     // 允许拐角
-        uint16_t    height;     // 地图高度
-        uint16_t    width;      // 地图宽度
-        Vec2        start;      // 起点坐标
-        Vec2        end;        // 终点坐标
-        Callback    can_pass;   // 是否可通过
+}
 
-        Params() : height(0), width(0), corner(false)
-        {
-        }
-    };
-
-private:
-    /**
-     * 路径节点状态
-     */
-    enum NodeState
-    {
-        NOTEXIST,               // 不存在
-        IN_OPENLIST,            // 在开启列表
-        IN_CLOSEDLIST           // 在关闭列表
-    };
-
-    /**
-     * 路径节点
-     */
-    struct Node
-    {
-        uint16_t    g;          // 与起点距离
-        uint16_t    h;          // 与终点距离
-        Vec2        pos;        // 节点位置
-        NodeState   state;      // 节点状态
-        Node*       parent;     // 父节点
-
-        /**
-         * 计算f值
-         */
-        int f() const
-        {
-            return g + h;
-        }
-
-        inline Node(const Vec2 &pos)
-            : g(0), h(0), pos(pos), parent(nullptr), state(NOTEXIST)
-        {
-        }
-    };
-
-public:
-    AStar(BlockAllocator *allocator);
-
-    ~AStar();
-
-public:
-    /**
-     * 获取直行估值
-     */
-    int get_step_value() const;
-
-    /**
-     * 获取拐角估值
-     */
-    int get_oblique_value() const;
-
-    /**
-     * 设置直行估值
-     */
-    void set_step_value(int value);
-
-    /**
-     * 获取拐角估值
-     */
-    void set_oblique_value(int value);
-
-    /**
-     * 执行寻路操作
-     */
-    std::vector<Vec2> find(const Params &param);
-
-private:
-    /**
-     * 清理参数
-     */
-    void clear();
-
-    /**
-     * 初始化参数
-     */
-    void init(const Params &param);
-
-    /**
-     * 参数是否有效
-     */
-    bool is_vlid_params(const Params &param);
-
-private:
-    /**
-     * 二叉堆上滤
-     */
-    void percolate_up(size_t hole);
-
-    /**
-     * 获取节点索引
-     */
-    bool get_node_index(Node *node, size_t *index);
-
-    /**
-     * 计算G值
-     */
-    uint16_t calcul_g_value(Node *parent, const Vec2 &current);
-
-    /**
-     * 计算F值
-     */
-    uint16_t calcul_h_value(const Vec2 &current, const Vec2 &end);
-
-    /**
-     * 节点是否存在于开启列表
-     */
-    bool in_open_list(const Vec2 &pos, Node *&out_node);
-
-    /**
-     * 节点是否存在于关闭列表
-     */
-    bool in_closed_list(const Vec2 &pos);
-
-    /**
-     * 是否可通过
-     */
-    bool can_pass(const Vec2 &pos);
-
-    /**
-     * 当前点是否可到达目标点
-     */
-    bool can_pass(const Vec2 &current, const Vec2 &destination, bool allow_corner);
-
-    /**
-     * 查找附近可通过的节点
-     */
-    void find_can_pass_nodes(const Vec2 &current, bool allow_corner, std::vector<Vec2> *out_lists);
-
-    /**
-     * 处理找到节点的情况
-     */
-    void handle_found_node(Node *current, Node *destination);
-
-    /**
-     * 处理未找到节点的情况
-     */
-    void handle_not_found_node(Node *current, Node *destination, const Vec2 &end);
-
-private:
-    int                     step_val_;
-    int                     oblique_val_;
-    std::vector<Node*>      mapping_;
-    uint16_t                height_;
-    uint16_t                width_;
-    Callback                can_pass_;
-    std::vector<Node*>      open_list_;
-    BlockAllocator*         allocator_;
-};
-
-#endif

@@ -4,7 +4,6 @@ brief: use example and test code
 #include "stdafx.h"
 #include "../lib_prj/game_utility/game_task.h"
 
-
 using namespace std;
 
 

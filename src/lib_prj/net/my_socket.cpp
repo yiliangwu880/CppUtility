@@ -88,7 +88,7 @@ bool SockListen::init( const SockAddr &my_addr, int type /*= SOCK_STREAM */ )
     return true;
 }
 
-bool SockListen::init( const char *ip, uint16 port )
+bool SockListen::init( const char *ip, uint16_t port )
 {
     if (NULL == ip)
     {

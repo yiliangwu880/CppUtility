@@ -16,7 +16,7 @@ void testClient();
 namespace
 {	
 	const char *ip ="127.0.0.1";
-	const uint16 PORT = 5551;
+	const uint16_t PORT = 5551;
 	
 	typedef CircleBuf<uint8, 5000> MyBuf;
 

@@ -21,7 +21,7 @@ public:
         sin_port = 0;
         memset((void*)sin_zero, 0, sizeof(sin_zero));
     }
-    SockAddr(const char *ip, uint16 port)
+    SockAddr(const char *ip, uint16_t port)
     {
         sin_family = AF_INET;
         sin_addr.s_addr = inet_addr(ip);
@@ -54,7 +54,7 @@ public:
         }
     }
 
-    inline uint16 port(){return sin_port;}
+    inline uint16_t port(){return sin_port;}
 
 
 
@@ -110,7 +110,7 @@ public:
 		close(m_fd);
 	}
 
-    bool init(const char *ip, uint16 port);
+    bool init(const char *ip, uint16_t port);
 	bool init(const SockAddr &my_addr, int type = SOCK_STREAM );
 	
 	//失败返回-1, 成功返回新的file script

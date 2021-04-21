@@ -37,7 +37,7 @@ namespace
 	
 
 	//const char *ip ="192.168.1.166";
-	const uint16 PORT = 5551;
+	const uint16_t PORT = 5551;
 	SockListen g_listen;
 	MyEpollBase g_epoll;
 	FdMapMySocket g_fd_map_socket;
