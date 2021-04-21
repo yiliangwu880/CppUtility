@@ -61,7 +61,7 @@ private:
 	std::array<TaskTypeCfg, (uint32_t)TaskType::MAX_LEN> m_cfg;
 
 public:
-	static const GameTaskTypeMgr &Obj()
+	static const GameTaskTypeMgr &Ins()
 	{
 		static GameTaskTypeMgr d;
 		return d;
@@ -272,13 +272,13 @@ void TaskMgr::Update(TaskType task_type, ...)
 	va_start(args, task_type);
 	va_start(forward_args, task_type);
 
-	if ((uint32_t)task_type >= m_all_task.size() || (uint32_t)task_type >= GameTaskTypeMgr::Obj().GetCfg().size())
+	if ((uint32_t)task_type >= m_all_task.size() || (uint32_t)task_type >= GameTaskTypeMgr::Ins().GetCfg().size())
 	{
 		m_is_updateing = false;
 		return;
 	}
 	VecTask &vec_task = m_all_task[(uint32_t)task_type];
-	const TaskTypeCfg &type_cfg = GameTaskTypeMgr::Obj().GetCfg()[(uint32_t)task_type];
+	const TaskTypeCfg &type_cfg = GameTaskTypeMgr::Ins().GetCfg()[(uint32_t)task_type];
 
 
 	uint32 para_num = type_cfg.vec_para_opt.size();
@@ -333,7 +333,7 @@ void TaskMgr::Update(TaskType task_type, ...)
 
 bool TaskMgr::IsFinish(const TaskCfg &task_cfg, uint32 cur_num)
 {
-	const auto &ar = GameTaskTypeMgr::Obj().GetCfg();
+	const auto &ar = GameTaskTypeMgr::Ins().GetCfg();
 	if (task_cfg.task_type >= ar.size())
 	{
 		L_ERROR("task type overflow %d", task_cfg.task_type);

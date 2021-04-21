@@ -46,7 +46,7 @@ void testDelayPara();
 int main(int argc, char* argv[])
 {
 	L_DEBUG("start");
-	UnitTestMgr::Obj().Start();
+	UnitTestMgr::Ins().Start();
 	//testLogFile();
 	//return 0;
 }

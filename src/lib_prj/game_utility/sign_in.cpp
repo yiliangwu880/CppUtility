@@ -41,7 +41,7 @@ bool WeekSignIn::signIn()
 		m_last_week = week;
 	}
 
-	const tm &tm_d = SysTime::Obj().CurTm();
+	const tm &tm_d = SysTime::Ins().CurTm();
 	m_vec_bool[tm_d.tm_wday] = true;
 	++m_sign_cnt;
 	return true;
@@ -49,9 +49,9 @@ bool WeekSignIn::signIn()
 
 void MonthSignIn::Reset()
 {	
-	SysTime::Obj().Refresh();
+	SysTime::Ins().Refresh();
 	m_vec_bool.clear();
-	m_vec_bool.resize(su::SysTime::Obj().GetDaysInMonth());
+	m_vec_bool.resize(su::SysTime::Ins().GetDaysInMonth());
 	m_sign_cnt=0;
 }
 
@@ -65,14 +65,14 @@ bool MonthSignIn::signIn()
 	}
 	m_last_day = cur;
 
-	int cur_mon = SysTime::Obj().GetMonthPeriodCnt();
+	int cur_mon = SysTime::Ins().GetMonthPeriodCnt();
 	if (m_last_mon != cur_mon)
 	{
 		m_last_mon = cur_mon;
 		Reset();
 	}
 
-	const tm &tm_d = SysTime::Obj().CurTm();
+	const tm &tm_d = SysTime::Ins().CurTm();
 	m_vec_bool[tm_d.tm_mday-1]= true;
 	++m_sign_cnt;
 	return true;
