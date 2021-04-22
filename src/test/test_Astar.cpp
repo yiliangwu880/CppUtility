@@ -4,7 +4,7 @@ brief: use example and test code
 #include <functional>
 #include <limits>
 #include <queue>
-#include "../lib_prj/game_utility/Astar/astar.h"
+#include "../lib_prj/game_utility/PathFind/astar.h"
 
 using namespace std;
 using namespace PathFind;

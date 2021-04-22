@@ -1,6 +1,7 @@
 #include "astar.h"
 #include "memory.h"
 #include <unordered_map>
+#include <utility>
 
 using namespace PathFind;
 struct Node
@@ -31,7 +32,6 @@ struct Node
 	}
 };
 
-using NodePoint = Node *;
 class NodeCmp
 {
 	bool reverse = false;
@@ -40,6 +40,7 @@ public:
 	{
 		reverse = revparam;
 	}
+	using NodePoint = Node *;
 	bool operator()(const NodePoint &lhs, const NodePoint &rhs) const
 	{
 		if (reverse) return (*rhs < *lhs);
@@ -51,7 +52,7 @@ class NodeMap
 {
 	Pos m_src;
 	int32_t m_radius = DEFAULT_MAX_RADIUS;
-	std::unordered_map<uint32_t, Node *> m_NodeMap;
+	std::unordered_map<uint32_t, Node> m_NodeMap;
 public:
 	NodeMap(const Pos &src, uint32_t radius)
 		:m_src(src)
@@ -59,10 +60,6 @@ public:
 	{}
 	~NodeMap()
 	{
-		for (auto &v : m_NodeMap)
-		{
-			delete (v.second);
-		}
 		m_NodeMap.clear();
 	}
 	inline Node* Get(const Pos &pos) {
@@ -92,13 +89,12 @@ Node* NodeMap::Get(uint32_t x, uint32_t y)
 	auto it = m_NodeMap.find(idx);
 	if (it != m_NodeMap.end())
 	{
-		return it->second;
+		return &(it->second);
 	}
 	else
 	{
-		Node *p = new Node(Pos((uint16_t)x, (uint16_t)y));
-		m_NodeMap[idx] = p;
-		return p;
+		auto pair = m_NodeMap.emplace(std::make_pair(idx, Node(Pos((uint16_t)x, (uint16_t)y))));
+		return &(pair.first->second);//链式哈希表，每个数据存储占据一个节点，所以增删操作，不会迭代器失效）
 	}
 }
 
