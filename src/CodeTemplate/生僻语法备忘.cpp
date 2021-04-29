@@ -93,6 +93,15 @@
 	template<class T>
 	struct C<T, false>{};
 
+	template<typename T>
+	inline T auto_hton(T t) //必须加inline 或者 static , extern,不让编译会重定义
+	{//不返回，不让它使用
+	}
+	template<>
+	inline uint16_t auto_hton(uint16_t t)
+	{
+		return htons(t);
+	}
 
 )前后置++ --重载运算符
 	T &operator++() //prefix
