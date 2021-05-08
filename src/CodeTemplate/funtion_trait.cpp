@@ -22,6 +22,10 @@ namespace
 		typename std::function<Fun>::first_argument_type t2 = 231; //ok
 		typename std::function<Fun>::second_argument_type t1 = 231; //ok
 		typename std::function<Fun>::result_type *p = nullptr;
+		//转换指针参数，很多机会用到
+		//typedef typename std::function<Fun>::first_argument_type P1type;
+		//typedef typename std::remove_reference<P1type>::type Type1;
+		//typedef typename std::remove_const<Type1>::type Type;
 
 		UNIT_INFO("t2 %d %d", t2, sizeof(t2))
 			UNIT_INFO("para3");
