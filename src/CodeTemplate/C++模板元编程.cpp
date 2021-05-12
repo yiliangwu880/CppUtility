@@ -32,9 +32,9 @@ void ft(T t)
 template<class T>
 struct HaveFun
 {
-	template <typename C> static char test(decltype(&C::f)); // C++ 11, 只能推导C为类(非基本类型)，不能推导含有成员f
+	template <typename AttrsCal> static char test(decltype(&AttrsCal::f)); // C++ 11, 只能推导C为类(非基本类型)，不能推导含有成员f
 	//template <typename C> static char test( void (C::*)() ){ return 0; }; //c+=98
-	template <typename C>static int32_t test(...);
+	template <typename AttrsCal>static int32_t test(...);
 	static const bool value = (sizeof(test<T>(0)) == 1); //编译时刻，根据T能推导出值.
 };
 

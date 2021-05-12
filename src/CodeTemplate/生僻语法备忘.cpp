@@ -89,9 +89,9 @@
 	struct C1<char>{};
 	部分参数特列化
 	template<class T, bool c = true>
-	struct C{};
+	struct AttrsCal{};
 	template<class T>
-	struct C<T, false>{};
+	struct AttrsCal<T, false>{};
 
 	template<typename T>
 	inline T auto_hton(T t) //必须加inline 或者 static , extern,不让编译会重定义
