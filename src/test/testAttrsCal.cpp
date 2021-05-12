@@ -4,7 +4,7 @@
 using namespace std;
 using namespace su;
 
-#if 0
+
 
 void noMul()
 {
@@ -12,13 +12,13 @@ void noMul()
 	//total = RIDE + S12
 
 	Sums sums;
-	sums[SubSys::S1] = make_shared<AttrsCal>(Attrs{ {Attr::pAt,2} });
-	sums[SubSys::S2] = make_shared<AttrsCal>(Attrs{ {Attr::pAt,8} });
-	auto s12 = make_shared<AttrsCal>(sums);
+	sums[SubSys::S1] = AttrsCal(Attrs{ {Attr::pAt,2}});
+	sums[SubSys::S2] = AttrsCal(Attrs{ {Attr::pAt,8} });
+	auto s12 = AttrsCal(sums);
 
 
 	Sums sums_total;
-	sums_total[SubSys::RIDE] = make_shared<AttrsCal>(Attrs{ {Attr::pAtPer,2} });
+	sums_total[SubSys::RIDE] = AttrsCal(Attrs{ {Attr::pAtPer,2} });
 	sums_total[SubSys::S12] = s12;
 	AttrsCal total(sums_total);
 	UNIT_INFO("%d", total.GetAttr(Attr::pAt));
@@ -109,9 +109,9 @@ void noMul2()
 	//total = RIDE + S1+S2
 
 	Sums sums;
-	sums[SubSys::S1] = make_shared<AttrsCal>(Attrs{ {Attr::pAt,2} });
-	sums[SubSys::S2] = make_shared<AttrsCal>(Attrs{ {Attr::pAt,8} });
-	sums[SubSys::RIDE] = make_shared<AttrsCal>(Attrs{ {Attr::pAtPer,2}, {Attr::pAt,0} });
+	sums[SubSys::S1] = AttrsCal(Attrs{ {Attr::pAt,2} });
+	sums[SubSys::S2] = AttrsCal(Attrs{ {Attr::pAt,8} });
+	sums[SubSys::RIDE] = AttrsCal(Attrs{ {Attr::pAtPer,2}, {Attr::pAt,0} });
 	AttrsCal total(sums);
 	UNIT_ASSERT(total.GetAttr(Attr::pAt) == 10);
 	UNIT_ASSERT(total.GetAttr(Attr::pAtPer) == 2);
@@ -195,13 +195,13 @@ void Mul()
 	//total = RIDE + S12*0.5
 
 	Sums sums;
-	sums[SubSys::S1] = make_shared<AttrsCal>(Attrs{ {Attr::pAt,2 * 2} });
-	sums[SubSys::S2] = make_shared<AttrsCal>(Attrs{ {Attr::pAt,8 * 2 } });
-	auto s12 = make_shared<AttrsCal>(sums, 0.5);
+	sums[SubSys::S1] = AttrsCal(Attrs{ {Attr::pAt,2 * 2} });
+	sums[SubSys::S2] = AttrsCal(Attrs{ {Attr::pAt,8 * 2 } });
+	auto s12 = AttrsCal(sums, 0.5);
 
 
 	Sums sums_total;
-	sums_total[SubSys::RIDE] = make_shared<AttrsCal>(Attrs{ {Attr::pAtPer,2 } });
+	sums_total[SubSys::RIDE] = AttrsCal(Attrs{ {Attr::pAtPer,2 } });
 	sums_total[SubSys::S12] = s12;
 	AttrsCal total(sums_total);
 	UNIT_ASSERT(total.GetAttr(Attr::pAt) == 10);
@@ -280,10 +280,11 @@ UNITTEST(Mul)
 
 UNITTEST(testAttrCal_memory)
 {
+	return;
 	for (;  ; )
 	{
 		Mul();
 	}
 
 }
-#endif
+
