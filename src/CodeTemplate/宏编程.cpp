@@ -1,4 +1,11 @@
 
+
+//字符显示 宏展开后 的效果
+#define TO_STRING( x ) TO_STRING1( x )  //宏参数会首先被全部展开, 如果宏里对宏参数使用了#或##，那么宏参数不会被展开. 所以这里需要 TO_STRING1
+#define TO_STRING1( x ) #x
+const char *str = TO_STRING(PARAM(ADDPARAM(1)));  //输出PARAM展开后的样子
+
+//宏 多态
 //用整型映射函数
 //////////////////////////////////////////////////////////////////////////
 #define BASE_A \
