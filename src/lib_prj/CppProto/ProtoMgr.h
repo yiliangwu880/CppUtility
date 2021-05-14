@@ -5,6 +5,27 @@ author:yiliangwu880
 C++结构体作为协议，提供给C++进程间通讯。
 源码的方式提供复用，需要根据项目小量修改
 
+使用例子：
+
+//发送消息
+	string strMsg;
+	//构建消息，发送
+	insert_cs msg;
+	....给msg 赋值
+	strMsg = PackToString(msg);
+
+//接收进程注册消息处理
+	static void insert_csHanlder(ConClass &con, const insert_cs &msg_)
+	{
+		UNIT_INFO("mem_insert_cs");
+	}
+	ProtoMgr::Ins().RegMsgHandler(insert_csHanlder);
+
+//接收消息
+	ConClass con;
+	ProtoMgr::Ins().Dispatch(con, strMsg.c_str(), strMsg.length());
+
+
 */
 
 
