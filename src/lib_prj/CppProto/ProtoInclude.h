@@ -6,7 +6,7 @@
 	PROTO_ALL_PROTO1\
 	PROTO_ALL_PROTO2\
 
-#include "StructPack.h"
+#include "ProtoPack.h"
 
 
 
