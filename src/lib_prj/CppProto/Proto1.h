@@ -9,7 +9,7 @@
 namespace proto {
 
 	//先定义参数信息，以后再具体实现, 域的顺序 和 遗漏，都会初始化的时候检查出来
-#define DB_ALL_STRUCT_INFO \
+#define PROTO_ALL_PROTO1 \
 	DB_CLASS_NAME(Ride)\
 	DB_FIELD(ids)\
 	DB_FIELD(s)\
@@ -35,6 +35,7 @@ namespace proto {
 	DB_FIELD(id)\
 	DB_FIELD(ids)\
 	DB_CLASS_END\
+
 
 
 	struct Data

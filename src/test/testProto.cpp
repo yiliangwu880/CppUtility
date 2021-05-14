@@ -1,7 +1,5 @@
 
 #include "../lib_prj/CppProto/ProtoMgr.h"
-#include "../lib_prj/CppProto/Proto1.h"
-#include "../lib_prj/CppProto/StructPack.h"
 #include <unordered_map>
 
 using namespace std;
@@ -11,6 +9,18 @@ using namespace proto;
 
 namespace
 {
+
+
+	//示范用，实际项目可以用更高效的方法，避免内存复制
+	template<class MsgType>
+	std::string PackToString(const MsgType &msg)
+	{
+		char ar[1024];
+		size_t len = 1024;
+		char *p = ar;
+		UNIT_ASSERT(proto::Pack(msg, p, len));
+		return std::string(ar, 1024 - len);
+	}
 
 	class HandleMsg
 	{
@@ -79,7 +89,7 @@ UNITTEST(testProto)
 		msg.vecData.push_back(Data{ 1,vector<uint32_t>{2,3} });
 		msg.mapData[2] = Data{ 2,vector<uint32_t>{2,3} };
 		msg.mapData[3] = Data{ 3,vector<uint32_t>{22,33} };
-		strMsg = ProtoMgr::Ins().Pack(msg);
+		strMsg = PackToString(msg);
 	}
 	//模拟接收网络字节流，处理消息
 	{
@@ -91,9 +101,18 @@ UNITTEST(testProto)
 		proto::insert_sc msg;
 		msg.ret = true;
 		msg.a = 6;
-		strMsg = ProtoMgr::Ins().Pack(msg);
+		strMsg = PackToString(msg);
 
 		ConClass con;
+		ProtoMgr::Ins().Dispatch(con, strMsg.c_str(), strMsg.length());
+	}
+	{
+		proto::test2_sc msg;
+		msg.ret = true;
+		strMsg = PackToString(msg);
+
+		ConClass con;
+		UNIT_INFO("NEXT LINE ERROR IS OK");
 		ProtoMgr::Ins().Dispatch(con, strMsg.c_str(), strMsg.length());
 	}
 }
@@ -123,7 +142,7 @@ UNITTEST(testProtoMemLeak)
 			msg.ride.m[1] = 2;
 			msg.ride.m[11] = 22;
 
-			strMsg = ProtoMgr::Ins().Pack(msg);
+			strMsg = PackToString(msg);
 		}
 		//模拟接收网络字节流，处理消息
 		{

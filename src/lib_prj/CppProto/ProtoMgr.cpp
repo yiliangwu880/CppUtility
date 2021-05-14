@@ -1,6 +1,5 @@
 
-#include "Proto1.h"
-#include "StructPack.h"
+
 #include "ProtoMgr.h"
 
 namespace proto

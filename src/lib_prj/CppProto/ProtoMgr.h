@@ -11,8 +11,7 @@ C++结构体作为协议，提供给C++进程间通讯。
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include "Proto1.h"
-#include "StructPack.h"
+#include "ProtoInclude.h"
 
 namespace proto
 {
@@ -48,16 +47,6 @@ namespace proto
 
 		void Dispatch(ConClass &con, const char *msg, size_t len);
 
-		//示范用，实际项目可以用更高效的方法，避免内存复制
-		template<class MsgType>
-		std::string Pack(const MsgType &msg)
-		{
-			char ar[1024];
-			size_t len = 1024;
-			char *p = ar;
-			proto::Pack(msg, p, len);
-			return std::string(ar, 1024 - len);
-		}
 	private:
 		void Check();//检查宏定义是否正确。
 	};

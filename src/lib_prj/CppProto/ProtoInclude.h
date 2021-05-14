@@ -2,11 +2,14 @@
 #include "Proto1.h"
 #include "Proto2.h"
 
-#if 0
-
-#define DB_ALL_STRUCT_INFO2\
+#define DB_ALL_STRUCT_INFO\
 	PROTO_ALL_PROTO1\
 	PROTO_ALL_PROTO2\
 
+#include "StructPack.h"
 
-#endif
+
+
+
+
+
