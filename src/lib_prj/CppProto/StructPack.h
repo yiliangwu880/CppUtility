@@ -1,7 +1,6 @@
-
 #pragma once
-
 #include "log_def.h"
+
 namespace proto
 {
 	using PointChar = char*;
@@ -48,16 +47,15 @@ namespace proto
 	}\
 
 	EASY_CODE(bool)
-		EASY_CODE(int32_t)
-		EASY_CODE(uint32_t)
-		EASY_CODE(int64_t)
-		EASY_CODE(uint64_t)
-		EASY_CODE(double)
-		EASY_CODE(int16_t)
-		EASY_CODE(uint16_t)
-		EASY_CODE(int8_t)
-		EASY_CODE(uint8_t)
-
+	EASY_CODE(int32_t)
+	EASY_CODE(uint32_t)
+	EASY_CODE(int64_t)
+	EASY_CODE(uint64_t)
+	EASY_CODE(double)
+	EASY_CODE(int16_t)
+	EASY_CODE(uint16_t)
+	EASY_CODE(int8_t)
+	EASY_CODE(uint8_t)
 #undef  EASY_CODE
 
 #define EASY_CODE(T)\
@@ -77,7 +75,6 @@ namespace proto
 		EASY_CODE(int64_t)
 		EASY_CODE(uint64_t)
 		EASY_CODE(double)
-
 		EASY_CODE(int16_t)
 		EASY_CODE(uint16_t)
 		EASY_CODE(int8_t)
@@ -88,7 +85,7 @@ namespace proto
 	inline bool Pack<std::string>(const std::string &v, PointChar &cur, size_t &len)
 	{
 		uint32_t strLen = v.length();
-		L_COND(Pack(strLen, cur, len),false);
+		L_COND(Pack(strLen, cur, len), false);
 		L_COND(len >= v.length(), false);
 		memcpy(cur, v.c_str(), v.length());
 		cur += v.length();
@@ -156,7 +153,7 @@ namespace proto
 			typename Map::mapped_type value;
 			L_COND(Unpack(k, cur, len), false);
 			L_COND(Unpack(value, cur, len), false);
-			v.insert(std::make_pair(k,value));
+			v.insert(std::make_pair(k, value));
 		}
 		return true;
 	}
@@ -176,7 +173,7 @@ namespace proto
 		return UnpackVector(v, cur, len);\
 	}\
 
-		EASY_CODE(int32_t)
+	EASY_CODE(int32_t)
 		EASY_CODE(uint32_t)
 		EASY_CODE(int64_t)
 		EASY_CODE(uint64_t)
@@ -186,7 +183,7 @@ namespace proto
 		EASY_CODE(int8_t)
 		EASY_CODE(uint8_t)
 
-			//任意vector<struct>
+		//任意vector<struct>
 #define DB_CLASS_NAME(className) EASY_CODE(className)
 #define DB_FIELD(fieldName)
 #define DB_CLASS_END
@@ -199,8 +196,8 @@ namespace proto
 
 #undef  EASY_CODE
 
-///////////////////////unordered_map////////////////////////////
-			//定义所有unordered_map<xx>
+		///////////////////////unordered_map////////////////////////////
+					//定义所有unordered_map<xx>
 #define EASY_CODE(K,T)\
 	template<>\
 	inline bool Pack<std::unordered_map<K,T>>(const std::unordered_map<K,T> &v, PointChar &cur, size_t &len)\
@@ -214,15 +211,15 @@ namespace proto
 	}\
 
 			//实际情况少量使用，需要再扩展
-			EASY_CODE(uint32_t, uint32_t)
-			EASY_CODE(uint32_t, uint64_t)
-			EASY_CODE(uint64_t, uint64_t)
+		EASY_CODE(uint32_t, uint32_t)
+		EASY_CODE(uint32_t, uint64_t)
+		EASY_CODE(uint64_t, uint64_t)
 
 #define DB_CLASS_NAME(className) EASY_CODE(uint64_t, className)
 #define DB_FIELD(fieldName)
 #define DB_CLASS_END
 
-			DB_ALL_STRUCT_INFO
+		DB_ALL_STRUCT_INFO
 
 #undef  DB_CLASS_NAME
 #undef  DB_FIELD
@@ -232,7 +229,7 @@ namespace proto
 #define DB_FIELD(fieldName)
 #define DB_CLASS_END
 
-			DB_ALL_STRUCT_INFO
+		DB_ALL_STRUCT_INFO
 
 #undef  DB_CLASS_NAME
 #undef  DB_FIELD
@@ -240,7 +237,7 @@ namespace proto
 
 #undef  EASY_CODE
 
-///////////////////////自定义结构体////////////////////////////
+		///////////////////////自定义结构体////////////////////////////
 
 #define DB_CLASS_NAME(className)\
 	template<>\
@@ -254,7 +251,7 @@ namespace proto
 		return true;\
 	}\
 
-	DB_ALL_STRUCT_INFO
+		DB_ALL_STRUCT_INFO
 
 #undef  DB_CLASS_NAME
 #undef  DB_FIELD
@@ -282,8 +279,8 @@ namespace proto
 
 
 
-///////////////////////分配 释放 函数////////////////////////////
-	template<class T>
+	///////////////////////分配 释放 函数////////////////////////////
+		template<class T>
 	inline char * CreateFun()
 	{
 		L_ERROR("CreateFun unknow. type name = %s", typeid(T).name());
@@ -305,7 +302,7 @@ namespace proto
 #define DB_FIELD(fieldName)
 #define DB_CLASS_END
 
-DB_ALL_STRUCT_INFO
+	DB_ALL_STRUCT_INFO
 
 #undef  DB_CLASS_NAME
 #undef  DB_FIELD

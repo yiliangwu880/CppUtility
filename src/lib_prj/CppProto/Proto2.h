@@ -13,12 +13,14 @@ namespace proto {
 	DB_CLASS_NAME(test2_sc)\
 	DB_FIELD(id)\
 	DB_FIELD(ret)\
+	DB_FIELD(any)\
 	DB_CLASS_END\
 
 	struct test2_sc
 	{
 		const uint16_t id = 101;
 		bool ret;
+		std::string any; //表达任意 proto定义的结构体，用来表达 动态变量，或者叫 联合体
 	};
 
 

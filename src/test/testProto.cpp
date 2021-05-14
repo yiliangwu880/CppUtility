@@ -115,6 +115,30 @@ UNITTEST(testProto)
 		UNIT_INFO("NEXT LINE ERROR IS OK");
 		ProtoMgr::Ins().Dispatch(con, strMsg.c_str(), strMsg.length());
 	}
+
+	{//测试 动态变量，或者叫 联合体
+		proto::test2_sc msg;
+		msg.ret = false;
+		proto::Data data{ 11,vector<uint32_t>{10,11} };
+		
+		msg.any = PackToString(data);
+
+		//////////////unpack///////////
+		proto::Data d2;
+		size_t len= msg.any.length();
+		const char *p = msg.any.c_str();
+		//可以写 case 1:Unpack<xx1>; case 2:Unpack<xx2>
+		proto::Unpack<proto::Data>(d2, p, len);
+		UNIT_INFO("%d %d", data.id, d2.id);
+		UNIT_ASSERT(data.id == d2.id);
+		UNIT_ASSERT(2 == d2.ids.size());
+		UNIT_ASSERT(data.ids.size() == d2.ids.size());
+		UNIT_ASSERT(data.ids[0] == d2.ids[0]);
+		UNIT_ASSERT(data.ids[1] == d2.ids[1]);
+
+
+
+	}
 }
 
 namespace

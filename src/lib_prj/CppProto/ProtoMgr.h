@@ -21,12 +21,13 @@ namespace proto
 
 	};
 
+	//记录处理接收消息 的信息
 	struct MsgData
 	{
-		void *unpackFun = nullptr;	//解包函数  bool Unpack(T &t, CPointChar &cur, size_t &len)
-		void *msgFun = nullptr;		//处理消息函数	 void(*fun)(ConClass &con, const MsgType &msg)
-		char *(*createFun)() = nullptr;		//消息对象 分配函数  
-		void (*freeFun)(char *) = nullptr;	//消息对象 释放函数 
+		void *unpackFun         = nullptr;	    //解包函数  bool Unpack(T &t, CPointChar &cur, size_t &len)
+		void *msgFun            = nullptr;		//处理消息函数	 void(*fun)(ConClass &con, const MsgType &msg)
+		char *(*createFun)()    = nullptr;		//消息对象 分配函数  
+		void (*freeFun)(char *) = nullptr;	    //消息对象 释放函数 
 	};
 
 	class ProtoMgr 
@@ -60,11 +61,11 @@ namespace proto
 			L_ERROR("repeated reg");
 			return;
 		}
-		MsgData &d = m_id2MsgData[msg.id];
-		d.msgFun = (void *)fun;
+		MsgData &d  = m_id2MsgData[msg.id];
+		d.msgFun    = (void *)fun;
 		d.unpackFun = (void *)proto::Unpack<MsgType>;
 		d.createFun = (decltype(d.createFun))proto::CreateFun<MsgType>;
-		d.freeFun = (decltype(d.freeFun))proto::FreeFun<MsgType>;
+		d.freeFun   = (decltype(d.freeFun))proto::FreeFun<MsgType>;
 	}
 
 }

@@ -1,5 +1,3 @@
-
-
 #include "ProtoMgr.h"
 
 namespace proto
