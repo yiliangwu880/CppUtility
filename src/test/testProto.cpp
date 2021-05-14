@@ -1,5 +1,7 @@
 
 #include "../lib_prj/CppProto/ProtoMgr.h"
+#include "../lib_prj/CppProto/Proto1.h"
+#include "../lib_prj/CppProto/StructPack.h"
 #include <unordered_map>
 
 using namespace std;

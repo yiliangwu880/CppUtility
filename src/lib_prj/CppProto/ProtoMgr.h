@@ -1,11 +1,16 @@
 /*
+author:yiliangwu880
+	you can get more refer from https ://github.com/yiliangwu880/CppUtility.git
+
 C++结构体作为协议，提供给C++进程间通讯。
 源码的方式提供复用，需要根据项目小量修改
 
-支持联合体 表达 动态对象（未开发）
 */
 
 
+#include <string>
+#include <vector>
+#include <unordered_map>
 #include "Proto1.h"
 #include "StructPack.h"
 

@@ -44,6 +44,7 @@ namespace proto
 		msgData.freeFun(msgType);
 	}
 
+
 	void ProtoMgr::Check()
 	{
 #pragma pack(push)

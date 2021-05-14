@@ -7,7 +7,36 @@
 #pragma pack(push)
 #pragma pack(1)
 namespace proto {
-	
+
+	//先定义参数信息，以后再具体实现, 域的顺序 和 遗漏，都会初始化的时候检查出来
+#define DB_ALL_STRUCT_INFO \
+	DB_CLASS_NAME(Ride)\
+	DB_FIELD(ids)\
+	DB_FIELD(s)\
+	DB_FIELD(m)\
+	DB_CLASS_END\
+\
+	DB_CLASS_NAME(insert_cs)\
+	DB_FIELD(id)\
+	DB_FIELD(a)\
+	DB_FIELD(vecInt)\
+	DB_FIELD(ride)\
+	DB_FIELD(vecData)\
+	DB_FIELD(mapData)\
+	DB_CLASS_END\
+\
+	DB_CLASS_NAME(insert_sc)\
+	DB_FIELD(id)\
+	DB_FIELD(ret)\
+	DB_FIELD(a)\
+	DB_CLASS_END\
+\
+	DB_CLASS_NAME(Data)\
+	DB_FIELD(id)\
+	DB_FIELD(ids)\
+	DB_CLASS_END\
+
+
 	struct Data
 	{
 		uint8_t id;
@@ -36,35 +65,8 @@ namespace proto {
 		bool ret;
 		uint32_t a;
 	};
-}
 
-//先定义参数信息，以后再具体实现, 域的顺序 和 遗漏，都会初始化的时候检查出来
-#define DB_ALL_STRUCT_INFO \
-	DB_CLASS_NAME(Ride)\
-	DB_FIELD(ids)\
-	DB_FIELD(s)\
-	DB_FIELD(m)\
-	DB_CLASS_END\
-\
-	DB_CLASS_NAME(insert_cs)\
-	DB_FIELD(id)\
-	DB_FIELD(a)\
-	DB_FIELD(vecInt)\
-	DB_FIELD(ride)\
-	DB_FIELD(vecData)\
-	DB_FIELD(mapData)\
-	DB_CLASS_END\
-\
-	DB_CLASS_NAME(insert_sc)\
-	DB_FIELD(id)\
-	DB_FIELD(ret)\
-	DB_FIELD(a)\
-	DB_CLASS_END\
-\
-	DB_CLASS_NAME(Data)\
-	DB_FIELD(id)\
-	DB_FIELD(ids)\
-	DB_CLASS_END\
+}
 
 
 

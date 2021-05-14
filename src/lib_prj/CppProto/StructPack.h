@@ -2,7 +2,6 @@
 #pragma once
 
 #include "log_def.h"
-#include <any>
 namespace proto
 {
 	using PointChar = char*;
