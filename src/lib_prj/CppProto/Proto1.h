@@ -48,7 +48,7 @@ namespace proto {
 	DB_CLASS_NAME(insert_sc)\
 	DB_FIELD(id)\
 	DB_FIELD(ret)\
-
+	DB_CLASS_END\
 
 
 #pragma pack(pop)

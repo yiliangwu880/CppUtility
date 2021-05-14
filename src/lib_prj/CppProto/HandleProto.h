@@ -1,6 +1,8 @@
 /*
 C++结构体作为协议，提供给C++进程间通讯。
 源码的方式提供复用，需要根据项目小量修改
+
+支持联合体 表达 动态对象（未开发）
 */
 
 
@@ -39,7 +41,7 @@ namespace proto
 		template<class MsgType>
 		void RegProtoParse(void(*fun)(ConClass &con, const MsgType &msg));
 
-		void Dispach(ConClass &con, const char *msg, size_t len);
+		void Dispatch(ConClass &con, const char *msg, size_t len);
 
 		//示范用，实际项目可以用更高效的方法，避免内存复制
 		template<class MsgType>
@@ -54,7 +56,6 @@ namespace proto
 	private:
 		void Check();//检查宏定义是否正确。
 	};
-#if 0
 
 	template<class MsgType>
 	void ProtoMgr::RegProtoParse(void(*fun)(ConClass &con, const MsgType &msg))
@@ -68,9 +69,8 @@ namespace proto
 		MsgData &d = m_id2MsgData[msg.id];
 		d.msgFun = (void *)fun;
 		d.unpackFun = (void *)proto::Unpack<MsgType>;
-		d.createFun = (void *)proto::CreateFun<MsgType>;
-		d.freeFun = (void *)proto::FreeFun<MsgType>;
+		d.createFun = (decltype(d.createFun))proto::CreateFun<MsgType>;
+		d.freeFun = (decltype(d.freeFun))proto::FreeFun<MsgType>;
 	}
 
-#endif
 }

@@ -26,6 +26,16 @@ namespace proto
 		return false;
 	}
 
+	template<>
+	inline bool Unpack<const uint16_t>(const uint16_t &v, CPointChar &cur, size_t &len)
+	{
+		L_COND(len >= sizeof(v), false);
+		uint16_t unpackV = *(uint16_t*)cur;
+		cur += sizeof(v);
+		len -= sizeof(v);
+		L_COND(v == unpackV, false); //解包内容和对象不符合。  消息ID不一样
+		return true;
+	}
 
 #define EASY_CODE(T)\
 	template<>\
@@ -74,41 +84,6 @@ namespace proto
 		EASY_CODE(int8_t)
 		EASY_CODE(uint8_t)
 #undef  EASY_CODE
-#if 0 //test code
-		using TEST_TYPE =uint64_t;
-		template<>
-		inline bool Pack<TEST_TYPE>(const TEST_TYPE &v, PointChar &cur, size_t &len)
-		{
-			L_DEBUG("Pack<TEST_TYPE>");
-			L_COND(len >= sizeof(v), false);
-
-			L_DEBUG("v = %ld", v);
-			*(TEST_TYPE*)cur = v;
-			L_DEBUG("size = %d", sizeof(v));
-			L_DEBUG("%d %d %d %d %d %d %d %d", *cur, *(cur + 1), *(cur + 2), *(cur + 3), *(cur + 4), *(cur + 5), *(cur + 6), *(cur + 7));
-
-			cur += sizeof(v);
-			len -= sizeof(v);
-
-			return true;
-		}
-
-		template<>
-		inline bool Unpack<TEST_TYPE>(TEST_TYPE &v, CPointChar &cur, size_t &len)
-		{
-			L_DEBUG("Unpack<TEST_TYPE>");
-			{
-				L_DEBUG("cur = %p ", cur);
-			}
-			L_COND(len >= sizeof(v), false);
-			v = *(TEST_TYPE*)cur;
-			cur += sizeof(v);
-			len -= sizeof(v);
-			L_DEBUG("%d", v);
-			return true;
-		}
-#endif
-
 
 	template<>
 	inline bool Pack<std::string>(const std::string &v, PointChar &cur, size_t &len)
@@ -265,19 +240,14 @@ namespace proto
 #undef  EASY_CODE
 
 ///////////////////////自定义结构体////////////////////////////
-#if 0
 
 #define DB_CLASS_NAME(className)\
 	template<>\
 	inline bool Pack<className>(const className &v, PointChar &cur, size_t &len)\
 	{\
 
-
-
 #define DB_FIELD(fieldName)\
 	L_COND(Pack(v.fieldName, cur, len), false);\
-
-
 
 #define DB_CLASS_END\
 		return true;\
@@ -289,9 +259,8 @@ namespace proto
 #undef  DB_FIELD
 #undef  DB_CLASS_END
 
-#endif
 
-#if 0
+
 #define DB_CLASS_NAME(className)\
 	template<>\
 	inline bool Unpack<className>(className &v, CPointChar &cur, size_t &len)\
@@ -309,7 +278,6 @@ namespace proto
 #undef  DB_CLASS_NAME
 #undef  DB_FIELD
 #undef  DB_CLASS_END
-#endif
 
 
 
