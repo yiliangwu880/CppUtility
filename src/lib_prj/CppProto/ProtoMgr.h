@@ -39,7 +39,7 @@ namespace proto
 		ProtoMgr();
 		//注册 proto消息回调
 		template<class MsgType>
-		void RegProtoParse(void(*fun)(ConClass &con, const MsgType &msg));
+		void RegMsgHandler(void(*fun)(ConClass &con, const MsgType &msg));
 
 		void Dispatch(ConClass &con, const char *msg, size_t len);
 
@@ -58,7 +58,7 @@ namespace proto
 	};
 
 	template<class MsgType>
-	void ProtoMgr::RegProtoParse(void(*fun)(ConClass &con, const MsgType &msg))
+	void ProtoMgr::RegMsgHandler(void(*fun)(ConClass &con, const MsgType &msg))
 	{
 		MsgType msg;
 		if (m_id2MsgData.find(msg.id) != m_id2MsgData.end())

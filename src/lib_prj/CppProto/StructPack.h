@@ -2,7 +2,7 @@
 #pragma once
 
 #include "log_def.h"
-
+#include <any>
 namespace proto
 {
 	using PointChar = char*;
@@ -21,11 +21,10 @@ namespace proto
 	template<class T>
 	inline bool Unpack(T &t, CPointChar &cur, size_t &len)
 	{
-		//static_assert(false);
 		L_ERROR("unpack unknow. type name = %s", typeid(T).name());
 		return false;
 	}
-
+	//解包消息ID用，例如 const uint16_t id = 1; 
 	template<>
 	inline bool Unpack<const uint16_t>(const uint16_t &v, CPointChar &cur, size_t &len)
 	{
@@ -36,6 +35,7 @@ namespace proto
 		L_COND(v == unpackV, false); //解包内容和对象不符合。  消息ID不一样
 		return true;
 	}
+
 
 #define EASY_CODE(T)\
 	template<>\
@@ -162,7 +162,9 @@ namespace proto
 		return true;
 	}
 	///////////////////////vector////////////////////////////
-	//定义所有vector<xx>
+	//定义所有vector<xx>  
+	//觉得理论上不应该每种vector<xx>都定义，应该有方法会静态识别vector类型，并调用PackVector函数，不需要这里得定义。
+	//但还没研究出方法，先用宏吧所有情况实现一遍
 #define EASY_CODE(T)\
 	template<>\
 	inline bool Pack<std::vector<T>>(const std::vector<T> &v, PointChar &cur, size_t &len)\

@@ -1,7 +1,7 @@
 
 #include "Proto1.h"
 #include "StructPack.h"
-#include "HandleProto.h"
+#include "ProtoMgr.h"
 
 namespace proto
 {
@@ -15,11 +15,11 @@ namespace proto
 		using ComMsgFun = void(ConClass &con, const char &); //消息回调函数的抽象。 
 		using ComUnpackFun = bool(char &, CPointChar &, size_t &);//消息解析函数的抽象。 
 
-		uint16_t cmdId = *(const uint16_t *)msg; //约定协议前 uint16_t 为 cmdId. 
-		auto it = m_id2MsgData.find(cmdId);
+		uint16_t msgId = *(const uint16_t *)msg; //约定协议前 uint16_t 为 cmdId. 
+		auto it = m_id2MsgData.find(msgId);
 		if (it == m_id2MsgData.end())
 		{
-			L_ERROR("unknow cmdId %d", cmdId);
+			L_ERROR("unknow cmdId %d", msgId);
 			return;
 		}
 		MsgData &msgData = it->second;
@@ -28,7 +28,18 @@ namespace proto
 		char *msgType = msgData.createFun();
 		if (unpack(*msgType, msg, len))
 		{
-			(*fun)(con, *msgType);
+			if (0 == len)
+			{
+				(*fun)(con, *msgType);
+			}
+			else//还有内容未解包
+			{
+				L_ERROR("have unknow bytes unpack %d", len);
+			}
+		}
+		else
+		{
+			L_ERROR("unpack fail, cmdId=%d", msgId);
 		}
 		msgData.freeFun(msgType);
 	}
@@ -37,35 +48,6 @@ namespace proto
 	{
 #pragma pack(push)
 #pragma pack(1)
-#if 0
-
-		//宏展开代码模板
-		struct Check_insert_cs
-		{
-			using CheckType = insert_cs;
-			decltype(CheckType::id) id;
-			decltype(CheckType::a) a;
-			decltype(CheckType::vecInt) vecInt;
-			decltype(CheckType::ride) ride;
-		};
-		L_INFO("%d %d", sizeof(Check_insert_cs), sizeof(Check_insert_cs::CheckType));
-		L_ASSERT(sizeof(Check_insert_cs) == sizeof(Check_insert_cs::CheckType)); //确保域宏定义完整
-			//宏实现的代码模板
-		{
-			Ride t;
-			size_t lastOffset = 0; //用来检查定义顺序是否和结构一致
-			//field 1
-			{
-				size_t offset = (size_t)&(((decltype(t) *)(nullptr))->id);
-				L_ASSERT(lastOffset <= offset); //field定义顺序和执行不一致
-				lastOffset = offset;
-			}
-			//field 2
-			//。。。。。
-		}
-#endif	
-	
-
 
 #define DB_CLASS_NAME(className) \
 	struct Check_##className \
@@ -110,7 +92,11 @@ namespace proto
 #define DB_FIELD(fieldName)	\
 	{\
 		size_t offset = (size_t)&(((decltype(t) *)(nullptr))->fieldName);\
-		L_ASSERT(lastOffset <= offset); \
+		if(lastOffset > offset)\
+		{\
+			L_ERROR("field "#fieldName" define order is error");\
+			L_ASSERT(false);\
+		}\
 		lastOffset = offset;\
 	}\
 

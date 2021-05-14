@@ -8,6 +8,11 @@
 #pragma pack(1)
 namespace proto {
 	
+	struct Data
+	{
+		uint8_t id;
+		std::vector<uint32_t> ids;
+	};
 	struct Ride 
 	{
 		std::vector<uint32_t> ids;
@@ -22,11 +27,14 @@ namespace proto {
 		uint32_t a;
 		std::vector<uint32_t> vecInt;
 		Ride ride; 
+		std::vector<Data> vecData;
+		std::unordered_map<uint32_t, Data> mapData;
 	};
 	struct insert_sc
 	{
 		const uint16_t id = 2;
 		bool ret;
+		uint32_t a;
 	};
 }
 
@@ -43,12 +51,21 @@ namespace proto {
 	DB_FIELD(a)\
 	DB_FIELD(vecInt)\
 	DB_FIELD(ride)\
+	DB_FIELD(vecData)\
+	DB_FIELD(mapData)\
 	DB_CLASS_END\
 \
 	DB_CLASS_NAME(insert_sc)\
 	DB_FIELD(id)\
 	DB_FIELD(ret)\
+	DB_FIELD(a)\
 	DB_CLASS_END\
+\
+	DB_CLASS_NAME(Data)\
+	DB_FIELD(id)\
+	DB_FIELD(ids)\
+	DB_CLASS_END\
+
 
 
 #pragma pack(pop)
