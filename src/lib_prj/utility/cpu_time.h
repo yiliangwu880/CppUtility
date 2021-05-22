@@ -1,6 +1,6 @@
-//¼ì²écpuÊ±¼ä£¬²éĞ§ÂÊ¹¦ÄÜ
+//æ£€æŸ¥cpuæ—¶é—´ï¼ŒæŸ¥æ•ˆç‡åŠŸèƒ½
 /*
-Ê¹ÓÃÀı×Ó£º
+ä½¿ç”¨ä¾‹å­ï¼š
 {
 	CPU_TIME_FUN
 	your code ...
@@ -14,18 +14,18 @@
 #include <string>
 
 
-//¼ì²â´¦ÀíÆ÷Ê±¼äÏà¹Ø¹¦ÄÜ, ²»ÒªÖ±½ÓÓÃÕâ¸öÀà½Ó¿Ú£¬ÏİÚå¶à£¬ÓÃ°²È«ºê°É
+//æ£€æµ‹å¤„ç†å™¨æ—¶é—´ç›¸å…³åŠŸèƒ½, ä¸è¦ç›´æ¥ç”¨è¿™ä¸ªç±»æ¥å£ï¼Œé™·é˜±å¤šï¼Œç”¨å®‰å…¨å®å§
 class CpuTime
 {
-	static const unsigned MAX_NEST_NUM = 50;  //×î´óÄÚÇ¶Êı
+	static const unsigned MAX_NEST_NUM = 50;  //æœ€å¤§å†…åµŒæ•°
 public:
 	static CpuTime &Instance()
 	{
 		static CpuTime d;
 		return d;
 	}
-	//checkStart ºÍ checkEnd Ö§³ÖÄÚÇ¶Ê¹ÓÃ
-	//²âÊÔ¿ªÊ¼ 
+	//checkStart å’Œ checkEnd æ”¯æŒå†…åµŒä½¿ç”¨
+	//æµ‹è¯•å¼€å§‹ 
 	inline void checkStart()
 	{
 		if (m_idx >= (int)(MAX_NEST_NUM - 1))
@@ -35,7 +35,7 @@ public:
 		++m_idx;
 		gettimeofday(&m_val[m_idx], NULL);
 	}
-	//²âÊÔ½áÊø, ·µ»Ø´ÓcheckStartµ½checkEndÖ®¼äµÄcpuÊ±¼ä Î¢Ãî
+	//æµ‹è¯•ç»“æŸ, è¿”å›ä»checkStartåˆ°checkEndä¹‹é—´çš„cpuæ—¶é—´ å¾®å¦™
 	inline unsigned long long checkEnd()
 	{
 		if (m_idx < 0)
@@ -56,7 +56,7 @@ private:
 
 private:
 	timeval m_val[MAX_NEST_NUM];
-	int m_idx;			//ÄÚÇ¶Ë÷Òı
+	int m_idx;			//å†…åµŒç´¢å¼•
 };
 
 
@@ -81,8 +81,8 @@ private:
 };
 
 #ifdef DEBUG_TEST_CPU_TIME
-//½¨ÒéÉÙÓÃ CPU_TIME_START ºê£¬ĞèÒªÆ¥Åä£¬ÈİÒ×Ğ´´í´úÂë
-//²âÊÔÄ³Çø¼äcpuÊ±¼ä£¬ºÍ ºêCPU_TIME_END ±ØĞëÆ¥ÅäÊ¹ÓÃ
+//å»ºè®®å°‘ç”¨ CPU_TIME_START å®ï¼Œéœ€è¦åŒ¹é…ï¼Œå®¹æ˜“å†™é”™ä»£ç 
+//æµ‹è¯•æŸåŒºé—´cpuæ—¶é—´ï¼Œå’Œ å®CPU_TIME_END å¿…é¡»åŒ¹é…ä½¿ç”¨
 #define CPU_TIME_START CpuTime::Instance().checkStart();
 
 #define CPU_TIME_END \
@@ -91,7 +91,7 @@ private:
 }
 
 
-//²âÊÔ¸ÄĞĞ´úÂëµ½}µÄcpuÊ±¼ä
+//æµ‹è¯•æ”¹è¡Œä»£ç åˆ°}çš„cpuæ—¶é—´
 #define CPU_TIME_FUN TestCpuTimeGuard cpu_time_guard(__FILE__, __LINE__, __FUNCTION__);
 #else
 #define CPU_TIME_START 
