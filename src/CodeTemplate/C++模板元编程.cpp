@@ -1,5 +1,5 @@
 
-)Ä£°åTraitÊµÏÖ¾²Ì¬¶àÌ¬
+)æ¨¡æ¿Traitå®ç°é™æ€å¤šæ€
 template<typename T>
 struct My_Traits
 {
@@ -23,22 +23,22 @@ struct My_Traits<char>
 template<typename T>
 void ft(T t)
 {
-	My_Traits<T>::F(t);//¶Ôt²Ù×÷£¬Ö§³Ö²»Í¬ÀàĞÍ²»Ò»Ñù£¬¼ä½ÓÒ»²ãÌØÁĞ»¯ÊµÏÖ¡£My_Traits<T>::F();. My_Traits<T>¿ÉÒÔÀí½âÎ»Ôªº¯Êı£¬²»Í¬ÊäÈë£¬²»Í¬Êä³ö¡£
+	My_Traits<T>::F(t);//å¯¹tæ“ä½œï¼Œæ”¯æŒä¸åŒç±»å‹ä¸ä¸€æ ·ï¼Œé—´æ¥ä¸€å±‚ç‰¹åˆ—åŒ–å®ç°ã€‚My_Traits<T>::F();. My_Traits<T>å¯ä»¥ç†è§£ä½å…ƒå‡½æ•°ï¼Œä¸åŒè¾“å…¥ï¼Œä¸åŒè¾“å‡ºã€‚
 }
 
-/////////////////////////////////»ªÀöµÄ·Ö¸îÏß/////////////////////////////////
-)SPINAE ¼ÙÈçÓĞÒ»¸öÌØ»¯»áµ¼ÖÂ±àÒëÊ±´íÎó(¼´³öÏÖ±àÒëÊ§°Ü)£¬Ö»Òª»¹ÓĞ±ğµÄÑ¡Ôñ¿ÉÒÔ±»Ñ¡Ôñ£¬ÄÇÃ´¾ÍÎŞÊÓÕâ¸öÌØ»¯´íÎó¶øÈ¥Ñ¡ÔñÁíÍâµÄ¿ÉÑ¡Ñ¡Ôñ
-//¹¦ÄÜ£¬ÅĞ¶ÏÀàĞÍÓĞÄ³¸ö³ÉÔ±Ãû(C::f)¾ÍÓÃ·½Ê½1´¦Àí£¬Ã»ÓĞ¾ÍÓÃ·½Ê½2´¦Àí
+/////////////////////////////////åä¸½çš„åˆ†å‰²çº¿/////////////////////////////////
+)SPINAE å‡å¦‚æœ‰ä¸€ä¸ªç‰¹åŒ–ä¼šå¯¼è‡´ç¼–è¯‘æ—¶é”™è¯¯(å³å‡ºç°ç¼–è¯‘å¤±è´¥)ï¼Œåªè¦è¿˜æœ‰åˆ«çš„é€‰æ‹©å¯ä»¥è¢«é€‰æ‹©ï¼Œé‚£ä¹ˆå°±æ— è§†è¿™ä¸ªç‰¹åŒ–é”™è¯¯è€Œå»é€‰æ‹©å¦å¤–çš„å¯é€‰é€‰æ‹©
+//åŠŸèƒ½ï¼Œåˆ¤æ–­ç±»å‹æœ‰æŸä¸ªæˆå‘˜å(C::f)å°±ç”¨æ–¹å¼1å¤„ç†ï¼Œæ²¡æœ‰å°±ç”¨æ–¹å¼2å¤„ç†
 template<class T>
 struct HaveFun
 {
-	template <typename AttrsCal> static char test(decltype(&AttrsCal::f)); // C++ 11, Ö»ÄÜÍÆµ¼CÎªÀà(·Ç»ù±¾ÀàĞÍ)£¬²»ÄÜÍÆµ¼º¬ÓĞ³ÉÔ±f
+	template <typename AttrsCal> static char test(decltype(&AttrsCal::f)); // C++ 11, åªèƒ½æ¨å¯¼Cä¸ºç±»(éåŸºæœ¬ç±»å‹)ï¼Œä¸èƒ½æ¨å¯¼å«æœ‰æˆå‘˜f
 	//template <typename C> static char test( void (C::*)() ){ return 0; }; //c+=98
 	template <typename AttrsCal>static int32_t test(...);
-	static const bool value = (sizeof(test<T>(0)) == 1); //±àÒëÊ±¿Ì£¬¸ù¾İTÄÜÍÆµ¼³öÖµ.
+	static const bool value = (sizeof(test<T>(0)) == 1); //ç¼–è¯‘æ—¶åˆ»ï¼Œæ ¹æ®Tèƒ½æ¨å¯¼å‡ºå€¼.
 };
 
-//¸ù¾İbool²ÎÊı£¬ÌØÀı»¯ÆäÖĞÒ»¸ö
+//æ ¹æ®boolå‚æ•°ï¼Œç‰¹ä¾‹åŒ–å…¶ä¸­ä¸€ä¸ª
 template<bool c>
 struct ft{};
 template<>
@@ -47,7 +47,7 @@ struct ft<true>
 	template<class T>
 	static void f(T t)
 	{
-		t.f();//T::fµ÷ÓÃ³ÉÔ±
+		t.f();//T::fè°ƒç”¨æˆå‘˜
 	}
 };
 template<>
@@ -56,7 +56,7 @@ struct ft<false>
 	template<class T>
 	static void f(T t)
 	{
-		//ÎŞT::f³ÉÔ±´¦Àí
+		//æ— T::fæˆå‘˜å¤„ç†
 	}
 };
 
@@ -67,12 +67,12 @@ void handler(T t)
 }
 void t()
 {
-	handler(A()); //AÎªÓĞ³ÉÔ±fµÄÀà
+	handler(A()); //Aä¸ºæœ‰æˆå‘˜fçš„ç±»
 	handler(3);
 
 }
 
-£©»ñÈ¡º¯Êı²ÎÊıÊıÁ¿
+ï¼‰è·å–å‡½æ•°å‚æ•°æ•°é‡
 
 template<typename Sig>
 struct get_;
@@ -89,9 +89,15 @@ inline size_t get(Sig) {
 
 void fun(int, int) {}
 
-Info(get(fun)); //»ñÈ¡²ÎÊıÊıÁ¿
+Info(get(fun)); //è·å–å‚æ•°æ•°é‡
 
-)¿É±ä²ÎÊı,ÍêÃÀ×ª·¢
+æˆ–è€… 
+ã€‚ã€‚ã€‚
+struct getg<R(Args...)> {
+	static size_t const value = sizeof...(Args);
+};
+
+)å¯å˜å‚æ•°,å®Œç¾è½¬å‘
 template<class... Args>
 void emplace_front(Args&&... args)
 {
