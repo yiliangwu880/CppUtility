@@ -1,9 +1,9 @@
 
-)CÓïÑÔ¿É±ä²ÎÊı
+)Cè¯­è¨€å¯å˜å‚æ•°
 	void Agrs(const char * pattern, ...)
 	{
 		va_list args;
-		va_start(args, pattern);//patternÊÇ×îºóÒ»¸öÈ·¶¨µÄ²ÎÊı
+		va_start(args, pattern);//patternæ˜¯æœ€åä¸€ä¸ªç¡®å®šçš„å‚æ•°
 
 		char para1;
 		para1 = va_arg(args, char);
@@ -13,14 +13,14 @@
 		va_end(args);
 	}
 
-)Ö¸¶¨ÄÚ´ænew¶ÔÏó, placement new
+)æŒ‡å®šå†…å­˜newå¯¹è±¡, placement new
 	type *p = new (place_address)type
 	type *p = new (place_address)type(initializers)
 	type *p = new (place_address)type[size]
 	type *p = new (place_address)type[size] { braced initializer list }
 
-)Ä£°å¿É±ä²ÎÊı;
-	//Ö§³ÖÎŞ²ÎÊıÇé¿ö
+)æ¨¡æ¿å¯å˜å‚æ•°;
+	//æ”¯æŒæ— å‚æ•°æƒ…å†µ
 	inline void AddCallerAgr(ScriptCaller &caller){};
 	template<class T>
 	void AddCallerAgr(ScriptCaller &caller, T&& t)
@@ -45,7 +45,7 @@
 	)lambda
 	[&a, b](..) -> double {}
 
-)Ä£°åÀàÉêÃ÷;
+)æ¨¡æ¿ç±»ç”³æ˜;
 	template<class Member>
 	class RealTimeRankMgr;
 
@@ -53,9 +53,13 @@
 	class RealTimeRank
 	{
 		friend class RealTimeRankMgr<Member>;
-	}£»
+	}ï¼›
 
-)ÉêÃ÷º¯ÊıÄ£°åÎªÓÑÔª
+)ç”³æ˜æ¨¡æ¿ç±»ä¸ºå‹å…ƒ
+template<class T>
+	friend class EventCom;
+
+)ç”³æ˜å‡½æ•°æ¨¡æ¿ä¸ºå‹å…ƒ
 	template<class T1>
 	class C1;
 
@@ -81,21 +85,21 @@
 		int i;
 	};
 
-)Ä£°åÌØÀı»¯
-	×¼¶ÔÉÏÒ»¸öC1Ä£°åÌØÀı
+)æ¨¡æ¿ç‰¹ä¾‹åŒ–
+	å‡†å¯¹ä¸Šä¸€ä¸ªC1æ¨¡æ¿ç‰¹ä¾‹
 	template<class T>
 	struct C1{};
 	template<>
 	struct C1<char>{};
-	²¿·Ö²ÎÊıÌØÁĞ»¯
+	éƒ¨åˆ†å‚æ•°ç‰¹åˆ—åŒ–
 	template<class T, bool c = true>
 	struct AttrsCal{};
 	template<class T>
 	struct AttrsCal<T, false>{};
 
 	template<typename T>
-	inline T auto_hton(T t) //±ØĞë¼Óinline »òÕß static , extern,²»ÈÃ±àÒë»áÖØ¶¨Òå
-	{//²»·µ»Ø£¬²»ÈÃËüÊ¹ÓÃ
+	inline T auto_hton(T t) //å¿…é¡»åŠ inline æˆ–è€… static , extern,ä¸è®©ç¼–è¯‘ä¼šé‡å®šä¹‰
+	{//ä¸è¿”å›ï¼Œä¸è®©å®ƒä½¿ç”¨
 	}
 	template<>
 	inline uint16_t auto_hton(uint16_t t)
@@ -103,11 +107,11 @@
 		return htons(t);
 	}
 
-)Ç°ºóÖÃ++ --ÖØÔØÔËËã·û
+)å‰åç½®++ --é‡è½½è¿ç®—ç¬¦
 	T &operator++() //prefix
 	T &operator++(int) //postfix
 
-)³õÊ¼»¯ÁĞ±íĞ´·¨ c++11
+)åˆå§‹åŒ–åˆ—è¡¨å†™æ³• c++11
 	void f4(std::initializer_list<int> c)
 	{
 		for (auto &v : c)
@@ -117,10 +121,10 @@
 	}
 	f4({ 1, 2, 3 });
 
-)×ÔÈ»×Ö·û´®³£Á¿(×ªÒå×Ö·û²»×ªÒå)
+)è‡ªç„¶å­—ç¬¦ä¸²å¸¸é‡(è½¬ä¹‰å­—ç¬¦ä¸è½¬ä¹‰)
 char *s = R"offa(
     abc
-    ²é"
+    æŸ¥"
 \
 \n
 end
