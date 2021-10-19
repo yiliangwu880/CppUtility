@@ -17,7 +17,7 @@ class
 
 };
 
-//auto ������ģ������� 
+//auto 非类型模板参数的 
 class
 {
 	template <typename T, typename U>
@@ -31,7 +31,7 @@ class
 	}
 };
 
-//std::variant<>
+//std::variant<> 存放指定类型的对象
 class
 {
 	std::variant<int, float> v, w;
@@ -50,17 +50,36 @@ class
 	catch (bad_variant_access&) {}
 };
 
-//�ṹ����(Structured bindings)
+//std::any 存放任意类型的对象
+{
+	std::any a;  //定义一个空的any，即一个空的容器
+	a = 2;   //直接重新赋值
+	if (typeid(int) == a.type())
+	{
+		Print("a is int");
+	}
+	try
+	{
+		auto f = std::any_cast<int>(a); //f为int类型，其值为2
+		std::cout << f << std::endl; //2
+	}
+	catch (const std::bad_any_cast& e)
+	{
+		std::cout << e.what() << std::endl;
+	}
+}
+
+//结构化绑定(Structured bindings)
 class
 {
 
 	std::tuple<int, double, std::string> f() {
 		return std::make_tuple(1, 2.3, "456");
 	}
-	auto[x, y, z] = f(); // x,y,z �ֱ��Ƶ�Ϊint,double,std::string
+	auto[x, y, z] = f(); // x,y,z 分别被推导为int,double,std::string
 };
 
-//����������ǿ��
+//变量声明的强化
 class
 {
 
