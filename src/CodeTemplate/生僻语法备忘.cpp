@@ -78,8 +78,8 @@ template<class T>
 	class C1
 	{
 	public:
-		friend bool operator == <> (C1 &a, C1 &b);	
-		friend bool ff3 <>(C1 &a, C1 &b);
+		friend bool operator == <int> (C1 &a, C1 &b);	
+		friend bool ff3 <int>(C1 &a, C1 &b);
 	protected:
 	private:
 		int i;
