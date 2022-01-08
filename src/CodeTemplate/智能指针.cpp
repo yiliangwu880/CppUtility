@@ -1,0 +1,43 @@
+
+#include <memory>
+using namespace std;
+
+///////////////////////////shared_ptr unique_ptr 通用注意事项
+p.get() //返回真正指针，后续操作注意原生的指针缺点，别野了。
+
+
+///////////////////////////shared_ptr 特有
+	
+用 shared_ptr<A> p = make_shared<A>(args); 代替 shared_ptr<A> p (new(args););
+可以直接用在容器	vector<shared_ptr<A>> v;v.emplace_back(make_shared<A>());
+派生类 可以 传递给 基类 shared_ptr<Base> b = make_shared<Derive>();
+
+
+///////////////////////////unique_ptr 特有
+
+使用场景 当定义一个对象，不知道具体类型时。
+class A
+{
+	unique_ptr<B> p;
+	//未来运行时刻，设置对象
+	void SetP(unique_ptr<B> &p1) {
+		p.reset(p1.release()) //p 释放原来对象，对象所有权从p1转移给p.
+	}
+};
+
+unique_ptr<C> c
+unique_ptr<B> b(std::move( c)); //B没虚析构函数，错的！！！！！！！！，B加虚析构函数就对
+
+//不能复制,但可以返回
+unique_ptr<C> f()
+{
+	auto p = make_unique<C>();
+	return p;
+}
+
+/////////////////////////////weak_ptr
+weak_ptr指向一个由shared_ptr管理的对象， 只能lock使用
+
+shared_ptr<ConcreteClass> p = wp.lock(); //获取
+UNIT_ASSERT(p); //这里判断有值，能保证对象存在。后面使用就注意了
+。。。//注意，一般当普通指针使用，shared_ptr不能保证不野。 所以需要用户保证使用p期间，对象别释放。

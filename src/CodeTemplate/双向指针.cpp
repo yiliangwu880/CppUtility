@@ -1,3 +1,5 @@
+//下面过于复杂，可考虑用：C 拥有 A ，B。 用户用weak_ptr使用。释放C全部释放
+
 //适用场景：A,B对象互相指向， 一对一关系。又需要自动释放
 template <typename Owner, typename Other>
 class DoublePoint
