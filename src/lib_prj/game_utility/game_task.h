@@ -1,5 +1,6 @@
 /************************************************************************/
 /*
+you can get more refer from https://github.com/yiliangwu880/CppUtility.git
 author:YiliangWu
 brief:
 任务功能：
