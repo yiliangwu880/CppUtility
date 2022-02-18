@@ -22,7 +22,7 @@ SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/../bin)
 ADD_EXECUTABLE(test ${SRCS} ${SRCS2})
 
 #设置依赖
-ADD_DEPENDENCIES(test lib_prj libsvr_util.a)
+#ADD_DEPENDENCIES(test lib_prj libsvr_util.a)
 
 #增加系统依赖库
 ADD_library(pthread SHARED IMPORTED)

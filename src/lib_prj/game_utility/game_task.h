@@ -187,7 +187,8 @@ public:
 	//@brief (process update event) task进度更新事件。如果 Task 完成，会被注销
 	//@para ..., 每个参数的意义根据 TaskType, TaskTypeCfg 意义来决定
 	//注意：每个参数必需为类型uint32
-	void Update(TaskType target_type, ...);	
+	template<class ... Args>
+	void Update(TaskType task_type, Args&& ... args);
 	
 	//true表示 进度完成
 	bool IsFinish(const TaskCfg &task_cfg, uint32 cur_num);
@@ -200,8 +201,30 @@ private:
 	//@target_type_info	为 TaskTypeCfg的一个元素
 	//@args		Update传进来的可变参数。 格式为 para1, para2, para3 
 	//return true表示符合条件
-	bool IsMatchCondition(const TaskTypeCfg &target_type_info, const TaskCfg &task_cfg, va_list args) const;
+	template<class ... Args>
+	bool IsMatchCondition(const TaskTypeCfg &target_type_info, const TaskCfg &task_cfg, Args&& ... args) const;
 
+
+};
+
+//任务类型信息配置
+class GameTaskTypeMgr
+{
+private:
+	std::array<TaskTypeCfg, (uint32_t)TaskType::MAX_LEN> m_cfg;
+
+public:
+	static const GameTaskTypeMgr &Ins()
+	{
+		static GameTaskTypeMgr d;
+		return d;
+	}
+	const std::array<TaskTypeCfg, (uint32_t)TaskType::MAX_LEN> &GetCfg() const { return m_cfg; }
+	bool IsCfgOk();//检查配置非法
+
+private:
+	TaskParaOpt Str2TaskParaLogic(const std::string &s);
+	GameTaskTypeMgr();
 };
 
 //注册Task,避免了用户操心动态分配
@@ -223,4 +246,112 @@ uint64 TaskMgr::CreateTask(const TaskCfg &cfg, Args&&... args)
 	DeriveTask *p = new DeriveTask(cfg, std::forward<Args>(args)...);
 	vec.push_back(p);
 	return (uint64)p;
+}
+
+template<class ... Args>
+void TaskMgr::Update(TaskType task_type, Args&& ... args)
+{
+	//m_is_updateing 控制，保证了m_all_task 在Update中不会被别的地方 删除，增加元素
+	if (m_is_updateing)
+	{
+		L_ERROR("recursive call");
+		return;
+	}
+	const TaskTypeCfg &type_cfg = GameTaskTypeMgr::Ins().GetCfg()[(uint32_t)task_type];
+	if (sizeof...(Args) != type_cfg.vec_para_opt.size() + 1)
+	{
+		L_ERROR("error para num");
+		return;
+	}
+	m_is_updateing = true;
+
+	if ((uint32_t)task_type >= m_all_task.size() || (uint32_t)task_type >= GameTaskTypeMgr::Ins().GetCfg().size())
+	{
+		m_is_updateing = false;
+		return;
+	}
+	VecTask &vec_task = m_all_task[(uint32_t)task_type];
+
+
+	uint32 last_para = 0;
+	auto GetPara = [&last_para](uint32 para)
+	{
+		last_para = para;
+	};
+	std::initializer_list<int> { (GetPara(std::forward<Args>(args)), 0)... };
+	VecTask remove_task; //完成等删除的task
+	//不符合条件退出, 符合改变进度
+	for (BaseTask *base_task : vec_task)
+	{
+		const TaskCfg &task_cfg = base_task->GetCfg();
+		//判断是否符合条件
+		if (!IsMatchCondition(type_cfg, task_cfg, std::forward<Args>(args)...))
+		{
+			continue;
+		}
+
+		//符合条件，判断最后一个参数
+		if (type_cfg.is_last_para_absolute)//is_last_para_absolute true表示最后一个参数表示绝对值，false 表示累加值. default 表示累加
+		{
+			base_task->SetNum(last_para);
+		}
+		else
+		{
+			base_task->AddNum(last_para);
+		}
+
+		if (IsFinish(task_cfg, base_task->GetNum()))
+		{
+			remove_task.push_back(base_task);
+		}
+		else
+		{
+			base_task->OnUpdate();
+		}
+	}
+
+	m_is_updateing = false;
+	for (BaseTask * v : remove_task)
+	{
+		v->OnFinish();
+		//VecRemove(vec_task, v);
+		for (auto iter = vec_task.begin(); iter != vec_task.end(); ++iter)
+		{
+			if (*iter == v)
+			{
+				*iter = vec_task.back();
+				vec_task.erase(vec_task.end() - 1);
+				break;
+			}
+		}
+		delete v;
+	}
+}
+
+template<class ... Args>
+bool TaskMgr::IsMatchCondition(const TaskTypeCfg &type_detail, const TaskCfg &task_cfg, Args&& ... args) const
+{
+	if (sizeof...(Args) != type_detail.vec_para_opt.size() + 1)
+	{
+		L_ERROR("error para num");
+		return false;
+	}
+	int idx = 0;
+	std::vector<uint32> vec_para;
+	auto f = [&vec_para](uint32 para)
+	{
+		vec_para.push_back(para);
+	};
+	std::initializer_list<int>{(f(std::forward<Args>(args)), 0)...};
+	for (const auto &logic : type_detail.vec_para_opt)
+	{
+		uint32 cfg_para = GetCfgPara(task_cfg, idx);
+		uint32 para = vec_para[idx];
+		if (!IsLogicOk(logic, para, cfg_para))
+		{
+			return false;
+		}
+		++idx;
+	}
+	return true;
 }

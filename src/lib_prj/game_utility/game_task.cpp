@@ -54,25 +54,6 @@ inline bool VecRemove(Vec& vec, typename Vec::value_type val)
 	}
 	return false;
 }
-//任务类型信息配置
-class GameTaskTypeMgr
-{
-private:
-	std::array<TaskTypeCfg, (uint32_t)TaskType::MAX_LEN> m_cfg;
-
-public:
-	static const GameTaskTypeMgr &Ins()
-	{
-		static GameTaskTypeMgr d;
-		return d;
-	}
-	const std::array<TaskTypeCfg, (uint32_t)TaskType::MAX_LEN> &GetCfg() const { return m_cfg; }
-	bool IsCfgOk();//检查配置非法
-
-private:
-	TaskParaOpt Str2TaskParaLogic(const std::string &s);
-	GameTaskTypeMgr();
-};
 
 
 
@@ -258,78 +239,6 @@ bool TaskMgr::IsLogicOk(TaskParaOpt logic, int64 cur_num, int64 cfg_para) const
 	return false;
 }
 
-void TaskMgr::Update(TaskType task_type, ...)
-{
-	//m_is_updateing 控制，保证了m_all_task 在Update中不会被别的地方 删除，增加元素
-	if (m_is_updateing)
-	{
-		L_ERROR("recurrive call");
-		return;
-	}
-	m_is_updateing = true;
-	va_list args;
-	va_list forward_args; //转传给IsMatchCondition函数用
-	va_start(args, task_type);
-	va_start(forward_args, task_type);
-
-	if ((uint32_t)task_type >= m_all_task.size() || (uint32_t)task_type >= GameTaskTypeMgr::Ins().GetCfg().size())
-	{
-		m_is_updateing = false;
-		return;
-	}
-	VecTask &vec_task = m_all_task[(uint32_t)task_type];
-	const TaskTypeCfg &type_cfg = GameTaskTypeMgr::Ins().GetCfg()[(uint32_t)task_type];
-
-
-	uint32 para_num = type_cfg.vec_para_opt.size();
-	if (para_num>0)
-	{
-		for (int32 i = 0; i < (int32)para_num; ++i)
-		{
-			va_arg(args, uint32);
-		}
-	}
-	const uint32 last_para = va_arg(args, uint32);
-
-	VecTask remove_task; //完成等删除的task
-	//不符合条件退出, 符合改变进度
-	for (BaseTask *base_task : vec_task)
-	{
-		const TaskCfg &task_cfg = base_task->GetCfg();
-		//判断是否符合条件
-		if (!IsMatchCondition(type_cfg, task_cfg, forward_args))
-		{
-			continue;
-		}
-
-		//符合条件，判断最后一个参数
-		if (type_cfg.is_last_para_absolute)//is_last_para_absolute true表示最后一个参数表示绝对值，false 表示累加值. default 表示累加
-		{
-			base_task->SetNum(last_para);
-		}
-		else
-		{
-			base_task->AddNum(last_para);
-		}
-
-		if(IsFinish(task_cfg, base_task->GetNum()))
-		{
-			remove_task.push_back(base_task);
-		}
-		else
-		{
-			base_task->OnUpdate();
-		}
-	}
-
-	m_is_updateing = false;
-	for (BaseTask * v : remove_task)
-	{
-		v->OnFinish();
-		VecRemove(vec_task, v);
-		delete v;
-	}
-}
 
 bool TaskMgr::IsFinish(const TaskCfg &task_cfg, uint32 cur_num)
 {
@@ -345,21 +254,7 @@ bool TaskMgr::IsFinish(const TaskCfg &task_cfg, uint32 cur_num)
 	return IsLogicOk(type_cfg.finish_opt, cur_num, cfg_last_para);
 }
 
-bool TaskMgr::IsMatchCondition(const TaskTypeCfg &type_detail, const TaskCfg &task_cfg, va_list args) const
-{
-	int idx = 0;
-	for (const auto &logic : type_detail.vec_para_opt)
-	{
-		uint32 cfg_para = GetCfgPara(task_cfg, idx);
-		uint32 para = va_arg(args, uint32);
-		if (!IsLogicOk(logic, para, cfg_para))
-		{
-			return false;
-		}
-		++idx;
-	}
-	return true;
-}
+
 
 
 

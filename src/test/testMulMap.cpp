@@ -87,6 +87,7 @@ void fff1()
 
 UNITTEST(MulMap)
 {
+	return;
 	fff1();
 	MM mm;
 	srand((int)time(NULL));
