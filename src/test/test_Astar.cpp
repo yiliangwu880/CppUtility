@@ -105,7 +105,7 @@ namespace
 
 namespace
 {
-	IsBlockFun checkBlock = [&](const Pos &beforepos, const Pos &pos)->bool
+	IsBlockFun checkBlock = [](const Pos &beforepos, const Pos &pos)->bool
 	{
 		if (pos.y >= 10 || pos.x >= 10)
 		{

@@ -25,23 +25,23 @@ struct MulMapTraits {};
 template<class MainKey, class SubKey, class mapped_type>
 class MulMap
 {
-	unordered_map<MainKey, mapped_type> main;
-	unordered_map<SubKey, mapped_type*> sub;
+	std::unordered_map<MainKey, mapped_type> main;
+	std::unordered_map<SubKey, mapped_type*> sub;
 public:
-	template<class... _Valty>
-	mapped_type *emplace(MainKey mainKey, SubKey subKey, _Valty&&... _Val)
+	template<class... Args>
+	mapped_type *emplace(MainKey mainKey, SubKey subKey, Args&&... _Val)
 	{
 		auto it = main.find(mainKey);
 		if (it != main.end())
 		{
-			return false;
+			return nullptr;
 		}
 		auto subIt = sub.find(subKey);
 		if (subIt != sub.end())
 		{
-			return false;
+			return nullptr;
 		}
-		it = main.emplace(make_pair(mainKey, forward<_Valty>(_Val)...)).first;
+		it = main.emplace(std::make_pair(mainKey, std::forward<Args>(_Val)...)).first;
 		mapped_type *p = &(it->second);
 		sub.emplace(make_pair(subKey, p));
 		MulMapTraits<mapped_type>::SetKey(*p, mainKey, subKey);
